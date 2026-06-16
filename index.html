@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="th" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Mail Room - Enterprise 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --sidebar-width: 280px; --sidebar-collapsed-width: 85px; }
+        body { font-family: 'Prompt', sans-serif; overflow: hidden; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        *, *::before, *::after { transition-property: background-color, border-color, color, width, transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
+        
+        /* Glass UI */
+        .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); }
+        .dark .glass-panel { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255,255,255,0.1); }
+        .input-field { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 0.75rem 1rem; width: 100%; outline: none; transition: 0.2s; font-size: 0.875rem; }
+        .dark .input-field { background-color: #0f172a; border-color: #334155; color: #f8fafc; }
+        .input-field:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
+
+        /* ================= RESPONSIVE SIDEBAR CSS ================= */
+        /* DESKTOP (1025px+) */
+        @media (min-width: 1025px) {
+            #app-container { display: flex; height: 100vh; }
+            #sidebar { width: var(--sidebar-width); position: relative; z-index: 40; display: flex !important; }
+            
+            /* Sidebar Collapsed State (Desktop) */
+            #sidebar.collapsed { width: var(--sidebar-collapsed-width); }
+            #sidebar.collapsed .menu-text { display: none; opacity: 0; }
+            #sidebar.collapsed .menu-item { justify-content: center; padding-left: 0; padding-right: 0; }
+            #sidebar.collapsed #brand-name { display: none; }
+            #sidebar.collapsed #user-profile-info { display: none; }
+            #sidebar.collapsed .bottom-controls { flex-direction: column; align-items: center; }
+            #sidebar.collapsed .bottom-controls button { width: 100%; padding: 0.75rem 0; justify-content: center; }
+            #sidebar.collapsed .bottom-controls button span { display: none; }
+            #sidebar.collapsed .bottom-controls button svg { margin: 0; }
+            #mobile-overlay { display: none !important; }
+        }
+
+        /* TABLET & IPAD (768px - 1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            #app-container { display: flex; height: 100vh; }
+            #sidebar { width: var(--sidebar-collapsed-width); position: relative; z-index: 40; display: flex !important; }
+            .menu-text { display: none; }
+            .menu-item { justify-content: center; padding-left: 0; padding-right: 0; }
+            #brand-name, #user-profile-info { display: none; }
+            .bottom-controls { flex-direction: column; align-items: center; }
+            .bottom-controls button span { display: none; }
+            .bottom-controls button svg { margin: 0; }
+            .bottom-controls button { width: 100%; padding: 0.75rem 0; justify-content: center; }
+            #btn-hide-menu { display: none; }
+        }
+
+        /* MOBILE (up to 767px) */
+        @media (max-width: 767px) {
+            #app-container { display: flex; flex-direction: column; height: 100vh; }
+            #sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 280px; transform: translateX(-100%); z-index: 50; transition: transform 0.3s ease; box-shadow: 20px 0 25px -5px rgba(0,0,0,0.1); }
+            #sidebar.mobile-open { transform: translateX(0); }
+            .card-grid { grid-template-columns: 1fr !important; }
+            #btn-hide-menu { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[200] flex flex-col gap-2"></div>
+
+    <div id="detail-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('detail-modal')"></div>
+        <div class="relative bg-white dark:bg-slate-800 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    ข้อมูลเอกสาร (Full Detail)
+                </h3>
+                <button onclick="closeModal('detail-modal')" class="text-slate-400 hover:text-rose-500 transition"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-700"><p class="text-slate-400 mb-1 text-[10px] uppercase tracking-wider">Tracking Number</p><p class="font-mono font-bold text-lg text-indigo-600 dark:text-indigo-400" id="md-tracking">-</p></div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-700"><p class="text-slate-400 mb-1 text-[10px] uppercase tracking-wider">สถานะ</p><p class="font-bold text-lg" id="md-status">-</p></div>
+                    <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">เวลาที่รับเข้า (GMT+7)</p><p class="font-medium" id="md-time">-</p></div>
+                    <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">จำนวน</p><p class="font-medium" id="md-qty">-</p></div>
+                    <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">ผู้ส่ง</p><p class="font-medium" id="md-sender">-</p></div>
+                    <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">แผนกผู้รับ</p><p class="font-medium" id="md-dept">-</p></div>
+                    <div class="md:col-span-2"><p class="text-slate-400 text-[10px] uppercase tracking-wider">ชื่อผู้รับ</p><p class="font-bold text-base" id="md-receiver">-</p></div>
+                    <div class="md:col-span-2 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800"><p class="text-slate-500 text-[10px] uppercase tracking-wider font-bold mb-1">หมายเหตุ</p><p class="text-slate-700 dark:text-slate-300" id="md-remarks">-</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-emerald-500"></div>
+            <div class="text-center mb-8 mt-2">
+                <div class="w-16 h-16 bg-slate-800 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-indigo-500/30">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                </div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">MailRoom <span class="text-indigo-400">Enterprise</span></h1>
+            </div>
+            <div class="space-y-4 relative">
+                <div><label class="text-xs font-bold text-slate-400 uppercase">Username</label><input type="text" id="login-user" value="admin" onkeydown="if(event.key === 'Enter') handleLogin()" class="input-field bg-slate-800 border-slate-700 text-white mt-1"></div>
+                <div><label class="text-xs font-bold text-slate-400 uppercase">Password</label><input type="password" id="login-pass" value="1234" onkeydown="if(event.key === 'Enter') handleLogin()" class="input-field bg-slate-800 border-slate-700 text-white mt-1"></div>
+                <button onclick="handleLogin()" id="btn-login" class="w-full mt-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg transition active:scale-95">เข้าสู่ระบบ (Login)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 z-40 hidden backdrop-blur-sm"></div>
+
+    <div id="app-container">
+        
+        <aside id="sidebar" class="bg-white dark:bg-slate-900 flex flex-col justify-between border-r border-slate-200 dark:border-slate-800">
+            <div class="flex flex-col h-full overflow-y-auto scrollbar-hide">
+                <div class="p-5 flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 justify-between md:justify-start">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <svg class="w-8 h-8 flex-shrink-0 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        <div id="brand-name" class="menu-text whitespace-nowrap"><h1 class="text-base font-bold tracking-widest uppercase">MailRoom</h1></div>
+                    </div>
+                    <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+
+                <nav class="p-3 space-y-2 flex-1 mt-2">
+                    <button onclick="switchTab('dashboard')" id="menu-dashboard" class="menu-item w-full flex items-center gap-3 bg-indigo-600 text-white px-4 py-3.5 rounded-xl font-medium transition shadow-md">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                        <span class="menu-text whitespace-nowrap">Dashboard</span>
+                    </button>
+                    
+                    <div class="my-2 border-t border-slate-100 dark:border-slate-800 menu-text"></div>
+                    <p class="px-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 menu-text">Operations</p>
+                    
+                    <button onclick="switchTab('inbound')" id="menu-inbound" class="menu-item w-full flex items-center gap-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-3 rounded-xl transition text-sm font-medium">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                        <span class="menu-text whitespace-nowrap">รับเอกสาร (Inbound)</span>
+                    </button>
+                    <button onclick="switchTab('delivery')" id="menu-delivery" class="menu-item w-full flex items-center gap-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-3 rounded-xl transition text-sm font-medium">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span class="menu-text whitespace-nowrap">จัดส่งเอกสาร (Delivery)</span>
+                    </button>
+
+                    <div class="my-2 border-t border-slate-100 dark:border-slate-800 menu-text"></div>
+                    <p class="px-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 menu-text">Management</p>
+
+                    <button onclick="switchTab('search')" id="menu-search" class="menu-item w-full flex items-center gap-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-3 rounded-xl transition text-sm font-medium">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <span class="menu-text whitespace-nowrap">ค้นหาและรายงาน</span>
+                    </button>
+                    <button onclick="switchTab('admin')" id="menu-admin" class="menu-item w-full flex items-center gap-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-3 rounded-xl transition text-sm font-medium hidden">
+                        <svg class="w-5 h-5 flex-shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                        <span class="menu-text whitespace-nowrap">จัดการระบบ (Admin)</span>
+                    </button>
+                </nav>
+
+                <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
+                    <div class="flex items-center gap-3 overflow-hidden justify-center md:justify-start">
+                        <div class="w-10 h-10 flex-shrink-0 rounded-full bg-gradient-to-tr from-indigo-500 to-emerald-500 flex items-center justify-center font-bold text-white shadow-md">US</div>
+                        <div id="user-profile-info" class="menu-text whitespace-nowrap">
+                            <p id="ui-username" class="text-sm font-bold truncate">User Profile</p>
+                            <div class="flex items-center gap-1 mt-0.5">
+                                <span id="conn-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                <p id="conn-text" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Offline</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom-controls flex flex-col xl:flex-row gap-2">
+                        <button id="btn-hide-menu" onclick="toggleDesktopSidebar()" class="flex-1 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-lg text-slate-700 dark:text-slate-300 transition flex items-center justify-center gap-2">
+                            <svg id="icon-collapse" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
+                            <svg id="icon-expand" class="w-4 h-4 flex-shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">ซ่อนเมนู</span>
+                        </button>
+                        <button onclick="logout()" class="flex-1 py-2 bg-rose-100 dark:bg-rose-900/40 text-rose-600 hover:bg-rose-200 rounded-lg transition flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col w-full h-full relative">
+            <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 py-4 flex justify-between items-center z-10 sticky top-0 border-b border-slate-200 dark:border-slate-800 h-16">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-500 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                    <h2 id="header-title" class="text-lg font-bold">Dashboard</h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto content-area p-4 md:p-8 scrollbar-hide w-full">
+
+                <div id="tab-dashboard" class="tab-content space-y-6 max-w-7xl mx-auto">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 card-grid">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-indigo-500"><p class="text-xs text-slate-500 font-bold mb-1">รับเข้า (วัน)</p><p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">15</p></div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-emerald-500"><p class="text-xs text-slate-500 font-bold mb-1">ส่งแล้ว (วัน)</p><p class="text-3xl font-bold text-emerald-600 dark:text-emerald-400">12</p></div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-amber-500"><p class="text-xs text-slate-500 font-bold mb-1">รอจัดส่ง</p><p class="text-3xl font-bold text-amber-600 dark:text-amber-400">3</p></div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-rose-500"><p class="text-xs text-slate-500 font-bold mb-1">ตีคืน</p><p class="text-3xl font-bold text-rose-600 dark:text-rose-400">0</p></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[340px]">
+                            <h3 class="text-base font-bold mb-4 text-slate-800 dark:text-white">กราฟสถิติเอกสารรับเข้า-ส่งออก (รายวัน)</h3>
+                            <div class="flex-1 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6">
+                                <svg class="w-12 h-12 mb-3 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                                <p class="font-bold text-slate-500 dark:text-slate-400 text-sm">ยังไม่พบข้อมูลสถิติในขณะนี้</p>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 text-center mt-1.5">กราฟจะแสดงผลอัตโนมัติ<br>เมื่อมีการบันทึกเอกสารเข้าสู่ระบบ</p>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[340px]">
+                            <h3 class="text-base font-bold mb-4 text-slate-800 dark:text-white">สัดส่วนเอกสารตามแผนกผู้รับ</h3>
+                            <div class="flex-1 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6">
+                                <svg class="w-12 h-12 mb-3 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                                <p class="font-bold text-slate-500 dark:text-slate-400 text-sm">ยังไม่พบข้อมูลสัดส่วนในขณะนี้</p>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 text-center mt-1.5">ข้อมูลจะแสดงผลอัตโนมัติ<br>เมื่อมีการคัดแยกและจัดส่งเอกสาร</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-inbound" class="tab-content hidden space-y-6 max-w-6xl mx-auto">
+                    <div class="bg-white dark:bg-slate-800 p-5 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="flex flex-col gap-4">
+                                <div class="relative w-full h-64 md:h-80 bg-slate-900 rounded-3xl overflow-hidden flex items-center justify-center border-4 border-slate-100 dark:border-slate-700">
+                                    <div id="camera-placeholder" class="text-center text-slate-400">
+                                        <svg class="w-12 h-12 mx-auto mb-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                        <p class="text-sm font-medium">กล้องพร้อมใช้งาน</p>
+                                    </div>
+                                    <video id="camera-stream" class="absolute inset-0 w-full h-full object-cover hidden" autoplay playsinline></video>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="startCamera()" class="flex-1 py-3 bg-slate-800 text-white rounded-2xl font-bold text-sm hover:bg-slate-900">เปิดกล้อง</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-50 dark:bg-slate-900/50 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Tracking <span class="text-emerald-500">Scan</span></label><input type="text" id="doc-tracking" class="input-field bg-white shadow-sm font-mono text-xs"></div>
+                                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">ชื่อผู้ส่ง <span class="text-emerald-500">OCR</span></label><input type="text" id="doc-sender" class="input-field bg-white shadow-sm text-xs"></div>
+                                    </div>
+                                    <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">ชื่อผู้รับ <span class="text-rose-500">*</span></label><input type="text" id="doc-receiver" class="input-field bg-white shadow-sm text-xs" placeholder="ระบุชื่อผู้รับ"></div>
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">แผนก <span class="text-rose-500">*</span></label>
+                                            <select id="doc-dept" class="input-field bg-white shadow-sm cursor-pointer text-xs">
+                                                <option value="">-- เลือกแผนก --</option>
+                                            </select>
+                                        </div>
+                                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">จำนวนซอง <span class="text-rose-500">*</span></label><input type="number" id="doc-qty" value="1" min="1" class="input-field bg-white shadow-sm text-center font-bold text-xs"></div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">สถานะ</label>
+                                            <select id="doc-status" class="input-field bg-white shadow-sm cursor-pointer font-bold text-xs" onchange="checkStatusReq()">
+                                                <option value="รอจัดส่ง" class="text-amber-600">รอจัดส่ง</option>
+                                                <option value="ส่งแล้ว" class="text-emerald-600">ส่งแล้ว</option>
+                                                <option value="ตีคืน" class="text-rose-600">ตีคืน</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">หมายเหตุ <span id="req-remarks" class="text-rose-500 hidden">*ระบุเหตุผล</span></label><input type="text" id="doc-remarks" class="input-field bg-white shadow-sm text-xs" placeholder="พิมพ์ข้อความ..."></div>
+                                    </div>
+                                </div>
+                                <button onclick="saveInbound()" id="btn-save" class="w-full mt-6 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-bold shadow-lg shadow-emerald-500/30 transition text-sm">
+                                    บันทึกข้อมูล สู่ Google Sheets
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-delivery" class="tab-content hidden space-y-4 max-w-7xl mx-auto">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 text-[10px] uppercase font-bold tracking-widest border-b border-slate-200 dark:border-slate-700">
+                                <tr>
+                                    <th class="px-4 md:px-6 py-4">Tracking</th>
+                                    <th class="px-4 md:px-6 py-4">แผนกผู้รับ</th>
+                                    <th class="px-4 md:px-6 py-4">เวลารับเข้า (GMT+7)</th>
+                                    <th class="px-4 md:px-6 py-4">สถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-delivery-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-search" class="tab-content hidden space-y-6 max-w-7xl mx-auto">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <div class="flex flex-col md:flex-row gap-4 mb-6">
+                            <input type="text" placeholder="พิมพ์ชื่อ, Tracking..." class="input-field flex-1 text-sm">
+                            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-2xl font-bold transition">ค้นหา</button>
+                        </div>
+                        <div class="h-40 flex items-center justify-center text-slate-400 border border-dashed rounded-2xl">ส่วนแสดงข้อมูลประวัติทั้งหมด</div>
+                    </div>
+                </div>
+
+                <div id="tab-admin" class="tab-content hidden space-y-6 max-w-7xl mx-auto">
+                    <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-xl mb-4 text-indigo-600">จัดการข้อมูลผู้ใช้งาน (Admin Only)</h3>
+                        <p class="text-sm text-slate-500">ส่วนจัดการผู้ใช้และแผนกแบบฟูลออปชัน</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycby2Gjwz8VxnVs6GKVE_MAHCqL7VD4RXl_PS5sjSCy2X32W4xuG2uUL6Dh3iKiTRGUMwOQ/exec';
+
+        // --- Theme & Layout ---
+        function toggleTheme() { document.documentElement.classList.toggle('dark'); }
+        
+        function toggleDesktopSidebar() {
+            const sb = document.getElementById('sidebar');
+            const iconCol = document.getElementById('icon-collapse');
+            const iconExp = document.getElementById('icon-expand');
+            
+            sb.classList.toggle('collapsed');
+            
+            if(sb.classList.contains('collapsed')) {
+                iconCol.classList.add('hidden');
+                iconExp.classList.remove('hidden');
+            } else {
+                iconCol.classList.remove('hidden');
+                iconExp.classList.add('hidden');
+            }
+        }
+        
+        function toggleMobileSidebar() {
+            const sb = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sb.classList.toggle('mobile-open');
+            if(sb.classList.contains('mobile-open')) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('block');
+            } else {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('block');
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(el => { el.classList.remove('bg-indigo-600', 'text-white', 'shadow-md'); el.classList.add('text-slate-500', 'dark:text-slate-400'); });
+            let activeMenu = document.getElementById('menu-' + tabId);
+            if(activeMenu) { activeMenu.classList.remove('text-slate-500', 'dark:text-slate-400'); activeMenu.classList.add('bg-indigo-600', 'text-white', 'shadow-md'); }
+            
+            const titles = { 'dashboard': 'Dashboard', 'inbound': 'รับเอกสารเข้า', 'delivery': 'จัดส่งเอกสาร', 'search': 'ค้นหาและรายงาน', 'admin': 'จัดการระบบ (Admin)' };
+            document.getElementById('header-title').textContent = titles[tabId] || '';
+            
+            if(window.innerWidth < 1025) {
+                document.getElementById('sidebar').classList.remove('mobile-open'); 
+                document.getElementById('mobile-overlay').classList.add('hidden');
+            }
+        }
+
+        // --- Utils & Modals ---
+        function showToast(msg, type='success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bg = type === 'success' ? 'bg-emerald-500' : 'bg-rose-500';
+            toast.className = `${bg} text-white px-6 py-4 rounded-2xl shadow-xl font-bold text-sm transform transition-all duration-300 translate-y-[-20px] opacity-0`;
+            toast.textContent = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-[-20px]', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('translate-y-[-20px]', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function openDetailModal(track, status, time, qty, sender, dept, receiver, remarks) {
+            document.getElementById('md-tracking').textContent = track;
+            document.getElementById('md-status').textContent = status;
+            document.getElementById('md-status').className = status === 'รอจัดส่ง' ? 'font-bold text-amber-500 text-lg' : (status==='ส่งแล้ว'?'font-bold text-emerald-500 text-lg':'font-bold text-rose-500 text-lg');
+            document.getElementById('md-time').textContent = time;
+            document.getElementById('md-qty').textContent = qty + " ซอง";
+            document.getElementById('md-sender').textContent = sender || '-';
+            document.getElementById('md-dept').textContent = dept;
+            document.getElementById('md-receiver').textContent = receiver;
+            document.getElementById('md-remarks').textContent = remarks || '-';
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function checkStatusReq() {
+            const status = document.getElementById('doc-status').value;
+            const req = document.getElementById('req-remarks');
+            if(status === 'ตีคืน') req.classList.remove('hidden');
+            else req.classList.add('hidden');
+        }
+
+        // --- API Connections ---
+        function updateConnStatus(isOnline) {
+            const dot = document.getElementById('conn-dot');
+            const txt = document.getElementById('conn-text');
+            if(isOnline) {
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+                txt.textContent = 'Connected'; txt.className = 'text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+                txt.textContent = 'Offline'; txt.className = 'text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest';
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-overlay').classList.remove('hidden');
+            document.getElementById('login-pass').value = '';
+            updateConnStatus(false);
+            switchTab('dashboard');
+        }
+
+        async function handleLogin() {
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+            const btn = document.getElementById('btn-login');
+            
+            if(!user || !pass) return showToast('กรุณากรอก Username และ Password', 'error');
+
+            btn.innerHTML = 'Connecting to Google Sheets...'; btn.disabled = true;
+
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'LOGIN', payload: { username: user, password: pass } }) });
+                const result = await res.json();
+
+                if (result.status === 'success') {
+                    document.getElementById('login-overlay').classList.add('hidden');
+                    document.getElementById('ui-username').textContent = result.user.name;
+                    updateConnStatus(true);
+                    
+                    if(result.departments && result.departments.length > 0) {
+                        const sel = document.getElementById('doc-dept');
+                        sel.innerHTML = '<option value="">-- เลือกแผนก --</option>';
+                        result.departments.forEach(d => sel.innerHTML += `<option value="${d}">${d}</option>`);
+                    }
+
+                    if(result.user.role === 'Super Admin') document.getElementById('menu-admin').classList.remove('hidden');
+                    else document.getElementById('menu-admin').classList.add('hidden');
+
+                    showToast(`ยินดีต้อนรับ ${result.user.name}`, 'success');
+                } else { showToast(result.message, 'error'); }
+            } catch (e) { showToast('ไม่สามารถเชื่อมต่อ Server', 'error'); } 
+            finally { btn.innerHTML = 'เข้าสู่ระบบ (Login)'; btn.disabled = false; }
+        }
+
+        async function saveInbound() {
+            const data = {
+                trackingNo: document.getElementById('doc-tracking').value,
+                sender: document.getElementById('doc-sender').value,
+                receiver: document.getElementById('doc-receiver').value,
+                department: document.getElementById('doc-dept').value,
+                quantity: document.getElementById('doc-qty').value,
+                status: document.getElementById('doc-status').value,
+                remarks: document.getElementById('doc-remarks').value
+            };
+
+            if(!data.receiver || !data.department || !data.quantity) return showToast('กรุณากรอกชื่อผู้รับ แผนก และจำนวน', 'error');
+            if(data.status === 'ตีคืน' && !data.remarks) return showToast('กรุณาระบุหมายเหตุการตีคืน', 'error');
+
+            const btn = document.getElementById('btn-save');
+            btn.innerHTML = 'กำลังซิงค์ข้อมูลกับ Google Sheets...'; btn.disabled = true;
+            
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'SAVE_INBOUND', payload: data }) });
+                const result = await res.json();
+                
+                if (result.status === 'success') {
+                    showToast('บันทึกข้อมูลลง Google Sheets เรียบร้อย', 'success');
+                    
+                    const tbody = document.getElementById('table-delivery-body');
+                    const time = new Date().toLocaleString('th-TH', {timeZone: 'Asia/Bangkok'}).substring(0,16) + ' น.';
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer';
+                    tr.onclick = () => openDetailModal(data.trackingNo, data.status, time, data.quantity, data.sender, data.department, data.receiver, data.remarks);
+                    
+                    let statusBadge = '';
+                    if(data.status === 'รอจัดส่ง') statusBadge = '<span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-[10px] font-bold">รอจัดส่ง</span>';
+                    else if(data.status === 'ส่งแล้ว') statusBadge = '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">ส่งแล้ว</span>';
+                    else statusBadge = '<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-[10px] font-bold">ตีคืน</span>';
+
+                    tr.innerHTML = `
+                        <td class="px-4 md:px-6 py-4 font-mono font-bold text-indigo-600 dark:text-indigo-400">${data.trackingNo || '-'}</td>
+                        <td class="px-4 md:px-6 py-4 font-medium">${data.department}</td>
+                        <td class="px-4 md:px-6 py-4 text-slate-500 text-xs">${time}</td>
+                        <td class="px-4 md:px-6 py-4">${statusBadge}</td>
+                    `;
+                    tbody.prepend(tr);
+
+                    ['doc-tracking','doc-sender','doc-receiver','doc-remarks'].forEach(id => document.getElementById(id).value = '');
+                    document.getElementById('doc-dept').value = '';
+                    document.getElementById('doc-qty').value = 1;
+                    document.getElementById('doc-status').value = 'รอจัดส่ง';
+                    checkStatusReq();
+                } else { showToast(result.message, 'error'); }
+            } catch(e) { showToast('Error Connection', 'error'); } 
+            finally { btn.innerHTML = 'บันทึกข้อมูล สู่ Google Sheets'; btn.disabled = false; }
+        }
+
+        async function startCamera() { alert('ส่วนเชื่อมต่อกล้องพร้อมทำงานแล้ว'); }
+    </script>
+</body>
+</html>
