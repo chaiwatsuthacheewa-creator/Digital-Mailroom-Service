@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Mail Room - Enterprise</title>
-    <!-- Tailwind CSS -->
+    <title>Digital Mail Room - Enterprise 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
     <style>
@@ -16,6 +16,7 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         *, *::before, *::after { transition-property: background-color, border-color, color, width, transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
         
+        /* Glass UI */
         .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); }
         .dark .glass-panel { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255,255,255,0.1); }
         .input-field { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 0.75rem 1rem; width: 100%; outline: none; transition: 0.2s; font-size: 0.875rem; }
@@ -59,9 +60,6 @@
 
     <div id="toast-container" class="fixed top-5 right-5 z-[200] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- ================= MODALS ================= -->
-    
-    <!-- 1. KPI List Modal (โชว์เมื่อคลิก Dashboard) -->
     <div id="kpi-modal" class="fixed inset-0 z-[140] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('kpi-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-4xl rounded-3xl shadow-2xl flex flex-col max-h-[85vh] border border-slate-200 dark:border-slate-700">
@@ -76,7 +74,6 @@
                             <tr><th class="px-6 py-4">Tracking Number</th><th class="px-6 py-4">ผู้รับ / แผนก</th><th class="px-6 py-4">เวลา (GMT+7)</th><th class="px-6 py-4">สถานะ</th></tr>
                         </thead>
                         <tbody id="kpi-modal-tbody" class="divide-y divide-slate-100 dark:divide-slate-800 cursor-pointer">
-                            <!-- Populated by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -84,7 +81,6 @@
         </div>
     </div>
 
-    <!-- 2. Detail Modal Pop-up -->
     <div id="detail-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('detail-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
@@ -100,7 +96,7 @@
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-700"><p class="text-slate-400 mb-1 text-[10px] uppercase tracking-wider">Tracking Number</p><p class="font-mono font-bold text-lg text-indigo-600 dark:text-indigo-400" id="md-tracking">-</p></div>
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-700"><p class="text-slate-400 mb-1 text-[10px] uppercase tracking-wider">สถานะ</p><p class="font-bold text-lg" id="md-status">-</p></div>
                     <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">เวลาที่รับเข้า (GMT+7)</p><p class="font-medium" id="md-time">-</p></div>
-                    <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">จำนวนซอง</p><p class="font-medium" id="md-qty">-</p></div>
+                    <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">จำนวน</p><p class="font-medium" id="md-qty">-</p></div>
                     <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">ผู้ส่ง</p><p class="font-medium" id="md-sender">-</p></div>
                     <div><p class="text-slate-400 text-[10px] uppercase tracking-wider">แผนกผู้รับ</p><p class="font-medium" id="md-dept">-</p></div>
                     <div class="md:col-span-2"><p class="text-slate-400 text-[10px] uppercase tracking-wider">ชื่อผู้รับ</p><p class="font-bold text-base" id="md-receiver">-</p></div>
@@ -110,7 +106,6 @@
         </div>
     </div>
 
-    <!-- 3. Admin User Modal -->
     <div id="admin-user-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('admin-user-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-lg rounded-3xl shadow-2xl flex flex-col">
@@ -145,7 +140,6 @@
         </div>
     </div>
 
-    <!-- Login Overlay (รองรับปุ่ม Enter) -->
     <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl">
@@ -164,16 +158,13 @@
         </div>
     </div>
 
-    <!-- Mobile Overlay -->
     <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 z-40 hidden backdrop-blur-sm"></div>
 
-    <!-- APP CONTAINER -->
     <div id="app-container">
         
-        <!-- SIDEBAR -->
         <aside id="sidebar" class="bg-white dark:bg-slate-900 flex flex-col justify-between border-r border-slate-200 dark:border-slate-800">
             <div class="flex flex-col h-full overflow-y-auto scrollbar-hide">
-                <div class="p-5 flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 justify-between md:justify-start">
+                <div class="p-5 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900">
                     <div class="flex items-center gap-3 overflow-hidden">
                         <svg class="w-8 h-8 flex-shrink-0 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                         <div id="brand-name" class="menu-text whitespace-nowrap"><h1 class="text-base font-bold tracking-widest uppercase">MailRoom</h1></div>
@@ -206,7 +197,6 @@
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         <span class="menu-text whitespace-nowrap">ค้นหาและรายงาน</span>
                     </button>
-                    <!-- Super Admin Menu -->
                     <button onclick="switchTab('admin')" id="menu-admin" class="menu-item w-full flex items-center gap-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-3 rounded-xl transition text-sm font-medium hidden">
                         <svg class="w-5 h-5 flex-shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
                         <span class="menu-text whitespace-nowrap">จัดการระบบ (Admin)</span>
@@ -239,7 +229,6 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
         <main class="flex-1 flex flex-col w-full h-full relative">
             <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 py-4 flex justify-between items-center z-10 sticky top-0 border-b border-slate-200 dark:border-slate-800 h-16">
                 <div class="flex items-center gap-4">
@@ -258,7 +247,6 @@
 
             <div class="flex-1 overflow-y-auto content-area p-4 md:p-8 scrollbar-hide w-full">
 
-                <!-- TAB 1: DASHBOARD (Clickable KPI Cards) -->
                 <div id="tab-dashboard" class="tab-content space-y-6 max-w-7xl mx-auto">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 card-grid">
                         <div onclick="openDashboardKpiModal('All')" class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-indigo-500 cursor-pointer transform transition hover:-translate-y-1 hover:shadow-lg"><p class="text-xs text-slate-500 font-bold mb-1">รับเข้าทั้งหมด</p><p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400" id="dash-val-1">0</p></div>
@@ -267,19 +255,18 @@
                         <div onclick="openDashboardKpiModal('ตีคืน')" class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-rose-500 cursor-pointer transform transition hover:-translate-y-1 hover:shadow-lg"><p class="text-xs text-slate-500 font-bold mb-1">ตีคืน</p><p class="text-3xl font-bold text-rose-600 dark:text-rose-400" id="dash-val-4">0</p></div>
                     </div>
                     
-                    <!-- Graph Empty States -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[340px]">
                             <h3 class="text-base font-bold mb-4 text-slate-800 dark:text-white">กราฟสถิติเอกสารรับเข้า-ส่งออก (รายวัน)</h3>
-                            <div class="flex-1 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6">
+                            <div class="flex-1 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6 text-center">
                                 <svg class="w-12 h-12 mb-3 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                                 <p class="font-bold text-slate-500 dark:text-slate-400 text-sm">ยังไม่พบข้อมูลสถิติในขณะนี้</p>
-                                <p class="text-xs text-slate-400 dark:text-slate-500 text-center mt-1.5">กราฟจะแสดงผลอัตโนมัติ<br>เมื่อมีการบันทึกเอกสารเข้าสู่ระบบเต็มรูปแบบ</p>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1.5">กราฟจะแสดงผลอัตโนมัติ<br>เมื่อมีการบันทึกเอกสารเข้าสู่ระบบเต็มรูปแบบ</p>
                             </div>
                         </div>
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[340px]">
                             <h3 class="text-base font-bold mb-4 text-slate-800 dark:text-white">สัดส่วนเอกสารตามแผนกผู้รับ</h3>
-                            <div class="flex-1 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6">
+                            <div class="flex-1 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6 text-center">
                                 <svg class="w-12 h-12 mb-3 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
                                 <p class="font-bold text-slate-500 dark:text-slate-400 text-sm">ยังไม่พบข้อมูลสัดส่วนในขณะนี้</p>
                             </div>
@@ -287,7 +274,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: INBOUND (รับเอกสาร) -->
                 <div id="tab-inbound" class="tab-content hidden space-y-6 max-w-6xl mx-auto">
                     <div class="bg-white dark:bg-slate-800 p-5 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -332,14 +318,13 @@
                                     </div>
                                 </div>
                                 <button onclick="saveInbound()" id="btn-save" class="w-full mt-6 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-bold shadow-lg shadow-emerald-500/30 transition text-sm">
-                                    บันทึกข้อมูล สู่ Google Sheets
+                                    บันทึกข้อมูลเข้าสู่ระบบ
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 3: DELIVERY -->
                 <div id="tab-delivery" class="tab-content hidden space-y-4 max-w-7xl mx-auto">
                     <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <table class="w-full text-left text-sm whitespace-nowrap">
@@ -352,13 +337,11 @@
                                 </tr>
                             </thead>
                             <tbody id="table-delivery-body" class="divide-y divide-slate-100 dark:divide-slate-800 cursor-pointer">
-                                <!-- Data will appear here after inbound -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- TAB 4: SEARCH -->
                 <div id="tab-search" class="tab-content hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
                         <div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -369,10 +352,8 @@
                     </div>
                 </div>
 
-                <!-- TAB 5: ADMIN -->
                 <div id="tab-admin" class="tab-content hidden space-y-6 max-w-7xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Users -->
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
                             <h3 class="font-bold text-xl mb-2 text-indigo-600 dark:text-indigo-400">จัดการข้อมูลผู้ใช้งาน (Users)</h3>
                             <p class="text-xs text-slate-500 mb-6">เพิ่ม ลบ หรือแก้ไขบัญชีพนักงาน (ซิงค์ผ่านระบบ)</p>
@@ -382,7 +363,6 @@
                             </div>
                         </div>
 
-                        <!-- Depts -->
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
                             <h3 class="font-bold text-xl mb-2 text-indigo-600 dark:text-indigo-400">จัดการแผนก (Departments)</h3>
                             <p class="text-xs text-slate-500 mb-6">เพิ่มและลบรายชื่อแผนกเพื่อใช้ในหน้าฟอร์มรับเอกสาร</p>
@@ -399,13 +379,12 @@
         </main>
     </div>
 
-    <!-- ================= JAVASCRIPT ================= -->
     <script>
         // === URL API Google Sheets ===
         const API_URL = 'https://script.google.com/macros/s/AKfycby2Gjwz8VxnVs6GKVE_MAHCqL7VD4RXl_PS5sjSCy2X32W4xuG2uUL6Dh3iKiTRGUMwOQ/exec';
         
         let adminUsersCache = [];
-        let globalInboundData = []; // เก็บประวัติเอกสารทั้งหมดเพื่อทำ List Pop-up บน Dashboard
+        let globalInboundData = [];
 
         // --- Layout Tools ---
         function toggleTheme() { document.documentElement.classList.toggle('dark'); }
@@ -461,13 +440,11 @@
         }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         
-        // --- Dashboard KPI Modal (เปิดดูลิสต์เอกสารตามสถานะ) ---
         function openDashboardKpiModal(filterStatus) {
             const modal = document.getElementById('kpi-modal');
             const tbody = document.getElementById('kpi-modal-tbody');
             const title = document.getElementById('kpi-modal-title');
             tbody.innerHTML = '';
-            
             title.textContent = filterStatus === 'All' ? 'รายการเอกสารรับเข้าทั้งหมด' : `รายการเอกสาร (${filterStatus})`;
             
             let filteredData = globalInboundData;
@@ -483,8 +460,7 @@
                     else badge = '<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-[10px] font-bold">ตีคืน</span>';
 
                     const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/50 transition';
-                    // นำวันเวลามาทำ Format คร่าวๆ ถ้ายาวไป
+                    tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer';
                     let shortTime = item.time.split(' ')[0] + ' ' + (item.time.split(' ')[1]||'');
                     
                     tr.innerHTML = `
@@ -493,7 +469,6 @@
                         <td class="px-6 py-4 text-xs text-slate-500">${shortTime}</td>
                         <td class="px-6 py-4">${badge}</td>
                     `;
-                    // คลิกเพื่อเปิดดู Full Detail ต่อได้
                     tr.onclick = () => openDetailModal(item.trackingNo, item.status, item.time, item.quantity, item.sender, item.department, item.receiver, item.remarks);
                     tbody.appendChild(tr);
                 });
@@ -508,7 +483,6 @@
             else req.classList.add('hidden');
         }
 
-        // --- API & Core Functions ---
         function updateConnStatus(isOnline) {
             const dot = document.getElementById('conn-dot');
             const txt = document.getElementById('conn-text');
@@ -532,7 +506,6 @@
             const user = document.getElementById('login-user').value;
             const pass = document.getElementById('login-pass').value;
             const btn = document.getElementById('btn-login');
-            
             if(!user || !pass) return showToast('กรุณากรอก Username และ Password', 'error');
 
             btn.innerHTML = 'Connecting to Server...'; btn.disabled = true;
@@ -546,7 +519,11 @@
                     document.getElementById('ui-username').textContent = result.user.name;
                     updateConnStatus(true);
                     
-                    if(result.departments) renderDeptDropdown(result.departments);
+                    if(result.departments) {
+                        const sel = document.getElementById('doc-dept');
+                        sel.innerHTML = '<option value="">-- เลือกแผนก --</option>';
+                        result.departments.forEach(d => sel.innerHTML += `<option value="${d}">${d}</option>`);
+                    }
 
                     if(result.user.role === 'Super Admin') {
                         document.getElementById('menu-admin').classList.remove('hidden');
@@ -555,15 +532,12 @@
                         document.getElementById('menu-admin').classList.add('hidden');
                     }
                     showToast(`ยินดีต้อนรับ ${result.user.name}`, 'success');
-
-                    // สั่งโหลด Dashboard Data เลยหลัง Login ผ่าน
                     loadDashboardData();
                 } else { showToast(result.message, 'error'); }
             } catch (e) { showToast('ไม่สามารถเชื่อมต่อ Server', 'error'); } 
             finally { btn.innerHTML = 'เข้าสู่ระบบ (Login)'; btn.disabled = false; }
         }
 
-        // โหลดข้อมูลเข้า Dashboard และหน้าจัดส่ง
         async function loadDashboardData() {
             try {
                 const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'GET_DASHBOARD_DATA' }) });
@@ -581,7 +555,6 @@
                         else if(item.status === 'รอจัดส่ง') pen++;
                         else if(item.status === 'ตีคืน') ret++;
 
-                        // เรนเดอร์คิวงานที่สถานะเป็น "รอจัดส่ง" ลงในแท็บ Delivery
                         if(item.status === 'รอจัดส่ง') {
                             const tr = document.createElement('tr');
                             tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer';
@@ -594,24 +567,16 @@
                                 <td class="px-4 md:px-6 py-4 text-slate-500 text-xs">${shortTime}</td>
                                 <td class="px-4 md:px-6 py-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-[10px] font-bold">รอจัดส่ง</span></td>
                             `;
-                            tbodyDel.appendChild(tr); // เพิ่มต่อท้าย (เนื่องจาก API เรียงใหม่ไปเก่าให้แล้ว)
+                            tbodyDel.appendChild(tr);
                         }
                     });
 
-                    // อัปเดตตัวเลขหน้า Dashboard
                     document.getElementById('dash-val-1').textContent = inb;
                     document.getElementById('dash-val-2').textContent = del;
                     document.getElementById('dash-val-3').textContent = pen;
                     document.getElementById('dash-val-4').textContent = ret;
                 }
-            } catch(e) { console.log('Error Loading Dashboard Data'); }
-        }
-
-        // --- Inbound System ---
-        function renderDeptDropdown(depts) {
-            const sel = document.getElementById('doc-dept');
-            sel.innerHTML = '<option value="">-- เลือกแผนก --</option>';
-            depts.forEach(d => sel.innerHTML += `<option value="${d}">${d}</option>`);
+            } catch(e) { console.log('Error Loading Dashboard'); }
         }
 
         async function saveInbound() {
@@ -637,8 +602,6 @@
                 
                 if (result.status === 'success') {
                     showToast('บันทึกเอกสารสำเร็จ', 'success');
-                    
-                    // หลังจากบันทึกเสร็จ ให้โหลด Dashboard ใหม่อีกครั้งเพื่ออัปเดตตัวเลขและตารางทันที
                     loadDashboardData();
 
                     ['doc-tracking','doc-sender','doc-receiver','doc-remarks'].forEach(id => document.getElementById(id).value = '');
@@ -652,7 +615,7 @@
             finally { btn.innerHTML = 'บันทึกข้อมูลเข้าสู่ระบบ'; btn.disabled = false; }
         }
 
-        // --- Real OCR System ---
+        // --- REAL OCR SYSTEM (อัปเกรดเพื่อจับข้อความแม่นยำขึ้น) ---
         let videoStream = null;
         async function startCamera() {
             try {
@@ -664,8 +627,9 @@
                 document.getElementById('btn-start-camera').classList.add('hidden');
                 document.getElementById('btn-capture').classList.remove('hidden');
                 document.getElementById('btn-cancel-camera').classList.remove('hidden');
-            } catch (err) { showToast('ไม่สามารถเข้าถึงกล้องได้', 'error'); }
+            } catch (err) { showToast('กรุณาอนุญาตการใช้งานกล้อง', 'error'); }
         }
+
         function stopCamera() {
             if (videoStream) videoStream.getTracks().forEach(t => t.stop());
             document.getElementById('camera-stream').classList.add('hidden');
@@ -674,41 +638,77 @@
             document.getElementById('btn-start-camera').classList.remove('hidden');
             document.getElementById('btn-capture').classList.add('hidden');
             document.getElementById('btn-cancel-camera').classList.add('hidden');
-            document.getElementById('btn-capture').innerHTML = 'ถ่ายภาพ (OCR)';
-            document.getElementById('btn-capture').disabled = false;
+            const btn = document.getElementById('btn-capture');
+            btn.innerHTML = `ถ่ายภาพ (OCR)`;
+            btn.classList.replace('bg-emerald-500', 'bg-indigo-600');
+            btn.disabled = false;
         }
+
         async function captureImage() {
             const video = document.getElementById('camera-stream');
             const btn = document.getElementById('btn-capture');
             
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            // หยุดวิดีโอเพื่อให้ผู้ใช้เห็นภาพที่แคป
+            video.pause();
+            document.getElementById('scanner-line').classList.add('hidden');
             
-            btn.innerHTML = '⏳ AI กำลังสกัดข้อความ...';
+            btn.innerHTML = '⏳ AI กำลังสกัดข้อความ (อาจใช้เวลาสักครู่)...';
             btn.disabled = true;
 
             try {
-                const { data: { text } } = await Tesseract.recognize(canvas, 'tha+eng');
-                const trackMatch = text.match(/(TH|KEX|DHL|SHP)[A-Z0-9]{8,15}|\b\d{10,15}\b/i);
+                // แคปหน้าจอวิดีโอลง Canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth; 
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
+                // ใช้ Tesseract AI ประมวลผลภาพเป็นข้อความ
+                const { data: { text } } = await Tesseract.recognize(
+                    canvas, 'eng+tha', { logger: m => console.log(m) }
+                );
+                
+                // ทำความสะอาดข้อความ ลบช่องว่างออกทั้งหมดเพื่อจับ Tracking ง่ายขึ้น
+                const cleanText = text.replace(/\s+/g, '').toUpperCase();
+                const upperText = text.toUpperCase();
+                
+                // ค้นหา Tracking Number
+                const trackMatch = cleanText.match(/(TH|KEX|DHL|SHP|JNT)[A-Z0-9]{8,15}|\b\d{10,15}\b/i);
+                
+                // ค้นหาชื่อขนส่ง (Sender) จากข้อความเดิม
                 let sender = "";
-                if (/Kerry|KEX/i.test(text)) sender = "KEX (Kerry Express)";
-                else if (/DHL/i.test(text)) sender = "DHL";
-                else if (/Flash/i.test(text)) sender = "Flash Express";
-                else if (/J&T/i.test(text)) sender = "J&T Express";
-                else if (/Shopee/i.test(text)) sender = "Shopee Express";
-                else if (/Thai Post|ไปรษณีย์/i.test(text)) sender = "ไปรษณีย์ไทย";
+                if (upperText.includes("KERRY") || upperText.includes("KEX")) sender = "KEX (Kerry Express)";
+                else if (upperText.includes("DHL")) sender = "DHL";
+                else if (upperText.includes("FLASH")) sender = "Flash Express";
+                else if (upperText.includes("J&T") || upperText.includes("JNT")) sender = "J&T Express";
+                else if (upperText.includes("SHOPEE") || upperText.includes("SPX")) sender = "Shopee Express";
+                else if (text.includes("ไปรษณีย์") || upperText.includes("THAI POST")) sender = "ไปรษณีย์ไทย";
 
-                document.getElementById('doc-tracking').value = trackMatch ? trackMatch[0].toUpperCase() : '';
-                document.getElementById('doc-sender').value = sender;
+                if(trackMatch) {
+                    document.getElementById('doc-tracking').value = trackMatch[0];
+                } else {
+                    showToast('AI ไม่พบเลข Tracking ในภาพ กรุณากรอกเอง', 'error');
+                }
+                if(sender) {
+                    document.getElementById('doc-sender').value = sender;
+                }
+
+                if(trackMatch || sender) {
+                    showToast('AI อ่านข้อมูลเสร็จสิ้น', 'success');
+                }
+
+                btn.innerHTML = '✅ สแกนสำเร็จ!';
+                btn.classList.replace('bg-indigo-600', 'bg-emerald-500');
                 
-                showToast('AI อ่านข้อมูลเสร็จสิ้น', 'success');
-                btn.innerHTML = '✅ สำเร็จ!';
-                setTimeout(() => stopCamera(), 1000);
+                // ปิดกล้องหลังสแกนเสร็จ 1.5 วินาที
+                setTimeout(() => stopCamera(), 1500);
+
             } catch (err) {
+                console.error(err);
                 showToast('เกิดข้อผิดพลาดในการอ่านข้อความ', 'error');
-                btn.innerHTML = 'ถ่ายภาพ (OCR)'; btn.disabled = false;
+                btn.innerHTML = 'ถ่ายภาพ (OCR)'; 
+                btn.disabled = false;
+                video.play(); // เล่นวิดีโอต่อถ้าสแกนพลาด
             }
         }
 
