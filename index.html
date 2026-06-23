@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>Digital Mail Room - Enterprise Hub</title>
     
+    <!-- Core UI CSS framework -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { 
@@ -13,11 +14,13 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Enterprise Advanced Framework Modules -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- PDF Generation Module -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -56,7 +59,7 @@
             padding: 0.75rem 1rem; 
             width: 100%; 
             outline: none; 
-            transition: 0.2s; 
+            transition: all 0.3s ease; 
             font-size: 0.875rem; 
         }
         .dark .input-field { 
@@ -124,8 +127,12 @@
 
     <div id="toast-container" class="fixed top-5 right-5 z-[200] flex flex-col gap-2 pointer-events-none"></div>
 
+    <!-- Hidden canvas for capturing camera frames -->
     <canvas id="capture-canvas" class="hidden"></canvas>
 
+    <!-- ================= ENTERPRISE DIALOG MODALS ================= -->
+    
+    <!-- 1. KPI List View Modal -->
     <div id="kpi-modal" class="fixed inset-0 z-[140] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('kpi-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-4xl rounded-3xl shadow-2xl flex flex-col max-h-[85vh]">
@@ -154,6 +161,7 @@
         </div>
     </div>
 
+    <!-- 2. Master Full Detail View Modal -->
     <div id="detail-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('detail-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
@@ -198,6 +206,7 @@
         </div>
     </div>
 
+    <!-- 3. Dynamic Operations Management Modal -->
     <div id="action-modal" class="fixed inset-0 z-[160] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('action-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-lg rounded-3xl shadow-2xl flex flex-col max-h-[95vh]">
@@ -253,6 +262,7 @@
         </div>
     </div>
 
+    <!-- 4. Admin User Modal -->
     <div id="admin-user-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('admin-user-modal')"></div>
         <div class="relative bg-white dark:bg-slate-800 w-full max-w-lg rounded-3xl shadow-2xl flex flex-col">
@@ -287,6 +297,7 @@
         </div>
     </div>
 
+    <!-- Login Overlay -->
     <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl">
@@ -311,9 +322,12 @@
         </div>
     </div>
 
+    <!-- Mobile Overlay -->
     <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 z-40 hidden backdrop-blur-sm"></div>
 
+    <!-- ================= CORE APPLICATION SIDENAV CONTAINER ================= -->
     <div id="app-container">
+        <!-- APP SIDEBAR LEFT PANEL -->
         <aside id="sidebar" class="bg-white dark:bg-slate-900 flex flex-col justify-between border-r border-slate-200 dark:border-slate-800">
             <div class="flex flex-col h-full overflow-y-auto scrollbar-hide">
                 <div class="p-5 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900">
@@ -382,6 +396,7 @@
             </div>
         </aside>
 
+        <!-- MAIN VIEW PORT LAYER -->
         <main class="flex-1 flex flex-col w-full h-full relative">
             <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 py-4 flex justify-between items-center z-10 sticky top-0 border-b border-slate-200 dark:border-slate-800 h-16">
                 <div class="flex items-center gap-4">
@@ -400,6 +415,7 @@
 
             <div class="flex-1 overflow-y-auto content-area p-4 md:p-8 scrollbar-hide w-full">
 
+                <!-- TAB 1: DASHBOARD ANALYTICS PANEL -->
                 <div id="tab-dashboard" class="tab-content space-y-6 max-w-7xl mx-auto">
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 card-grid">
                         <div onclick="openDashboardKpiModal('All')" class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 border-l-4 border-l-indigo-500 cursor-pointer transform transition hover:-translate-y-1 hover:shadow-lg">
@@ -421,6 +437,7 @@
                     </div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        <!-- Chart Section -->
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[380px]">
                             <h3 class="text-base font-bold mb-4 text-slate-800 dark:text-white">กราฟแสดงปริมาณพัสดุและเอกสารประจำวัน (ย้อนหลัง 7 วัน)</h3>
                             <div id="chart-container" class="flex-1 relative w-full h-full">
@@ -432,6 +449,7 @@
                             </div>
                         </div>
 
+                        <!-- Department Stats Section -->
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-[380px]">
                             <h3 class="text-base font-bold mb-4 text-slate-800 dark:text-white flex justify-between items-center">สัดส่วนพัสดรับเข้าจำแนกตามแผนก (Top 5)</h3>
                             <div id="dash-dept-stats" class="flex-1 flex flex-col justify-center gap-4 mt-2">
@@ -444,10 +462,12 @@
                     </div>
                 </div>
 
+                <!-- TAB 2: INBOUND REGISTRATION SYSTEM (มีระบบ OCR AI + Barcode ขั้นสูง) -->
                 <div id="tab-inbound" class="tab-content hidden space-y-6 max-w-6xl mx-auto">
                     <div class="bg-white dark:bg-slate-800 p-5 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             
+                            <!-- แผงควบคุมเลนส์กล้อง + OCR -->
                             <div class="flex flex-col gap-4">
                                 <div class="relative w-full h-64 md:h-80 bg-slate-900 rounded-3xl overflow-hidden flex items-center justify-center border-4 border-slate-100 dark:border-slate-700">
                                     <div id="camera-placeholder" class="text-center text-slate-400 px-4">
@@ -456,6 +476,7 @@
                                     </div>
                                     <video id="camera-stream" class="absolute inset-0 w-full h-full object-cover hidden" autoplay playsinline muted></video>
                                     <img id="captured-preview" class="absolute inset-0 w-full h-full object-contain bg-black hidden" alt="preview">
+                                    <!-- OCR overlay -->
                                     <div id="ocr-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm flex-col items-center justify-center hidden z-20" style="display:none;">
                                         <div class="scan-line" id="scan-anim"></div>
                                         <svg class="w-10 h-10 text-emerald-400 animate-spin mb-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
@@ -466,32 +487,33 @@
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="startCamera()" id="btn-camera" class="py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2">
+                                    <button onclick="startCamera()" id="btn-camera" class="py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                                         <span id="btn-camera-text">เปิดกล้อง</span>
                                     </button>
-                                    <button onclick="document.getElementById('file-upload').click()" class="py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2">
+                                    <button onclick="document.getElementById('file-upload').click()" class="py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                                         อัปโหลดรูป
                                     </button>
                                     <input type="file" id="file-upload" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
                                 </div>
 
-                                <button onclick="startBarcodeScan()" id="btn-barcode" class="w-full py-3 bg-slate-900 dark:bg-slate-700 hover:bg-black text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2">
+                                <button onclick="startBarcodeScan()" id="btn-barcode" class="w-full py-3 bg-slate-900 dark:bg-slate-700 hover:bg-black text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10M8 7v10m4-10v10m4-10v10m4-10v10"></path></svg>
                                     <span id="btn-barcode-text">ยิงบาร์โค้ด / QR (อ่านเลขพัสดุ)</span>
                                 </button>
 
-                                <button onclick="captureAndOCR()" id="btn-capture" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-bold text-sm shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                                <button onclick="captureAndOCR()" id="btn-capture" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-bold text-sm shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all" disabled>
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                                     📸 ถ่าย & อ่านป้ายอัตโนมัติ (Scan OCR)
                                 </button>
 
+                                <!-- Raw OCR result box (Free-form) -->
                                 <div id="ocr-result-box" class="hidden bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 transition-all">
                                     <div class="flex items-center justify-between mb-2">
                                         <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                            คลังคำสะสม (แตะชิปเพื่อเติมลงช่อง)
+                                            คลังคำอิสระ (สะสมจากการสแกน)
                                         </p>
                                         <div class="flex gap-3 items-center">
                                             <button onclick="clearOCRPool()" class="text-[10px] text-rose-500 font-bold hover:underline flex items-center gap-1">
@@ -501,49 +523,44 @@
                                             <button onclick="toggleRawText()" class="text-[10px] text-indigo-500 font-bold hover:underline">ดูข้อความดิบ</button>
                                         </div>
                                     </div>
-                                    <div id="ocr-tokens" class="space-y-1"></div>
+                                    <div id="ocr-tokens" class="space-y-1 mt-3"></div>
                                     <pre id="ocr-raw-text" class="hidden mt-3 text-[10px] text-slate-500 whitespace-pre-wrap bg-white dark:bg-slate-800 p-3 rounded-lg max-h-32 overflow-y-auto"></pre>
                                 </div>
                             </div>
                             
+                            <!-- แฟ้มฟอร์มอินพุตลงทะเบียน -->
                             <div class="bg-slate-50 dark:bg-slate-900/50 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
                                 <div class="space-y-4">
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label class="text-[10px] font-bold text-slate-500 uppercase flex items-center gap-1 mb-1">
-                                                เลขพัสดุ (Tracking) <span class="bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded text-[8px]">OCR</span>
-                                            </label>
-                                            <input type="text" id="doc-tracking" onfocus="lastTokenTarget='doc-tracking'" class="input-field bg-white shadow-sm font-mono text-xs">
+                                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">เลขพัสดุ (Tracking No.)</label>
+                                            <input type="text" id="doc-tracking" onfocus="setActiveField('doc-tracking')" class="input-field bg-white shadow-sm font-mono text-xs">
                                         </div>
                                         <div>
-                                            <label class="text-[10px] font-bold text-slate-500 uppercase flex items-center gap-1 mb-1">
-                                                ขนส่ง / ผู้จัดส่ง <span class="bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded text-[8px]">OCR</span>
-                                            </label>
-                                            <input type="text" id="doc-sender" onfocus="lastTokenTarget='doc-sender'" class="input-field bg-white shadow-sm text-xs" placeholder="พิมพ์ชื่อ หรือจิ้มรับ OCR">
+                                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">ขนส่ง / ผู้จัดส่ง</label>
+                                            <input type="text" id="doc-sender" onfocus="setActiveField('doc-sender')" class="input-field bg-white shadow-sm text-xs" placeholder="เลือกช่องนี้ แล้วจิ้มคำ">
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="text-[10px] font-bold text-slate-500 uppercase flex items-center gap-1 mb-1">
-                                            ชื่อผู้รับปลายทาง <span class="bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded text-[8px]">OCR</span> <span class="text-rose-500">*</span>
-                                        </label>
-                                        <input type="text" id="doc-receiver" onfocus="lastTokenTarget='doc-receiver'" class="input-field bg-white shadow-sm text-xs" placeholder="พิมพ์ชื่อ หรือจิ้มรับ OCR">
+                                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">ชื่อผู้รับปลายทาง <span class="text-rose-500">*</span></label>
+                                        <input type="text" id="doc-receiver" onfocus="setActiveField('doc-receiver')" class="input-field bg-white shadow-sm text-xs" placeholder="เลือกช่องนี้ แล้วจิ้มคำ">
                                     </div>
                                     <div class="grid grid-cols-3 gap-4">
                                         <div class="col-span-2">
                                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">ระบุกลุ่มแผนกงาน <span class="text-rose-500">*</span></label>
-                                            <select id="doc-dept" class="input-field bg-white shadow-sm cursor-pointer text-xs">
+                                            <select id="doc-dept" onfocus="setActiveField('doc-dept')" class="input-field bg-white shadow-sm cursor-pointer text-xs">
                                                 <option value="">-- เลือกแผนกหน่วยงาน --</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">จำนวนชิ้น <span class="text-rose-500">*</span></label>
-                                            <input type="number" id="doc-qty" value="1" min="1" class="input-field bg-white shadow-sm text-center font-bold text-xs">
+                                            <input type="number" id="doc-qty" onfocus="setActiveField('doc-qty')" value="1" min="1" class="input-field bg-white shadow-sm text-center font-bold text-xs">
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-3 gap-4">
                                         <div>
                                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">สถานะเริ่มต้น</label>
-                                            <select id="doc-status" class="input-field bg-white shadow-sm cursor-pointer font-bold text-xs" onchange="checkInboundStatusReq()">
+                                            <select id="doc-status" onfocus="setActiveField('doc-status')" class="input-field bg-white shadow-sm cursor-pointer font-bold text-xs" onchange="checkInboundStatusReq()">
                                                 <option value="รอจัดส่ง" class="text-amber-600">รอจัดส่ง</option>
                                                 <option value="ส่งแล้ว" class="text-emerald-600">ส่งแล้ว</option>
                                                 <option value="ตีคืน" class="text-rose-600">ตีคืน</option>
@@ -551,7 +568,7 @@
                                         </div>
                                         <div class="col-span-2">
                                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">บันทึกหมายเหตุเพิ่มเติม <span id="req-remarks" class="text-rose-500 hidden">*โปรดระบุสาเหตุ</span></label>
-                                            <input type="text" id="doc-remarks" onfocus="lastTokenTarget='doc-remarks'" class="input-field bg-white shadow-sm text-xs" placeholder="พิมพ์ข้อมูลประกอบรายงาน...">
+                                            <input type="text" id="doc-remarks" onfocus="setActiveField('doc-remarks')" class="input-field bg-white shadow-sm text-xs" placeholder="เลือกช่องนี้ แล้วจิ้มคำ">
                                         </div>
                                     </div>
                                 </div>
@@ -564,6 +581,7 @@
                     </div>
                 </div>
 
+                <!-- TAB 3: DISPATCH DELIVERY SYSTEM -->
                 <div id="tab-delivery" class="tab-content hidden space-y-4 max-w-7xl mx-auto">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
                         
@@ -574,6 +592,7 @@
                             <button onclick="filterDelivery('ตีคืน')" id="btn-del-returned" class="del-filter-btn bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl font-bold text-xs transition">ตีคืน</button>
                         </div>
                         
+                        <!-- ตัวควบคุมลอจิกคัดแยกแยกตามทีมพนักงาน -->
                         <div class="flex items-center gap-2 w-full md:w-auto">
                             <label class="text-xs font-bold text-slate-500 uppercase whitespace-nowrap">คัดกรองทีมแผนก:</label>
                             <select id="delivery-dept-select" onchange="handleDeliveryDeptFilterChange()" class="input-field bg-white shadow-sm cursor-pointer text-xs font-bold md:w-48">
@@ -599,16 +618,20 @@
                                 </tr>
                             </thead>
                             <tbody id="table-delivery-body" class="divide-y divide-slate-100 dark:divide-slate-800 cursor-pointer">
-                                </tbody>
+                                <!-- Data populated by JavaScript -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
 
+                <!-- TAB 4: SEARCH RECORDS & AUDIT REPORT -->
                 <div id="tab-search" class="tab-content hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
                         
+                        <!-- Search Engine Bar -->
                         <div class="flex flex-col lg:flex-row gap-4 mb-6">
                             
+                            <!-- 1. ช่องพิมพ์ค้นหาข้อความหลัก -->
                             <div class="flex-1 relative">
                                 <input type="text" id="search-input" placeholder="พิมพ์ค้นหาข้อมูลด่วนแบบครอบคลุม เช่น เลข Tracking , ชื่อพนักงาน..." onkeyup="if(event.key === 'Enter') executeSearch()" class="input-field w-full pl-11 text-sm">
                                 <svg class="w-5 h-5 absolute left-4 top-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -616,18 +639,22 @@
                                 </svg>
                             </div>
                             
+                            <!-- 2. ส่วนเลือก วัน/เดือน/ปี แบบระบุช่วงได้ (Date Range Filter) -->
                             <div class="flex items-center gap-2 w-full lg:w-auto">
                                 <input type="date" id="search-date-start" onchange="executeSearch()" class="input-field text-sm" title="ตั้งแต่วันที่">
                                 <span class="text-slate-400 font-bold">-</span>
                                 <input type="date" id="search-date-end" onchange="executeSearch()" class="input-field text-sm" title="ถึงวันที่">
                             </div>
                             
+                            <!-- 3. Dropdown ระบุแผนกสำหรับการค้นหาและส่งออกรายงาน -->
                             <div class="w-full lg:w-48 relative">
                                 <select id="search-dept-select" onchange="executeSearch()" class="input-field w-full text-sm font-bold cursor-pointer">
                                     <option value="ALL_DEPTS">ดูทุกแผนก (ทั้งหมด)</option>
-                                    </select>
+                                    <!-- Options injected via JavaScript -->
+                                </select>
                             </div>
                             
+                            <!-- 4. ปุ่มค้นหาและล้างตาราง -->
                             <div class="flex gap-2 w-full lg:w-auto">
                                 <button onclick="executeSearch()" class="flex-1 lg:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition shadow-md whitespace-nowrap">ค้นหา</button>
                                 <button onclick="clearSearch()" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 px-4 py-3 rounded-xl font-bold transition whitespace-nowrap">ล้างค่า</button>
@@ -635,6 +662,7 @@
 
                         </div>
                         
+                        <!-- ปลั๊กอินโมดูลการส่งรายงานออกภายนอก -->
                         <div class="flex gap-2 justify-end mb-4 border-t border-slate-100 dark:border-slate-700 pt-4">
                             <button onclick="exportExcel()" class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-emerald-100 transition flex items-center gap-2 shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> 
@@ -663,6 +691,7 @@
                     </div>
                 </div>
 
+                <!-- TAB 5: ADMIN SYSTEM ARCHITECTURE PANEL -->
                 <div id="tab-admin" class="tab-content hidden space-y-6 max-w-7xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         
@@ -690,8 +719,9 @@
         </main>
     </div>
 
+    <!-- ================= UNCOMPRESSED APPLICATION JAVASCRIPT ================= -->
     <script>
-        // === ตั้งค่า URL API Google Sheets ของระบบ (ใส่ URL Web App ของคุณที่นี่) ===
+        // === ตั้งค่า URL API Google Sheets ของระบบ ===
         const API_URL = 'https://script.google.com/macros/s/AKfycby2Gjwz8VxnVs6GKVE_MAHCqL7VD4RXl_PS5sjSCy2X32W4xuG2uUL6Dh3iKiTRGUMwOQ/exec';
         
         // --- ตัวแปรหลักของระบบ ---
@@ -707,18 +737,31 @@
         let barcodeReader = null;
         let barcodeActive = false;
         
-        // Default Target สำหรับรับค่าจาก OCR (จะเปลี่ยนอัตโนมัติเมื่อผู้ใช้เอาเมาส์/นิ้วไปจิ้มช่องอื่น)
+        // Default Target สำหรับรับค่าจาก OCR (ระบบ Universal Active Focus)
         let lastTokenTarget = 'doc-tracking'; 
         
-        // OCR Token Pool (คลังคำสะสมจากการสแกนหลายๆ ครั้ง)
-        let ocrPool = {
-            track: new Set(),
-            phone: new Set(),
-            postal: new Set(),
-            name: new Set(),
-            addr: new Set(),
-            other: new Set()
-        };
+        // OCR Token Pool (คลังคำอิสระ สะสมข้ามการสแกนหลายรูปได้)
+        let ocrPool = new Set();
+
+        function setActiveField(id) {
+            lastTokenTarget = id;
+            const fields = ['doc-tracking', 'doc-sender', 'doc-receiver', 'doc-dept', 'doc-qty', 'doc-status', 'doc-remarks'];
+            fields.forEach(fid => {
+                const el = document.getElementById(fid);
+                if (el) {
+                    if (fid === id) {
+                        el.classList.add('ring-2', 'ring-emerald-500', 'border-emerald-500', 'bg-emerald-50/30');
+                    } else {
+                        el.classList.remove('ring-2', 'ring-emerald-500', 'border-emerald-500', 'bg-emerald-50/30');
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('load', () => {
+            initSignatureCanvas();
+            setTimeout(() => setActiveField('doc-tracking'), 300); // Set default target on load
+        });
 
         // --- Core Engine: E-Signature Canvas Architecture ---
         let isDrawing = false; 
@@ -782,8 +825,6 @@
             const pixelBuffer = new Uint32Array(context.getImageData(0, 0, canvas.width, canvas.height).data.buffer);
             return !pixelBuffer.some(color => color !== 0);
         }
-        
-        window.addEventListener('load', initSignatureCanvas);
 
         // --- Core UI Engine Layout ---
         function toggleTheme() { 
@@ -1275,9 +1316,9 @@
             });
         }
 
-        // --- INBOUND OCR AI SCANNER SYSTEM (คลังคำสะสม) ---
+        // --- INBOUND OCR AI SCANNER SYSTEM (คลังคำอิสระ แบบไม่จัดกลุ่ม) ---
         function clearOCRPool() {
-            ocrPool = { track: new Set(), phone: new Set(), postal: new Set(), name: new Set(), addr: new Set(), other: new Set() };
+            ocrPool.clear();
             document.getElementById('ocr-tokens').innerHTML = '';
             document.getElementById('ocr-raw-text').textContent = '';
             document.getElementById('ocr-result-box').classList.add('hidden');
@@ -1288,7 +1329,7 @@
             if (barcodeActive) stopBarcodeScan();
             if (cameraStream) return stopCamera();
             try {
-                // บังคับใช้กล้องหลัง (Environment)
+                // บังคับใช้กล้องหลัง
                 cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 } }, audio: false });
                 video.srcObject = cameraStream; video.classList.remove('hidden'); preview.classList.add('hidden'); placeholder.classList.add('hidden');
                 document.getElementById('btn-camera-text').textContent = 'ปิดกล้อง'; document.getElementById('btn-capture').disabled = false; capturedImageData = null;
@@ -1357,6 +1398,7 @@
             let oldText = document.getElementById('ocr-raw-text').textContent;
             document.getElementById('ocr-raw-text').textContent = oldText ? oldText + '\n---\n' + text : text;
 
+            // ดึงเฉพาะ Tracking No. อัตโนมัติ (แพทเทิร์นทั่วไป)
             const compact = text.toUpperCase().replace(/[\s\-]/g, '');
             const trackingPatterns = [ /\b[A-Z]{2}\d{9}[A-Z]{2}\b/g, /\b[A-Z]{3}\d{8,12}\b/g, /\b\d{12,16}\b/g, /\b[A-Z]{2}\d{8,12}\b/g ];
             for (const p of trackingPatterns) {
@@ -1364,96 +1406,74 @@
                 if (m && m.length && !document.getElementById('doc-tracking').value) { document.getElementById('doc-tracking').value = m[0]; break; }
             }
 
-            const lines = text.split(/\n+/).map(l => l.trim()).filter(Boolean);
-            const senderKeys = /(ผู้ส่ง|จาก|from|sender)/i;
-            for (let i = 0; i < lines.length; i++) {
-                if (senderKeys.test(lines[i])) {
-                    let val = lines[i].replace(senderKeys, '').replace(/[:：]/g, '').trim();
-                    if (!val && lines[i+1]) val = lines[i+1].trim();
-                    if (val && !document.getElementById('doc-sender').value) { document.getElementById('doc-sender').value = val.substring(0, 80); break; }
-                }
-            }
-
-            const recvKeys = /(ผู้รับ|เรียน|ถึง|to|attn)/i;
-            for (let i = 0; i < lines.length; i++) {
-                if (recvKeys.test(lines[i])) {
-                    let val = lines[i].replace(recvKeys, '').replace(/[:：]/g, '').trim();
-                    if (!val && lines[i+1]) val = lines[i+1].trim();
-                    if (val && !document.getElementById('doc-receiver').value) { document.getElementById('doc-receiver').value = val.substring(0,80); break; }
-                }
-            }
-
             accumulateAndRenderTokens(text);
         }
 
         function accumulateAndRenderTokens(text) {
-            const compact = text.toUpperCase().replace(/[\s\-]/g, '');
-            const lines = text.split(/\n/).map(l => l.trim()).filter(l => l.length >= 2);
-
-            [/\b[A-Z]{2}\d{9}[A-Z]{2}\b/g, /\b[A-Z]{3}\d{8,12}\b/g, /\b\d{12,16}\b/g, /\b[A-Z]{2}\d{8,12}\b/g]
-                .forEach(p => { (compact.match(p) || []).forEach(m => ocrPool.track.add(m)); });
-
-            (text.match(/0\d[\d\-\s]{7,11}\d/g) || []).forEach(m => {
-                const digits = m.replace(/\D/g, '');
-                if (digits.length >= 9 && digits.length <= 10 && !Array.from(ocrPool.track).some(t => t.includes(digits))) ocrPool.phone.add(digits);
+            // หั่นข้อความด้วยช่องว่างหรือบรรทัดใหม่
+            const words = text.split(/[\s\n]+/);
+            words.forEach(w => {
+                const cleanWord = w.trim();
+                // กรองคำที่มีความยาวตั้งแต่ 1 ตัวอักษรขึ้นไป
+                if (cleanWord.length > 0 && /[A-Za-z0-9ก-๙]/.test(cleanWord)) {
+                    ocrPool.add(cleanWord);
+                }
             });
-
-            (text.match(/\b\d{5}\b/g) || []).forEach(m => {
-                if (!Array.from(ocrPool.track).some(t => t.includes(m)) && !Array.from(ocrPool.phone).some(t => t.includes(m))) ocrPool.postal.add(m);
-            });
-
-            const namePrefix = /(นาย|นาง|นางสาว|น\.ส\.|ด\.ช\.|ด\.ญ\.|คุณ|บริษัท|บจก|บมจ|หจก|ห้าง|ร้าน|ฝ่าย|แผนก|กอง|สำนัก|ธนาคาร|โรงพยาบาล|โรงเรียน|มหาวิทยาลัย|คณะ)/;
-            const addrKey = /(ถนน|ถ\.|ซอย|ซ\.|ตำบล|ต\.|อำเภอ|อ\.|จังหวัด|จ\.|แขวง|เขต|หมู่|ม\.|เลขที่|อาคาร|ชั้น|กรุงเทพ)/;
-            
-            lines.forEach(l => { if (namePrefix.test(l)) ocrPool.name.add(l); else if (addrKey.test(l)) ocrPool.addr.add(l); });
-
-            text.split(/[\s\n]+/).map(w => w.trim()).forEach(w => {
-                if (w.length < 2 || /^[\d\W]+$/.test(w)) return;
-                const up = w.toUpperCase().replace(/[\s\-]/g, '');
-                if (Array.from(ocrPool.track).some(t => t.includes(up))) return;
-                if (Array.from(ocrPool.name).concat(Array.from(ocrPool.addr)).some(l => l.includes(w))) return;
-                ocrPool.other.add(w);
-            });
-
             renderAccumulatedPool();
         }
 
         function renderAccumulatedPool() {
             const container = document.getElementById('ocr-tokens');
             container.innerHTML = '';
-            let total = 0;
-            total += renderGroup(container, '📦 เลขพัสดุ / Tracking', 'text-indigo-600 dark:text-indigo-400', Array.from(ocrPool.track), 'doc-tracking', 'replace');
-            total += renderGroup(container, '👤 ชื่อ / หน่วยงาน', 'text-emerald-600 dark:text-emerald-400', Array.from(ocrPool.name), 'focus', 'append');
-            total += renderGroup(container, '📞 เบอร์โทร', 'text-sky-600 dark:text-sky-400', Array.from(ocrPool.phone), 'doc-remarks', 'append');
-            total += renderGroup(container, '📍 ที่อยู่ / รหัสไปรษณีย์', 'text-amber-600 dark:text-amber-400', Array.from(ocrPool.addr).concat(Array.from(ocrPool.postal)), 'doc-remarks', 'append');
-            total += renderGroup(container, '🔤 อื่นๆ', 'text-slate-500', Array.from(ocrPool.other).slice(0, 40), 'focus', 'append');
+            
+            if (ocrPool.size === 0) {
+                container.innerHTML = '<span class="text-xs text-slate-400">อ่านข้อความไม่ได้ ลองถ่ายใกล้ขึ้น/แสงสว่างขึ้น</span>';
+                return;
+            }
 
-            if (total === 0) container.innerHTML = '<span class="text-xs text-slate-400">อ่านข้อความไม่ได้ ลองถ่ายใกล้ขึ้น/แสงสว่างขึ้น</span>';
-        }
+            const wrap = document.createElement('div'); 
+            wrap.className = 'mb-3 w-full';
+            
+            const head = document.createElement('p'); 
+            head.className = `text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2`;
+            head.innerHTML = `💡 เลือกกล่องข้อความด้านล่าง แล้วจิ้มคำเพื่อเติมข้อมูล`; 
+            wrap.appendChild(head);
 
-        function renderGroup(container, title, colorClass, items, target, mode) {
-            const list = items.filter(Boolean); if (list.length === 0) return 0;
-            const wrap = document.createElement('div'); wrap.className = 'mb-3 w-full';
-            const head = document.createElement('p'); head.className = `text-[10px] font-bold ${colorClass} uppercase tracking-wider mb-1.5`;
-            const hint = target === 'doc-tracking' ? ' · แตะ→ช่อง Tracking' : target === 'doc-remarks' ? ' · แตะ→หมายเหตุ' : ' · แตะ→ช่องที่กำลังเลือกอยู่';
-            head.textContent = title + hint; wrap.appendChild(head);
-            const row = document.createElement('div'); row.className = 'flex flex-wrap gap-1.5';
-            list.forEach(v => {
+            const row = document.createElement('div'); 
+            row.className = 'flex flex-wrap gap-1.5';
+            
+            ocrPool.forEach(v => {
                 const chip = document.createElement('button');
-                chip.className = 'px-2.5 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-[11px] hover:border-indigo-400 hover:text-indigo-600 active:scale-95 transition max-w-full truncate';
-                chip.textContent = v.length > 42 ? v.slice(0, 42) + '…' : v; chip.title = v;
-                chip.onclick = () => applyToken(v, target, mode);
+                chip.className = 'px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 active:scale-95 transition-all shadow-sm max-w-full truncate';
+                chip.textContent = v; 
+                chip.title = v;
+                chip.onclick = () => applyToken(v);
                 row.appendChild(chip);
             });
-            wrap.appendChild(row); container.appendChild(wrap); return list.length;
+            
+            wrap.appendChild(row); 
+            container.appendChild(wrap);
         }
 
-        function applyToken(word, target, mode) {
-            // ถ้าระบุว่า focus ให้ใช้ตัวแปร lastTokenTarget (เปลี่ยนไปตามที่ผู้ใช้คลิก)
-            const id = (target === 'focus') ? lastTokenTarget : target;
-            const el = document.getElementById(id); if (!el) return;
-            el.value = (mode === 'replace' || !el.value) ? word : (el.value + ' ' + word);
-            el.classList.add('ring-2', 'ring-emerald-400'); setTimeout(() => el.classList.remove('ring-2', 'ring-emerald-400'), 600);
+        function applyToken(word) {
+            const el = document.getElementById(lastTokenTarget); 
+            if (!el) return;
+            
+            if(el.tagName === 'SELECT') {
+                let found = false;
+                for(let i=0; i<el.options.length; i++) {
+                    if(el.options[i].text.includes(word) || word.includes(el.options[i].text)) {
+                        el.selectedIndex = i; found = true; break;
+                    }
+                }
+                if(!found) showToast('คำที่เลือกไม่ตรงกับตัวเลือกใน Dropdown', 'info');
+            } else {
+                el.value = el.value ? el.value + ' ' + word : word;
+            }
+
+            // Visual Feedback กระพริบเขียวเพื่อบอกว่าเติมคำสำเร็จ
+            el.classList.add('bg-emerald-100', 'dark:bg-emerald-900/50'); 
+            setTimeout(() => el.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/50'), 300);
         }
 
         function toggleRawText() { document.getElementById('ocr-raw-text').classList.toggle('hidden'); }
