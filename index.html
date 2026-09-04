@@ -12,15 +12,15 @@
   --navy:#0E1B3D; --navy-2:#182A63; --navy-3:#24347A;
   --heading:#0E1B3D;
   --ink:#182233; --ink-soft:#5B6478; --ink-faint:#94A0B8;
-  --paper:#F1F3F9; --surface:#FFFFFF; --surface-2:#F8FAFF; --line:#E2E6F0; --line-2:#EDEFF5;
-  --blue:#2951F5; --blue-deep:#1D3BC4; --blue-soft:#EAF0FE;
-  --green:#1C8A5E; --green-soft:#E3F3EC;
-  --amber:#C77D22; --amber-soft:#FBEEDD;
-  --plum:#6B4FA0; --plum-soft:#EFEAF8;
-  --brick:#B23A3A; --brick-soft:#F8E9E9;
-  --cyan:#0E8FA8; --cyan-soft:#E0F4F8;
-  --pink:#C43C86; --pink-soft:#FBE8F2;
-  --sidebar-bg:linear-gradient(180deg,#0E1B3D 0%,#0B1631 100%);
+  --paper:#F4F7FF; --surface:#FFFFFF; --surface-2:#F8FAFF; --line:#DDE5F5; --line-2:#EDF1F8;
+  --blue:#365CF5; --blue-deep:#2341C7; --blue-soft:#EAF0FF;
+  --green:#0E9F6E; --green-soft:#DFF8EE;
+  --amber:#E98A15; --amber-soft:#FFF0D6;
+  --plum:#7C4DDB; --plum-soft:#F0E9FF;
+  --brick:#E5485E; --brick-soft:#FFE8EC;
+  --cyan:#00A3C4; --cyan-soft:#DFF7FC;
+  --pink:#E93D98; --pink-soft:#FFE5F3;
+  --sidebar-bg:linear-gradient(180deg,#121F54 0%,#25206B 48%,#06496D 100%);
   --table-hover:#FAFBFF;
   --topbar-bg:rgba(255,255,255,.82); --glass-bg:rgba(255,255,255,.9);
   --r-lg:18px; --r-md:12px; --r-sm:8px;
@@ -58,7 +58,8 @@ html,body{margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
 body{
   font-family:'Sarabun','Noto Sans Thai',-apple-system,'Segoe UI',Roboto,sans-serif;
-  background:var(--paper); color:var(--ink); font-size:14.5px; line-height:1.55;
+  background:radial-gradient(circle at 84% 6%,rgba(233,61,152,.09),transparent 28%),radial-gradient(circle at 20% 2%,rgba(0,163,196,.10),transparent 28%),var(--paper); color:var(--ink); font-size:14.5px; line-height:1.55;
+  background-attachment:fixed;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
   overscroll-behavior-y:none;
   transition:background .3s ease, color .3s ease;
@@ -84,8 +85,8 @@ a{color:var(--blue);}
 }
 .sidebar-brand{padding:calc(20px + var(--sat)) 20px 16px; display:flex; align-items:center; gap:11px; border-bottom:1px solid rgba(255,255,255,.08);}
 .brand-mark{
-  width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--blue),#5B7CFA);
-  display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 4px 14px rgba(41,81,245,.45);
+  width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,#365CF5,#A34FE2 56%,#00B7D7);
+  display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 6px 18px rgba(95,65,220,.46);
 }
 .brand-text .brand-title{font-size:14.5px; font-weight:700; color:#fff; letter-spacing:.2px;}
 .brand-text .brand-sub{font-size:11px; color:#8A94BA; margin-top:1px;}
@@ -100,7 +101,7 @@ a{color:var(--blue);}
 }
 .nav-item svg{flex:none; opacity:.82;}
 .nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
-.nav-item.active{background:linear-gradient(135deg,var(--blue),#4368F7); color:#fff; box-shadow:0 6px 18px rgba(41,81,245,.4);}
+.nav-item.active{background:linear-gradient(135deg,#365CF5,#8A4FD8 56%,#00A3C4); color:#fff; box-shadow:0 8px 22px rgba(54,92,245,.42);}
 .nav-item.active svg{opacity:1;}
 .nav-badge{
   margin-left:auto; background:rgba(255,255,255,.14); color:#fff; font-size:11px; font-weight:700;
@@ -149,11 +150,11 @@ a{color:var(--blue);}
 
 /* ---------- Login screen ---------- */
 .login-screen{position:fixed; inset:0; z-index:150; display:flex; align-items:center; justify-content:center; padding:20px; overflow:auto;}
-.login-bg{position:absolute; inset:0; background:linear-gradient(135deg,#0E1B3D,#1D3BC4 55%,#2951F5);}
-.login-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 15%,rgba(91,124,250,.6),transparent 45%),radial-gradient(circle at 15% 110%,rgba(18,174,202,.5),transparent 45%);}
-.login-card{position:relative; z-index:1; width:100%; max-width:400px; background:var(--surface); border-radius:20px; padding:30px; box-shadow:var(--shadow-lg); animation:modal-pop .3s var(--ease); padding-bottom:calc(30px + var(--sab));}
+.login-bg{position:absolute; inset:0; background:linear-gradient(135deg,#10235C,#5429B7 44%,#176CEC 72%,#00A3C4); background-size:220% 220%; animation:hero-spectrum 11s ease infinite;}
+.login-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 15%,rgba(255,96,188,.55),transparent 38%),radial-gradient(circle at 15% 110%,rgba(73,244,211,.52),transparent 42%),radial-gradient(circle at 8% 8%,rgba(255,226,105,.3),transparent 22%);}
+.login-card{position:relative; z-index:1; width:100%; max-width:400px; background:var(--surface); border:1px solid rgba(255,255,255,.65); border-radius:24px; padding:30px; box-shadow:0 24px 70px rgba(8,19,65,.34); animation:modal-pop .3s var(--ease); padding-bottom:calc(30px + var(--sab));}
 .login-brand{display:flex; align-items:center; gap:13px; margin-bottom:18px;}
-.login-brand .brand-mark{background:linear-gradient(135deg,var(--blue),#5B7CFA);}
+.login-brand .brand-mark{background:linear-gradient(135deg,#365CF5,#A34FE2 56%,#00B7D7);}
 .login-title{font-size:22px; font-weight:800; color:var(--heading); letter-spacing:.3px;}
 .login-sub{font-size:12.5px; color:var(--ink-faint);}
 .login-conn{font-size:12px; font-weight:600; padding:8px 12px; border-radius:9px; margin-bottom:18px; display:flex; align-items:center; gap:7px;}
@@ -235,7 +236,7 @@ a{color:var(--blue);}
   white-space:nowrap; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
 }
 .btn:active{transform:scale(.97);}
-.btn-primary{background:var(--blue); color:#fff; box-shadow:0 2px 8px rgba(41,81,245,.25);}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#7854DD); color:#fff; box-shadow:0 4px 12px rgba(54,92,245,.28);}
 .btn-primary:hover{filter:brightness(1.08); box-shadow:0 4px 14px rgba(41,81,245,.32);}
 .btn-primary:disabled{background:#B9C4EF; cursor:not-allowed;}
 .btn-outline{background:var(--surface); color:var(--ink); border-color:var(--line);}
@@ -244,28 +245,34 @@ a{color:var(--blue);}
 .btn-ghost:hover{background:var(--paper); color:var(--ink);}
 .btn-danger{background:var(--brick-soft); color:var(--brick);}
 .btn-danger:hover{background:var(--brick); color:#fff;}
-.btn-success{background:var(--green); color:#fff;}
+.btn-success{background:linear-gradient(135deg,var(--green),#00B8C6); color:#fff; box-shadow:0 4px 12px rgba(14,159,110,.22);}
 .btn-success:hover{filter:brightness(1.08);}
 .btn-sm{padding:6px 11px; font-size:12.5px; border-radius:7px;}
 .btn-icon{padding:8px; border-radius:8px;}
 .btn-block{width:100%;}
 
 /* ---------- Cards ---------- */
-.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px;}
+.card{background:linear-gradient(145deg,var(--surface),var(--surface-2)); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px; box-shadow:0 8px 26px rgba(54,92,245,.055);}
 /* ---------- Dashboard hero ---------- */
-.hero{position:relative; border-radius:var(--r-lg); overflow:hidden; color:#fff; padding:26px 26px; box-shadow:var(--shadow-md);}
-.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg,#0E1B3D 0%,#1D3BC4 55%,#2951F5 100%); z-index:0;}
-.hero-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 82% 18%, rgba(91,124,250,.55), transparent 42%), radial-gradient(circle at 12% 120%, rgba(18,174,202,.4), transparent 45%);}
-.hero-content{position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+.hero{position:relative; min-height:190px; border-radius:24px; overflow:hidden; color:#fff; padding:30px; box-shadow:0 18px 44px rgba(35,65,199,.25); border:1px solid rgba(255,255,255,.18); isolation:isolate;}
+.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg,#13255F,#5A2FC2,#1F68EC,#00A3C4); background-size:260% 260%; z-index:0; animation:hero-spectrum 10s ease infinite;}
+.hero-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 82% 18%,rgba(255,107,199,.42),transparent 34%),radial-gradient(circle at 12% 120%,rgba(67,237,209,.48),transparent 42%),linear-gradient(110deg,transparent 25%,rgba(255,255,255,.08) 48%,transparent 70%);}
+@keyframes hero-spectrum{0%,100%{background-position:0% 45%;}50%{background-position:100% 55%;}}
+.hero-fireworks{position:absolute; inset:0; z-index:1; width:100%; height:100%; pointer-events:none; mix-blend-mode:screen;}
+.hero-orb{position:absolute; z-index:1; width:160px; height:160px; border-radius:50%; filter:blur(2px); opacity:.34; pointer-events:none; animation:hero-float 7s ease-in-out infinite;}
+.hero-orb.orb-a{right:22%; top:-90px; background:radial-gradient(circle,#FFE66D,transparent 68%);}
+.hero-orb.orb-b{left:18%; bottom:-120px; background:radial-gradient(circle,#54F2D2,transparent 68%); animation-delay:-3.2s;}
+@keyframes hero-float{0%,100%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(18px,18px,0) scale(1.15);}}
+.hero-content{position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
 .hero-greet{font-size:12.5px; font-weight:600; color:#B9C7F5; letter-spacing:.2px;}
 .hero-title{font-size:24px; font-weight:700; color:#fff; margin:6px 0 8px; letter-spacing:-.4px;}
 .hero-date{font-size:12.5px; color:#C9D4F7; display:flex; align-items:center; gap:6px;}
-.hero-pending{text-align:center; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); border-radius:14px; padding:14px 22px; backdrop-filter:blur(6px);}
+.hero-pending{text-align:center; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.24); border-radius:18px; padding:16px 24px; backdrop-filter:blur(10px); box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 12px 28px rgba(11,20,67,.18);}
 .hero-pending-num{font-size:34px; font-weight:800; line-height:1; font-variant-numeric:tabular-nums;}
 .hero-pending-lbl{font-size:11.5px; color:#C9D4F7; margin-top:4px;}
 /* card & stat interactions */
-.stat-card{transition:transform .18s var(--ease), box-shadow .18s ease;}
-@media (hover:hover){ .stat-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);} }
+.stat-card{transition:transform .18s var(--ease), box-shadow .18s ease,border-color .18s ease;}
+@media (hover:hover){ .stat-card:hover{transform:translateY(-5px); box-shadow:0 16px 32px rgba(54,92,245,.14); border-color:currentColor;} }
 .stat-card .stat-ic{background-image:linear-gradient(135deg,rgba(255,255,255,.5),transparent);}
 .card-title{font-size:15px; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:9px; margin-bottom:16px;}
 .card-title .ic-badge{
@@ -279,18 +286,34 @@ a{color:var(--blue);}
   background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
   padding:16px 18px; display:flex; flex-direction:column; gap:6px; min-width:0; position:relative; overflow:hidden;
 }
+.stat-card-button{width:100%; text-align:left; font:inherit; cursor:pointer; appearance:none; -webkit-appearance:none;}
+.stat-card-button:active{transform:translateY(-1px) scale(.985);}
+.stat-card-button:focus-visible{outline:3px solid currentColor; outline-offset:3px;}
 .stat-card::after{content:''; position:absolute; right:-30px; top:-30px; width:90px; height:90px; border-radius:99px; opacity:.1; background:currentColor;}
 .stat-card .stat-top{display:flex; align-items:center; justify-content:space-between;}
 .stat-card .stat-label{font-size:12.5px; font-weight:600; color:var(--ink-soft);}
 .stat-card .stat-ic{width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex:none; color:#fff; box-shadow:0 4px 10px rgba(14,27,61,.18);}
 .stat-card .stat-value{font-size:28px; font-weight:800; color:var(--heading); font-variant-numeric:tabular-nums;}
 .stat-card .stat-sub{font-size:11.5px; color:var(--ink-faint);}
+.stat-open{display:inline-flex; align-items:center; gap:4px; margin-top:3px; font-size:11.5px; font-weight:700; color:currentColor;}
 .stat-blue{color:var(--blue); background:linear-gradient(135deg,var(--blue-soft),var(--surface) 60%);} .stat-blue .stat-ic{background:linear-gradient(135deg,var(--blue),#5B7CFA);}
 .stat-green{color:var(--green); background:linear-gradient(135deg,var(--green-soft),var(--surface) 60%);} .stat-green .stat-ic{background:linear-gradient(135deg,var(--green),#37C58C);}
 .stat-amber{color:var(--amber); background:linear-gradient(135deg,var(--amber-soft),var(--surface) 60%);} .stat-amber .stat-ic{background:linear-gradient(135deg,var(--amber),#E8A94E);}
 .stat-plum{color:var(--plum); background:linear-gradient(135deg,var(--plum-soft),var(--surface) 60%);} .stat-plum .stat-ic{background:linear-gradient(135deg,var(--plum),#9B7BDD);}
 .stat-brick{color:var(--brick); background:linear-gradient(135deg,var(--brick-soft),var(--surface) 60%);} .stat-brick .stat-ic{background:linear-gradient(135deg,var(--brick),#E56A6F);}
 .stat-navy{color:var(--cyan); background:linear-gradient(135deg,var(--cyan-soft),var(--surface) 60%);} .stat-navy .stat-ic{background:linear-gradient(135deg,var(--cyan),#3DC5DE);}
+
+/* ---------- Thai PDF rendering surface ---------- */
+.thai-pdf-root{position:fixed; left:-12000px; top:0; width:794px; z-index:-1; pointer-events:none; font-family:'Sarabun','Noto Sans Thai','Tahoma',sans-serif; color:#17213A;}
+.thai-pdf-page{width:794px; height:1123px; overflow:hidden; background:#fff; padding:48px 52px 42px; display:flex; flex-direction:column; box-sizing:border-box;}
+.pdf-head{margin:-48px -52px 24px; padding:30px 52px 25px; background:linear-gradient(115deg,#13255F,#365CF5 58%,#00A3C4); color:#fff; display:flex; align-items:flex-start; justify-content:space-between; gap:24px;}
+.pdf-brand{font-size:25px; line-height:1.25; font-weight:700;}.pdf-sub{font-size:14px; opacity:.78; margin-top:5px;}.pdf-code{text-align:right; font-size:18px; font-weight:700;}.pdf-date{font-size:13px; opacity:.82; margin-top:5px; font-weight:400;}
+.pdf-meta{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px;}.pdf-meta-box{padding:13px 15px; background:#F3F6FF; border:1px solid #DDE5F5; border-radius:12px;}.pdf-meta-label{font-size:11px; color:#75809A;}.pdf-meta-value{font-size:15px; font-weight:700; color:#17213A; margin-top:3px; overflow-wrap:anywhere;}
+.pdf-table{width:100%; border-collapse:separate; border-spacing:0; font-size:12px; table-layout:fixed; border:1px solid #DDE5F5; border-radius:12px; overflow:hidden;}.pdf-table th{padding:10px 8px; background:#EAF0FF; color:#29408F; border-bottom:1px solid #DDE5F5; font-weight:700;}.pdf-table td{padding:9px 8px; border-bottom:1px solid #EDF1F8; vertical-align:middle; overflow-wrap:anywhere;}.pdf-table tr:last-child td{border-bottom:none;}.pdf-thumb{width:50px; height:38px; border-radius:7px; object-fit:cover; border:1px solid #DDE5F5;}.pdf-no-image{width:50px; height:38px; border-radius:7px; background:#F1F4FA; color:#9BA6BB; display:flex; align-items:center; justify-content:center; font-size:9px;}.pdf-track{font-family:ui-monospace,Consolas,monospace; color:#2341C7; font-weight:700; font-size:10.5px; word-break:break-all;}
+.pdf-signature{margin-top:auto; padding-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:24px;}.pdf-sign-box{height:90px; border:1.5px dashed #BFCBE2; border-radius:12px; display:flex; align-items:center; justify-content:center; background:#FAFBFF;}.pdf-sign-box img{max-width:88%; max-height:76px; object-fit:contain;}.pdf-sign-name{font-size:14px; font-weight:700; margin-top:8px;}.pdf-sign-label{font-size:11px; color:#7B879E;}.pdf-footer{margin-top:auto; padding-top:10px; border-top:1px solid #E5EAF3; color:#8B96AB; font-size:10px; display:flex; justify-content:space-between;}.pdf-signature+.pdf-footer{margin-top:18px;}
+.report-loading{min-height:52vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--ink-soft); background:var(--surface);}.report-loading-ring{width:42px; height:42px; border:4px solid var(--blue-soft); border-top-color:var(--blue); border-radius:50%; animation:spin .8s linear infinite;}
+
+@media (prefers-reduced-motion:reduce){.hero-bg,.hero-orb{animation:none!important;}.hero-fireworks{display:none;}}
 
 /* ---------- Forms ---------- */
 .form-group{margin-bottom:15px;}
@@ -339,12 +362,53 @@ tbody tr:hover{background:var(--table-hover);}
 .thumb-empty{width:44px; height:44px; border-radius:8px; border:1.5px dashed var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-faint);}
 
 /* ---------- Photo capture box ---------- */
-.photo-box{border:1.5px dashed var(--line); border-radius:var(--r-md); padding:16px; display:flex; align-items:center; gap:14px; background:var(--paper);}
+.photo-box{border:1.5px dashed var(--line); border-radius:var(--r-md); padding:16px; display:flex; align-items:center; gap:14px; background:var(--paper); transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;}
+.photo-box:hover{border-color:var(--blue); background:var(--blue-soft); box-shadow:0 0 0 3px rgba(41,81,245,.06);}
 .photo-box .photo-preview{width:64px; height:64px; border-radius:10px; object-fit:cover; flex:none; background:var(--surface-2); border:1px solid var(--line);}
 .photo-box .photo-placeholder{width:64px; height:64px; border-radius:10px; background:var(--surface-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-faint); flex:none;}
 .photo-box .photo-text{flex:1; min-width:0;}
 .photo-box .photo-text .t1{font-weight:600; font-size:13.5px;}
 .photo-box .photo-text .t2{font-size:11.5px; color:var(--ink-faint); margin-top:2px;}
+
+/* ---------- Camera workspace ---------- */
+.camera-shell{display:grid; gap:14px;}
+.camera-viewport{position:relative; aspect-ratio:4/3; min-height:240px; overflow:hidden; border-radius:16px; background:linear-gradient(145deg,#07101f,#101b32); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); isolation:isolate;}
+.camera-video{display:block; width:100%; height:100%; object-fit:cover; background:#07101f;}
+.camera-video.mirror{transform:scaleX(-1);}
+.camera-guide{position:absolute; inset:12%; border:2px solid rgba(255,255,255,.76); border-radius:15px; pointer-events:none; box-shadow:0 0 0 999px rgba(4,10,22,.18);}
+.camera-guide::before,.camera-guide::after{content:''; position:absolute; left:50%; top:50%; width:28px; height:2px; border-radius:99px; background:rgba(255,255,255,.84); transform:translate(-50%,-50%);}
+.camera-guide::after{width:2px; height:28px;}
+.camera-scan-line{position:absolute; left:14%; right:14%; top:22%; height:2px; border-radius:99px; background:linear-gradient(90deg,transparent,#5B84FF,#59E6D2,transparent); box-shadow:0 0 14px rgba(89,230,210,.8); animation:camera-scan 2s ease-in-out infinite; pointer-events:none;}
+@keyframes camera-scan{0%,100%{top:22%; opacity:.45;}50%{top:76%; opacity:1;}}
+.camera-topbar{position:absolute; left:12px; right:12px; top:12px; display:flex; justify-content:space-between; align-items:center; gap:8px; pointer-events:none;}
+.camera-pill{display:inline-flex; align-items:center; gap:7px; min-height:32px; padding:6px 10px; border-radius:99px; color:#fff; background:rgba(7,16,31,.72); backdrop-filter:blur(8px); font-size:12px; font-weight:600; box-shadow:0 3px 12px rgba(0,0,0,.2);}
+.camera-dot{width:7px; height:7px; border-radius:50%; background:#F0A54A; box-shadow:0 0 0 4px rgba(240,165,74,.16);}
+.camera-dot.ready{background:#4FE0A1; box-shadow:0 0 0 4px rgba(79,224,161,.16);}
+.camera-dot.error{background:#FF737A; box-shadow:0 0 0 4px rgba(255,115,122,.16);}
+.camera-controls{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px;}
+.camera-controls .camera-side:first-child{justify-self:end;}
+.camera-controls .camera-side:last-child{justify-self:start;}
+.camera-side{width:44px; height:44px; border-radius:13px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); display:flex; align-items:center; justify-content:center; transition:all .16s ease;}
+.camera-side:hover:not(:disabled){color:var(--blue); border-color:var(--blue); background:var(--blue-soft);}
+.camera-side:disabled{opacity:.38; cursor:not-allowed;}
+.camera-shutter{width:68px; height:68px; border-radius:50%; border:5px solid var(--surface); background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 2px var(--blue),0 9px 24px rgba(41,81,245,.35); transition:transform .14s ease,filter .14s ease;}
+.camera-shutter:hover:not(:disabled){filter:brightness(1.08); transform:scale(1.03);}
+.camera-shutter:active:not(:disabled){transform:scale(.94);}
+.camera-shutter:disabled{background:var(--ink-faint); box-shadow:0 0 0 2px var(--ink-faint); cursor:not-allowed;}
+.camera-help{text-align:center; color:var(--ink-soft); font-size:13px; min-height:20px;}
+.camera-help.error{color:var(--brick); background:var(--brick-soft); border:1px solid rgba(178,58,58,.2); border-radius:10px; padding:10px 12px; text-align:left;}
+.camera-fallback{display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; padding-top:2px;}
+.camera-flash{position:absolute; inset:0; z-index:4; background:#fff; opacity:0; pointer-events:none;}
+.camera-flash.go{animation:camera-flash .28s ease-out;}
+@keyframes camera-flash{0%{opacity:.9;}100%{opacity:0;}}
+@media (max-width:560px){
+  .camera-viewport{min-height:230px; border-radius:14px;}
+  .camera-guide{inset:10%;}
+  .camera-controls{gap:18px;}
+  .photo-box{align-items:flex-start; flex-wrap:wrap;}
+  .photo-box .photo-text{min-width:calc(100% - 82px);}
+  .photo-box .btn{width:100%;}
+}
 
 /* ---------- Steps / basket ---------- */
 .dept-bar{display:flex; align-items:center; gap:14px; background:linear-gradient(120deg,var(--blue-soft),var(--plum-soft)); border:1px solid var(--line); border-radius:var(--r-md); padding:12px 16px; margin-bottom:18px;}
@@ -559,6 +623,7 @@ tbody tr:hover{background:var(--table-hover);}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.0/tesseract.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* ============================================================
@@ -658,7 +723,7 @@ function defaultSettings(){
     ],
     buildings:[{name:'Ari Hills', code:'01'},{name:'BTSVP', code:'02'}],
     trackingPrefix:'TIDLOR',
-    theme:{primary:'#2951F5', mode:'light'},
+    theme:{primary:'#365CF5', mode:'light'},
     autoMail:{
       enabled:true,
       domain:'tidlor.com',
@@ -855,14 +920,12 @@ function renderLogin(){
           '<div class="brand-mark" style="width:52px;height:52px;border-radius:14px;">'+ic('mail',26)+'</div>'+
           '<div><div class="login-title">OPS-BSCS</div><div class="login-sub">Digital Mail Service</div></div>'+
         '</div>'+
-        '<div class="login-conn '+(state.sheet.connected?'ok':'off')+'">'+ic(state.sheet.connected?'sheet':'globe',14)+' '+(state.sheet.connected?'เชื่อมต่อ Google Sheet แล้ว':'ยังไม่ได้เชื่อมต่อ Google Sheet')+'</div>'+
-        '<div class="form-group"><label class="form-label">ชื่อผู้ใช้ (Username)</label><input class="input" id="login-user" placeholder="admin" onkeydown="if(event.key===\'Enter\')document.getElementById(\'login-pass\').focus()"></div>'+
+        '<div class="form-group"><label class="form-label">ชื่อผู้ใช้ (Username)</label><input class="input" id="login-user" autocomplete="username" placeholder="กรอกชื่อผู้ใช้" onkeydown="if(event.key===\'Enter\')document.getElementById(\'login-pass\').focus()"></div>'+ 
         '<div class="form-group"><label class="form-label">รหัสผ่าน (Password)</label><input class="input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key===\'Enter\')doLogin()"></div>'+
         '<div id="login-error" class="login-error" style="display:none;"></div>'+
         '<button class="btn btn-primary btn-block ripple" id="login-btn" onclick="doLogin()" style="margin-top:6px;">'+ic('unlock',17)+' เข้าสู่ระบบ</button>'+
         (ep? '' : '<button class="btn btn-outline btn-block" onclick="openConnectionModal()" style="margin-top:10px;">'+ic('sheet',16)+' ตั้งค่าการเชื่อมต่อ Google Sheet</button>')+
-        '<button class="btn btn-ghost btn-block" onclick="loginOffline()" style="margin-top:8px;">เข้าโหมดทดลอง (ออฟไลน์)</button>'+
-        '<div class="login-hint">ค่าเริ่มต้นหลังสร้างชีต: admin / admin123</div>'+
+        '<button class="btn btn-ghost btn-block" onclick="loginOffline()" style="margin-top:8px;">เข้าโหมดทดลอง (ออฟไลน์)</button>'+ 
       '</div>'+
     '</div>';
   document.getElementById('app').style.display='none';
@@ -875,7 +938,7 @@ async function doLogin(){
   const errEl = document.getElementById('login-error');
   const btn = document.getElementById('login-btn');
   if(!user){ errEl.style.display='block'; errEl.textContent='กรุณากรอกชื่อผู้ใช้'; return; }
-  if(!state.sheet.endpoint){ errEl.style.display='block'; errEl.textContent='ยังไม่ได้เชื่อมต่อ Google Sheet — กดปุ่มด้านล่างเพื่อตั้งค่า หรือเข้าโหมดทดลอง'; return; }
+  if(!state.sheet.endpoint){ errEl.style.display='block'; errEl.textContent='กรุณาตั้งค่าการเชื่อมต่อก่อนเข้าสู่ระบบ หรือเลือกเข้าโหมดทดลอง'; return; }
   btn.disabled=true; btn.innerHTML=ic('refresh',16)+' กำลังตรวจสอบ...';
   try{
     if(!state.sheet.connected){ await testConnection(); }
@@ -1036,6 +1099,68 @@ function fireConfetti(){
   setTimeout(()=>container.remove(), 2000);
 }
 
+/* ---------------- Dashboard fireworks ---------------- */
+let dashboardFxRAF=null, dashboardFxCleanup=null;
+function stopDashboardFireworks(){
+  if(dashboardFxRAF){ cancelAnimationFrame(dashboardFxRAF); dashboardFxRAF=null; }
+  if(dashboardFxCleanup){ dashboardFxCleanup(); dashboardFxCleanup=null; }
+}
+function startDashboardFireworks(){
+  stopDashboardFireworks();
+  const canvas=document.getElementById('dashboard-fireworks');
+  if(!canvas || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const ctx=canvas.getContext('2d');
+  if(!ctx) return;
+  let width=0,height=0,dpr=1,lastLaunch=0;
+  let rockets=[],particles=[];
+  const colors=['#FFE66D','#FF76C8','#5EF4D4','#78A5FF','#FF8A6B','#DDA2FF'];
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    width=Math.max(1,rect.width); height=Math.max(1,rect.height); dpr=Math.min(2,window.devicePixelRatio||1);
+    canvas.width=Math.round(width*dpr); canvas.height=Math.round(height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function burst(x,y,color){
+    const count=34+Math.floor(Math.random()*20);
+    for(let i=0;i<count;i++){
+      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.12;
+      const speed=1.1+Math.random()*2.6;
+      particles.push({x:x,y:y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.012+Math.random()*.012,color:color,size:1+Math.random()*1.6});
+    }
+  }
+  function launch(){
+    const color=colors[Math.floor(Math.random()*colors.length)];
+    const x=width*(.12+Math.random()*.76);
+    rockets.push({x:x,y:height+5,px:x,py:height+5,vx:(Math.random()-.5)*.36,vy:-(2.7+Math.random()*1.2),target:height*(.18+Math.random()*.38),color:color});
+  }
+  function frame(time){
+    ctx.clearRect(0,0,width,height);
+    ctx.globalCompositeOperation='lighter';
+    if(time-lastLaunch>620 && rockets.length<3){ launch(); lastLaunch=time; }
+    for(let i=rockets.length-1;i>=0;i--){
+      const r=rockets[i]; r.px=r.x; r.py=r.y; r.x+=r.vx; r.y+=r.vy; r.vy+=.012;
+      ctx.globalAlpha=.95; ctx.strokeStyle=r.color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(r.px,r.py); ctx.lineTo(r.x,r.y+8); ctx.stroke();
+      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(r.x,r.y,1.8,0,Math.PI*2); ctx.fill();
+      if(r.y<=r.target){ burst(r.x,r.y,r.color); rockets.splice(i,1); }
+    }
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i]; p.px=p.x; p.py=p.y; p.x+=p.vx; p.y+=p.vy; p.vy+=.032; p.vx*=.992; p.life-=p.decay;
+      if(p.life<=0){ particles.splice(i,1); continue; }
+      ctx.globalAlpha=Math.max(0,p.life); ctx.strokeStyle=p.color; ctx.lineWidth=p.size; ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke();
+      if(p.life>.72){ ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(p.x,p.y,.8,0,Math.PI*2); ctx.fill(); }
+    }
+    ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
+    dashboardFxRAF=requestAnimationFrame(frame);
+  }
+  resize();
+  let observer=null;
+  if(typeof ResizeObserver!=='undefined'){ observer=new ResizeObserver(resize); observer.observe(canvas); }
+  else window.addEventListener('resize',resize);
+  dashboardFxCleanup=()=>{ if(observer) observer.disconnect(); else window.removeEventListener('resize',resize); rockets=[]; particles=[]; };
+  lastLaunch=performance.now()-700;
+  dashboardFxRAF=requestAnimationFrame(frame);
+}
+
 function applyTheme(){
   if(state.settings.theme.primary){
     document.documentElement.style.setProperty('--blue', state.settings.theme.primary);
@@ -1080,6 +1205,198 @@ function compressImageFile(file, maxDim, quality){
   });
 }
 
+/* ---------------- Camera helpers (iPad / mobile / desktop) ---------------- */
+function stopMediaStream(stream){
+  if(stream){ stream.getTracks().forEach(track=>track.stop()); }
+}
+function cameraErrorText(error){
+  if(!window.isSecureContext){
+    return 'กล้องเว็บต้องเปิดผ่าน HTTPS หรือ localhost กรุณาเปิดระบบจากลิงก์ที่ปลอดภัย หรือใช้ปุ่มเลือกรูปแทน';
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    return 'เบราว์เซอร์นี้ไม่รองรับการเปิดกล้องในหน้าเว็บ กรุณาอัปเดตเบราว์เซอร์หรือใช้ปุ่มเลือกรูป';
+  }
+  const name = error && error.name ? error.name : '';
+  if(name==='NotAllowedError' || name==='PermissionDeniedError'){
+    return 'ยังไม่ได้อนุญาตใช้กล้อง กรุณาอนุญาต Camera ในการตั้งค่าเว็บไซต์ แล้วกด “ลองใหม่”';
+  }
+  if(name==='NotFoundError' || name==='DevicesNotFoundError'){
+    return 'ไม่พบกล้องบนอุปกรณ์นี้ กรุณาตรวจสอบกล้องหรือใช้ปุ่มเลือกรูป';
+  }
+  if(name==='NotReadableError' || name==='TrackStartError'){
+    return 'กล้องกำลังถูกใช้งานโดยแอปอื่น กรุณาปิดแอปกล้อง/วิดีโอ แล้วกด “ลองใหม่”';
+  }
+  if(name==='SecurityError'){
+    return 'เบราว์เซอร์บล็อกสิทธิ์กล้อง หากระบบเปิดอยู่ในหน้าที่ฝังไว้ ให้เปิดระบบในแท็บใหม่';
+  }
+  return 'เปิดกล้องไม่สำเร็จ กรุณาตรวจสอบสิทธิ์กล้อง แล้วกด “ลองใหม่” หรือเลือกภาพจากเครื่อง';
+}
+async function requestCameraStream(facingMode){
+  if(!window.isSecureContext){ const e=new Error('insecure-context'); e.name='SecurityError'; throw e; }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ const e=new Error('camera-not-supported'); e.name='NotSupportedError'; throw e; }
+  const constraints = {
+    audio:false,
+    video:{
+      facingMode:{ideal:facingMode||'environment'},
+      width:{ideal:1920},
+      height:{ideal:1080}
+    }
+  };
+  try{
+    return await navigator.mediaDevices.getUserMedia(constraints);
+  }catch(error){
+    if(error && (error.name==='OverconstrainedError' || error.name==='ConstraintNotSatisfiedError' || error.name==='TypeError')){
+      return navigator.mediaDevices.getUserMedia({audio:false,video:true});
+    }
+    throw error;
+  }
+}
+async function attachCameraStream(video, stream){
+  video.muted = true;
+  video.setAttribute('autoplay','');
+  video.setAttribute('playsinline','');
+  video.srcObject = stream;
+  if(video.readyState<1){
+    await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(new Error('camera-timeout')),7000);
+      video.onloadedmetadata=()=>{ clearTimeout(timer); resolve(); };
+      video.onerror=()=>{ clearTimeout(timer); reject(new Error('camera-video-error')); };
+    });
+  }
+  await video.play();
+}
+function photoDataFromVideo(video, maxDim, quality){
+  const sourceW=video.videoWidth, sourceH=video.videoHeight;
+  if(!sourceW || !sourceH) throw new Error('camera-frame-not-ready');
+  let w=sourceW, h=sourceH;
+  if(w>h && w>maxDim){ h=Math.round(h*maxDim/w); w=maxDim; }
+  else if(h>=w && h>maxDim){ w=Math.round(w*maxDim/h); h=maxDim; }
+  const canvas=document.createElement('canvas');
+  canvas.width=w; canvas.height=h;
+  const ctx=canvas.getContext('2d');
+  ctx.drawImage(video,0,0,w,h);
+  return canvas.toDataURL('image/jpeg',quality||0.58);
+}
+
+let photoCameraStream=null;
+let photoCameraFacing='environment';
+let photoCameraTarget='';
+let photoCameraBusy=false;
+let photoCameraSession=0;
+
+function openPhotoCamera(target){
+  if(target==='keyin') syncKeyinForm();
+  if(target==='internal') syncInternalForm();
+  photoCameraTarget=target;
+  photoCameraFacing='environment';
+  openModal(
+    '<div class="modal-head"><h3>'+ic('camera',18)+' ถ่ายรูปเอกสาร</h3><button class="modal-close" onclick="closePhotoCamera()" aria-label="ปิดกล้อง">'+ic('x',18)+'</button></div>'+ 
+    '<div class="modal-body"><div class="camera-shell">'+
+      '<div class="camera-viewport">'+
+        '<video id="photo-camera-video" class="camera-video" autoplay muted playsinline></video>'+ 
+        '<div class="camera-guide"></div><div class="camera-flash" id="photo-camera-flash"></div>'+ 
+        '<div class="camera-topbar"><span class="camera-pill"><span class="camera-dot" id="photo-camera-dot"></span><span id="photo-camera-state">กำลังขอสิทธิ์กล้อง</span></span></div>'+ 
+      '</div>'+ 
+      '<div class="camera-help" id="photo-camera-help">จัดหน้าซองให้อยู่ในกรอบ แล้วกดปุ่มถ่ายภาพ</div>'+ 
+      '<div class="camera-controls">'+ 
+        '<button class="camera-side" id="photo-camera-switch" onclick="togglePhotoCamera()" aria-label="สลับกล้อง" title="สลับกล้อง" disabled>'+ic('refresh',20)+'</button>'+ 
+        '<button class="camera-shutter" id="photo-camera-shutter" onclick="capturePhotoNow()" aria-label="ถ่ายภาพ" title="ถ่ายภาพ" disabled>'+ic('camera',27)+'</button>'+ 
+        '<button class="camera-side" id="photo-camera-retry" onclick="startPhotoCamera()" aria-label="ลองเปิดกล้องใหม่" title="ลองใหม่">'+ic('refresh',20)+'</button>'+ 
+      '</div>'+ 
+      '<div class="camera-fallback"><span class="form-hint">หรือ</span><label class="btn btn-outline btn-sm">'+ic('image',15)+' เลือกรูปจากเครื่อง<input type="file" accept="image/*" style="display:none" onchange="handlePhotoCameraUpload(this)"></label></div>'+ 
+    '</div></div>'+ 
+    '<div class="modal-foot"><button class="btn btn-outline" onclick="closePhotoCamera()">ยกเลิก</button></div>',
+    {large:true,persistent:true,onClose:stopPhotoCamera}
+  );
+  startPhotoCamera();
+}
+function setPhotoCameraStatus(mode, text){
+  const dot=document.getElementById('photo-camera-dot');
+  const label=document.getElementById('photo-camera-state');
+  const help=document.getElementById('photo-camera-help');
+  if(dot) dot.className='camera-dot'+(mode==='ready'?' ready':mode==='error'?' error':'');
+  if(label) label.textContent=mode==='ready'?'กล้องพร้อมใช้งาน':mode==='error'?'กล้องไม่พร้อม':'กำลังเปิดกล้อง';
+  if(help){ help.className='camera-help'+(mode==='error'?' error':''); help.textContent=text; }
+}
+async function startPhotoCamera(){
+  if(photoCameraBusy) return;
+  const video=document.getElementById('photo-camera-video');
+  if(!video) return;
+  const session=++photoCameraSession;
+  photoCameraBusy=true;
+  stopMediaStream(photoCameraStream); photoCameraStream=null;
+  const shutter=document.getElementById('photo-camera-shutter');
+  const switchBtn=document.getElementById('photo-camera-switch');
+  if(shutter) shutter.disabled=true;
+  if(switchBtn) switchBtn.disabled=true;
+  setPhotoCameraStatus('loading','กำลังขอสิทธิ์ใช้กล้องจากอุปกรณ์…');
+  try{
+    const stream=await requestCameraStream(photoCameraFacing);
+    if(session!==photoCameraSession || !document.contains(video)){ stopMediaStream(stream); return; }
+    photoCameraStream=stream;
+    await attachCameraStream(video,photoCameraStream);
+    video.classList.toggle('mirror',photoCameraFacing==='user');
+    if(shutter) shutter.disabled=false;
+    let cameras=[];
+    try{ cameras=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput'); }catch(e){}
+    if(switchBtn) switchBtn.disabled=cameras.length<2;
+    setPhotoCameraStatus('ready','จัดหน้าซองให้อยู่ในกรอบ แล้วกดปุ่มถ่ายภาพ');
+    const track=photoCameraStream.getVideoTracks()[0];
+    if(track) track.addEventListener('ended',()=>setPhotoCameraStatus('error','การเชื่อมต่อกล้องหยุดลง กรุณากด “ลองใหม่”'));
+  }catch(error){
+    stopMediaStream(photoCameraStream); photoCameraStream=null;
+    setPhotoCameraStatus('error',cameraErrorText(error));
+  }finally{ if(session===photoCameraSession) photoCameraBusy=false; }
+}
+function togglePhotoCamera(){
+  photoCameraFacing=photoCameraFacing==='environment'?'user':'environment';
+  startPhotoCamera();
+}
+function stopPhotoCamera(){
+  photoCameraSession++;
+  stopMediaStream(photoCameraStream); photoCameraStream=null;
+  photoCameraBusy=false;
+  photoCameraTarget='';
+}
+function closePhotoCamera(){ closeModal(); }
+function savePhotoToTarget(target, dataUrl){
+  if(target==='keyin') state.ui.keyin.form.photo=dataUrl;
+  else if(target==='internal') state.ui.internal.form.photo=dataUrl;
+}
+async function capturePhotoNow(){
+  const video=document.getElementById('photo-camera-video');
+  const shutter=document.getElementById('photo-camera-shutter');
+  if(!video || !photoCameraStream || photoCameraBusy) return;
+  photoCameraBusy=true;
+  if(shutter) shutter.disabled=true;
+  try{
+    const flash=document.getElementById('photo-camera-flash');
+    if(flash){ flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go'); }
+    const target=photoCameraTarget;
+    const dataUrl=photoDataFromVideo(video,target==='ocr'?1400:1000,target==='ocr'?0.9:0.58);
+    closePhotoCamera();
+    if(target==='ocr') await processOcrDataUrl(dataUrl);
+    else { savePhotoToTarget(target,dataUrl); renderAll(); showToast('ถ่ายรูปเรียบร้อย', 'success'); }
+  }catch(error){
+    photoCameraBusy=false;
+    if(shutter) shutter.disabled=false;
+    setPhotoCameraStatus('error','ยังรับภาพจากกล้องไม่ได้ กรุณารอสักครู่แล้วลองอีกครั้ง');
+  }
+}
+async function handlePhotoCameraUpload(input){
+  if(!input.files || !input.files[0]) return;
+  const file=input.files[0];
+  const target=photoCameraTarget;
+  const limit=target==='internal'?5:12;
+  if(file.size>limit*1024*1024){ showToast('ไฟล์เกิน '+limit+' MB','error'); input.value=''; return; }
+  try{
+    const dataUrl=await compressImageFile(file,target==='ocr'?1400:1000,target==='ocr'?0.9:0.58);
+    closePhotoCamera();
+    if(target==='ocr') await processOcrDataUrl(dataUrl);
+    else { savePhotoToTarget(target,dataUrl); renderAll(); showToast('เพิ่มรูปเรียบร้อย','success'); }
+  }catch(error){ showToast('ไม่สามารถประมวลผลรูปได้','error'); input.value=''; }
+}
+
 /* ---------------- Modal system ---------------- */
 let modalStack = [];
 function openModal(html, opts){
@@ -1101,10 +1418,19 @@ function openModal(html, opts){
 }
 function closeModal(){
   const mount = document.getElementById('modal-mount');
-  if(mount.lastElementChild){ mount.removeChild(mount.lastElementChild); modalStack.pop(); }
+  if(mount.lastElementChild){
+    mount.removeChild(mount.lastElementChild);
+    const opts=modalStack.pop()||{};
+    if(typeof opts.onClose==='function'){ try{ opts.onClose(); }catch(e){} }
+  }
   if(!mount.childElementCount){ document.body.style.overflow=''; }
 }
-function closeAllModals(){ document.getElementById('modal-mount').innerHTML=''; modalStack=[]; document.body.style.overflow=''; }
+function closeAllModals(){
+  document.getElementById('modal-mount').innerHTML='';
+  const stack=modalStack.slice().reverse(); modalStack=[];
+  stack.forEach(opts=>{ if(typeof opts.onClose==='function'){ try{ opts.onClose(); }catch(e){} } });
+  document.body.style.overflow='';
+}
 document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ const m=document.getElementById('modal-mount'); if(m&&m.childElementCount){ closeModal(); } else if(state.ui.sidebarOpen){ closeSidebar(); } } });
 document.addEventListener('pointerdown', function(e){
   const btn = e.target.closest('.ripple, .btn');
@@ -1269,6 +1595,7 @@ function saveSwitchUser(){
 const VIEW_RENDERERS = {}; /* populated by each view module below */
 
 function renderAll(){
+  stopDashboardFireworks();
   renderNav();
   renderTopbar();
   const fn = VIEW_RENDERERS[state.ui.currentView];
@@ -1280,12 +1607,13 @@ const AFTER_RENDER = {};
 /* ============================================================
    Shared UI helpers used across views
    ============================================================ */
-function statCard(label, value, sub, iconName, colorClass){
-  return '<div class="stat-card stat-'+colorClass+'">'
+function statCard(label, value, sub, iconName, colorClass, cardKey){
+  return '<button type="button" class="stat-card stat-card-button stat-'+colorClass+'" onclick="openDashboardCard(\''+cardKey+'\')" aria-label="ดูรายละเอียด '+label+'">'
     +'<div class="stat-top"><span class="stat-label">'+label+'</span><span class="stat-ic">'+ic(iconName,15)+'</span></div>'
     +'<div class="stat-value" data-count="'+value+'">0</div>'
     +'<div class="stat-sub">'+sub+'</div>'
-  +'</div>';
+    +'<span class="stat-open">ดูข้อมูลทั้งหมด '+ic('chevright',13)+'</span>'
+  +'</button>';
 }
 function iconBadge(name){ return '<span class="ic-badge">'+ic(name,16)+'</span>'; }
 function emptyState(iconName, title, sub){
@@ -1308,15 +1636,13 @@ function buildingOptions(selected){
 }
 function photoBoxHtml(photo, opts){
   opts = opts||{};
-  const inputId = opts.inputId||'photo-input';
   const mainText = opts.mainText||'คลิกเพื่อถ่ายรูปหน้าเอกสาร';
   const subText = opts.subText||'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB';
+  const target = opts.target||'internal';
   return '<div class="photo-box">'
     + (photo ? '<img class="photo-preview" src="'+photo+'" onclick="imageViewerModal(\''+photo+'\')">' : '<div class="photo-placeholder">'+ic('camera',22)+'</div>')
     + '<div class="photo-text"><div class="t1">'+mainText+'</div><div class="t2">'+subText+'</div></div>'
-    + '<label class="btn btn-outline btn-sm" style="flex:none;">'+ic('camera',15)+' ถ่ายรูป'
-    +   '<input type="file" accept="image/*" capture="environment" id="'+inputId+'" style="display:none;" onchange="'+opts.onChange+'(this)">'
-    + '</label>'
+    + '<button class="btn btn-outline btn-sm" style="flex:none;" onclick="openPhotoCamera(\''+target+'\')">'+ic('camera',15)+' '+(photo?'ถ่ายใหม่':'เปิดกล้อง')+'</button>'
   + '</div>';
 }
 
@@ -1391,6 +1717,56 @@ function computeDeptSummary(){
   return Object.values(map).sort((a,b)=>b.total-a.total);
 }
 function setDashboardPeriod(p){ state.ui.dashboardPeriod=p; renderAll(); }
+function dashboardDocsForCard(cardKey){
+  const now=new Date();
+  const period=state.ui.dashboardPeriod;
+  function inPeriod(iso){
+    const d=new Date(iso);
+    if(period==='week'){ const diffDays=(now-d)/86400000; return diffDays>=0 && diffDays<7; }
+    return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+  }
+  const todayStr=todayISO();
+  const docs=(state.documents||[]).filter(d=>{
+    if(cardKey==='total') return inPeriod(d.createdAt);
+    if(cardKey==='pickup') return d.type==='keyin' && isoDatePart(d.createdAt)===todayStr;
+    if(cardKey==='interoffice') return d.type==='internal' && inPeriod(d.createdAt);
+    if(cardKey==='pending') return d.status==='pending';
+    if(cardKey==='redelivery') return d.status==='redelivery';
+    if(cardKey==='return') return d.status==='return';
+    return false;
+  });
+  return docs.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+}
+function openDashboardCard(cardKey){
+  const meta={
+    total:{title:'เอกสารรับเข้าทั้งหมด',icon:'inbox'},
+    pickup:{title:'เอกสาร Pick Up วันนี้',icon:'zap'},
+    interoffice:{title:'เอกสารจัดส่งระหว่างตึก',icon:'truck'},
+    pending:{title:'รายการรอเซ็นรับ',icon:'clock'},
+    redelivery:{title:'รายการนำส่งใหม่',icon:'redo'},
+    'return':{title:'รายการตีกลับ Vendor',icon:'undo2'}
+  }[cardKey];
+  if(!meta) return;
+  const docs=dashboardDocsForCard(cardKey);
+  const rows=docs.map((d,i)=>'<tr>'+
+    '<td>'+(i+1)+'</td>'+ 
+    '<td>'+formatDateTimeTH(d.createdAt)+'</td>'+ 
+    '<td>'+(d.type==='internal'?'Internal Delivery':'Key In')+'</td>'+ 
+    '<td>'+escapeHtml(d.senderName||'-')+'</td>'+ 
+    '<td>'+escapeHtml(d.receiverDept||'-')+'</td>'+ 
+    '<td class="tnum">'+escapeHtml(d.tracking||'-')+'</td>'+ 
+    '<td>'+statusBadge(d.status||'pending')+'</td>'+ 
+    '<td>'+thumbHtml(d.photo)+'</td>'+ 
+  '</tr>').join('');
+  openModal(
+    '<div class="modal-head"><h3>'+iconBadge(meta.icon)+escapeHtml(meta.title)+' <span style="color:var(--blue);">('+docs.length+')</span></h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+ 
+    '<div class="modal-body">'+(docs.length?
+      '<div class="table-wrap" style="max-height:62vh;overflow:auto;"><table><thead><tr><th>#</th><th>วันที่รับเข้า</th><th>ช่องทาง</th><th>ผู้ส่ง</th><th>แผนกผู้รับ</th><th>Tracking</th><th>สถานะ</th><th>รูป</th></tr></thead><tbody>'+rows+'</tbody></table></div>':
+      emptyState(meta.icon,'ยังไม่มีข้อมูลในรายการนี้','ข้อมูลจะแสดงทันทีเมื่อมีรายการตรงตามเงื่อนไข'))+'</div>'+ 
+    '<div class="modal-foot"><button class="btn btn-primary" onclick="closeModal()">ปิด</button></div>',
+    {large:true}
+  );
+}
 
 VIEW_RENDERERS.dashboard = function(){
   const s = computeDashboardStats();
@@ -1402,6 +1778,8 @@ VIEW_RENDERERS.dashboard = function(){
   return ''
   + '<div class="hero">'
   +   '<div class="hero-bg"></div>'
+  +   '<canvas class="hero-fireworks" id="dashboard-fireworks" aria-hidden="true"></canvas>'
+  +   '<span class="hero-orb orb-a" aria-hidden="true"></span><span class="hero-orb orb-b" aria-hidden="true"></span>'
   +   '<div class="hero-content">'
   +     '<div class="hero-left"><div class="hero-greet">'+greet+' · '+escapeHtml(state.currentUser.name)+'</div>'
   +       '<h1 class="hero-title">ภาพรวมระบบจัดส่งเอกสาร</h1>'
@@ -1421,14 +1799,14 @@ VIEW_RENDERERS.dashboard = function(){
   +   '</div>'
   + '</div>'
   + '<div class="grid-3" style="margin-bottom:16px;">'
-  +   statCard('Total', s.total, 'เอกสารรับเข้าระบบภายใน'+periodLabel, 'inbox', 'blue')
-  +   statCard('Pick Up', s.pickup, 'รับเข้าวันนี้จาก Key In', 'zap', 'navy')
-  +   statCard('Interoffice Mail', s.interoffice, 'จัดส่งระหว่างตึกภายใน'+periodLabel, 'truck', 'blue')
+  +   statCard('Total', s.total, 'เอกสารรับเข้าระบบภายใน'+periodLabel, 'inbox', 'blue', 'total')
+  +   statCard('Pick Up', s.pickup, 'รับเข้าวันนี้จาก Key In', 'zap', 'navy', 'pickup')
+  +   statCard('Interoffice Mail', s.interoffice, 'จัดส่งระหว่างตึกภายใน'+periodLabel, 'truck', 'green', 'interoffice')
   + '</div>'
   + '<div class="grid-3" style="margin-bottom:24px;">'
-  +   statCard('Pending Signature', s.pending, 'รอเซ็นรับ ณ ปัจจุบัน', 'clock', 'amber')
-  +   statCard('Redelivery', s.redelivery, 'รอนำส่งใหม่ (ระบุผิดแผนก)', 'redo', 'plum')
-  +   statCard('Return', s.ret, 'เอกสารตีกลับ Vendor', 'undo2', 'brick')
+  +   statCard('Pending Signature', s.pending, 'รอเซ็นรับ ณ ปัจจุบัน', 'clock', 'amber', 'pending')
+  +   statCard('Redelivery', s.redelivery, 'รอนำส่งใหม่ (ระบุผิดแผนก)', 'redo', 'plum', 'redelivery')
+  +   statCard('Return', s.ret, 'เอกสารตีกลับ Vendor', 'undo2', 'brick', 'return')
   + '</div>'
   + '<div class="grid-2">'
   +   '<div class="card">'
@@ -1444,7 +1822,7 @@ VIEW_RENDERERS.dashboard = function(){
   +   '</div>'
   + '</div>';
 };
-AFTER_RENDER.dashboard = function(){ animateCounts(); };
+AFTER_RENDER.dashboard = function(){ animateCounts(); startDashboardFireworks(); };
 function animateCounts(){
   document.querySelectorAll('[data-count]').forEach(el=>{
     const target = parseInt(el.getAttribute('data-count'),10)||0;
@@ -1559,12 +1937,11 @@ VIEW_RENDERERS.keyin = function(){
   // RIGHT CARD: photo + actions
   +   '<div class="card">'
   +     '<div class="card-title">'+iconBadge('camera')+'รูปหน้าซองเอกสาร</div>'
-  +     '<div class="photo-stage" onclick="document.getElementById(\'keyin-photo\').click()">'
+  +     '<div class="photo-stage" role="button" tabindex="0" aria-label="เปิดกล้องถ่ายรูปหน้าซอง" onclick="openPhotoCamera(\'keyin\')" onkeydown="if(event.target===event.currentTarget&&(event.key===\'Enter\'||event.key===\' \')){event.preventDefault();openPhotoCamera(\'keyin\');}">'
   +       (k.form.photo
         ? '<img src="'+k.form.photo+'" class="photo-stage-img"><button class="photo-stage-view" onclick="event.stopPropagation();imageViewerModal(\''+k.form.photo+'\')">'+ic('eye',15)+' ดูรูป</button>'
-        : '<div class="photo-stage-empty">'+ic('camera',34)+'<div class="t1">ถ่ายรูปหน้าซองเอกสาร</div><div class="t2">แตะเพื่อถ่าย • ระบบย่อขนาดไฟล์อัตโนมัติ</div></div>')
+        : '<div class="photo-stage-empty">'+ic('camera',34)+'<div class="t1">เปิดกล้องถ่ายรูปหน้าซอง</div><div class="t2">รองรับ iPad มือถือ และคอมพิวเตอร์ • ย่อรูปอัตโนมัติ</div></div>')
   +     '</div>'
-  +     '<input type="file" accept="image/*" capture="environment" id="keyin-photo" style="display:none;" onchange="onKeyinPhoto(this)">'
   +     (k.form.photo?'<button class="btn btn-ghost btn-sm btn-block" style="margin-top:8px;" onclick="removeKeyinPhoto()">'+ic('trash',14)+' ลบรูป</button>':'')
   +     '<div class="form-row" style="margin-top:16px;">'
   +       '<button class="btn btn-outline btn-block keyin-action" onclick="keyinNext()">'+ic('plus',18)+'<span>Next</span><small>ถ่ายรูปหน้าซองถัดไป</small></button>'
@@ -1719,8 +2096,10 @@ function openOcrModal(){
     '<div class="modal-head"><h3>สแกนชื่อผู้ส่ง (OCR)</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+
     '<div class="modal-body">'+
       '<p class="form-hint" style="margin-bottom:12px;">'+ic('info',14)+' อ่านข้อความจากภาพในเครื่อง ไม่ใช้ AI ไม่ส่งข้อมูลออกนอกระบบ รองรับไทย-อังกฤษ</p>'+
-      '<label class="btn btn-outline btn-block" style="margin-bottom:14px;">'+ic('camera',16)+' เลือก/ถ่ายรูปหน้าซอง'+
-        '<input type="file" accept="image/*" capture="environment" id="ocr-file" style="display:none;" onchange="runOcr(this)"></label>'+
+      '<div class="form-row" style="margin-bottom:14px;">'+
+        '<button class="btn btn-primary btn-block" onclick="openPhotoCamera(\'ocr\')">'+ic('camera',16)+' เปิดกล้อง</button>'+ 
+        '<label class="btn btn-outline btn-block">'+ic('image',16)+' เลือกรูปจากเครื่อง<input type="file" accept="image/*" id="ocr-file" style="display:none;" onchange="runOcr(this)"></label>'+ 
+      '</div>'+ 
       '<div id="ocr-status" style="display:none;text-align:center;color:var(--ink-soft);font-size:12.5px;padding:8px;"></div>'+
       '<div id="ocr-preview" style="display:none;text-align:center;margin-bottom:12px;"><img id="ocr-img" style="max-height:130px;border-radius:8px;border:1px solid var(--line);"></div>'+
       '<div id="ocr-result" style="display:none;">'+
@@ -1736,13 +2115,27 @@ function openOcrModal(){
 }
 async function runOcr(input){
   if(!input.files||!input.files[0]) return;
-  const status = document.getElementById('ocr-status');
-  status.style.display='block'; status.textContent='กำลังเตรียมรูป...';
+  if(input.files[0].size>12*1024*1024){ showToast('ไฟล์ใหญ่เกินไป','error'); input.value=''; return; }
+  const status=document.getElementById('ocr-status');
+  if(status){ status.style.display='block'; status.textContent='กำลังเตรียมรูป...'; }
   try{
     const dataUrl = await compressImageFile(input.files[0], 1400, 0.9);
-    document.getElementById('ocr-img').src = dataUrl;
-    document.getElementById('ocr-preview').style.display='block';
-    status.textContent='กำลังอ่านข้อความ... (ครั้งแรกอาจใช้เวลาสักครู่)';
+    await processOcrDataUrl(dataUrl);
+  }catch(e){
+    if(status) status.textContent='ไม่สามารถอ่านข้อความได้ ลองใหม่อีกครั้ง';
+  }finally{ input.value=''; }
+}
+async function processOcrDataUrl(dataUrl){
+  const status=document.getElementById('ocr-status');
+  const preview=document.getElementById('ocr-preview');
+  const image=document.getElementById('ocr-img');
+  if(!status || !preview || !image) return;
+  status.style.display='block';
+  image.src=dataUrl;
+  preview.style.display='block';
+  status.textContent='กำลังอ่านข้อความ... (ครั้งแรกอาจใช้เวลาสักครู่)';
+  try{
+    if(typeof Tesseract==='undefined') throw new Error('ocr-library-unavailable');
     const result = await Tesseract.recognize(dataUrl, 'tha+eng', {
       logger: m=>{ if(m.status==='recognizing text'){ status.textContent='กำลังอ่านข้อความ... '+Math.round(m.progress*100)+'%'; } }
     });
@@ -1751,7 +2144,8 @@ async function runOcr(input){
     status.style.display='none';
     renderOcrTokens(tokens);
   }catch(e){
-    status.textContent='ไม่สามารถอ่านข้อความได้ ลองใหม่อีกครั้ง';
+    status.style.display='block';
+    status.textContent='ไม่สามารถอ่านข้อความได้ กรุณาถ่ายให้ชัดขึ้นแล้วลองใหม่';
   }
 }
 let ocrSelected = [];
@@ -1789,85 +2183,130 @@ function useOcrName(){
   showToast('ใส่ชื่อผู้ส่งจากการสแกนแล้ว', 'success');
 }
 
-/* ---------------- QR / Barcode scan modal (offline, jsQR camera) ---------------- */
-let qrScanStream=null, qrScanRAF=null;
+/* ---------------- QR / Barcode scan modal ---------------- */
+let qrScanStream=null, qrScanRAF=null, qrScanDetector=null;
+let qrCameraFacing='environment', qrCameraBusy=false, qrCameraSession=0;
 function openQrScanModal(){
   syncKeyinForm();
+  qrCameraFacing='environment';
   openModal(
-    '<div class="modal-head"><h3>สแกน QR Code / Barcode</h3><button class="modal-close" onclick="closeQrScan()">'+ic('x',18)+'</button></div>'+
-    '<div class="modal-body">'+
-      '<div style="position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:4/3;">'+
-        '<video id="qr-video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>'+
-        '<div style="position:absolute;inset:18%;border:2.5px solid rgba(255,255,255,.85);border-radius:12px;"></div>'+
-      '</div>'+
-      '<div id="qr-status" style="text-align:center;color:var(--ink-soft);font-size:12.5px;padding:10px;">กำลังเปิดกล้อง...</div>'+
-      '<div style="text-align:center;color:var(--ink-faint);font-size:11.5px;">หากไม่มีกล้อง ให้อัปโหลดรูป QR หรือพิมพ์เลขเองในช่อง Tracking</div>'+
-      '<label class="btn btn-outline btn-block" style="margin-top:10px;">'+ic('image',16)+' อัปโหลดรูป QR/Barcode'+
-        '<input type="file" accept="image/*" style="display:none;" onchange="scanQrFromFile(this)"></label>'+
-    '</div>'+
+    '<div class="modal-head"><h3>'+ic('qr',18)+' สแกน QR Code / Barcode</h3><button class="modal-close" onclick="closeQrScan()" aria-label="ปิดตัวสแกน">'+ic('x',18)+'</button></div>'+ 
+    '<div class="modal-body"><div class="camera-shell">'+
+      '<div class="camera-viewport">'+
+        '<video id="qr-video" class="camera-video" autoplay muted playsinline></video>'+ 
+        '<div class="camera-guide"></div><div class="camera-scan-line"></div>'+ 
+        '<div class="camera-topbar"><span class="camera-pill"><span class="camera-dot" id="qr-camera-dot"></span><span id="qr-camera-state">กำลังขอสิทธิ์กล้อง</span></span></div>'+ 
+      '</div>'+ 
+      '<div class="camera-help" id="qr-status">กำลังเปิดกล้อง…</div>'+ 
+      '<div class="camera-controls">'+ 
+        '<button class="camera-side" id="qr-camera-switch" onclick="toggleQrCamera()" aria-label="สลับกล้อง" title="สลับกล้อง" disabled>'+ic('refresh',20)+'</button>'+ 
+        '<div class="camera-pill" style="color:var(--blue);background:var(--blue-soft);box-shadow:none;justify-self:center;">'+ic('qr',17)+' สแกนอัตโนมัติ</div>'+ 
+        '<button class="camera-side" onclick="startQrCamera()" aria-label="ลองเปิดกล้องใหม่" title="ลองใหม่">'+ic('refresh',20)+'</button>'+ 
+      '</div>'+ 
+      '<div class="camera-fallback"><span class="form-hint">สแกนไม่สำเร็จ?</span><label class="btn btn-outline btn-sm">'+ic('image',16)+' เลือกรูป QR/Barcode<input type="file" accept="image/*" style="display:none" onchange="scanQrFromFile(this)"></label></div>'+ 
+    '</div></div>'+ 
     '<div class="modal-foot"><button class="btn btn-outline" onclick="closeQrScan()">ยกเลิก</button></div>',
-    {persistent:true}
+    {large:true,persistent:true,onClose:stopQrScanner}
   );
   startQrCamera();
 }
-async function startQrCamera(){
-  const video = document.getElementById('qr-video');
-  const status = document.getElementById('qr-status');
+function setQrCameraStatus(mode,text){
+  const dot=document.getElementById('qr-camera-dot');
+  const label=document.getElementById('qr-camera-state');
+  const help=document.getElementById('qr-status');
+  if(dot) dot.className='camera-dot'+(mode==='ready'?' ready':mode==='error'?' error':'');
+  if(label) label.textContent=mode==='ready'?'กำลังสแกน':mode==='error'?'กล้องไม่พร้อม':'กำลังเปิดกล้อง';
+  if(help){ help.className='camera-help'+(mode==='error'?' error':''); help.textContent=text; }
+}
+async function createBarcodeDetector(){
+  if(!('BarcodeDetector' in window)) return null;
+  const wanted=['qr_code','code_128','code_39','ean_13','ean_8','upc_a','data_matrix','itf','codabar'];
+  let formats=wanted;
   try{
-    qrScanStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
-    video.srcObject = qrScanStream;
-    video.setAttribute('playsinline','');
-    await video.play();
-    // Prefer native BarcodeDetector (supports real 1D barcodes: code_128/39, ean_13, data_matrix, qr)
-    let detector = null;
-    if('BarcodeDetector' in window){
-      try{ detector = new window.BarcodeDetector({formats:['qr_code','code_128','code_39','ean_13','ean_8','upc_a','data_matrix','itf','codabar']}); }catch(e){ detector=null; }
+    if(typeof window.BarcodeDetector.getSupportedFormats==='function'){
+      const supported=await window.BarcodeDetector.getSupportedFormats();
+      formats=wanted.filter(f=>supported.includes(f));
     }
-    status.textContent = detector ? 'เล็ง QR / Barcode ให้อยู่ในกรอบ (รองรับบาร์โค้ดพัสดุ)' : 'เล็ง QR Code ให้อยู่ในกรอบ';
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d', {willReadFrequently:true});
+    return formats.length ? new window.BarcodeDetector({formats:formats}) : null;
+  }catch(e){ return null; }
+}
+async function startQrCamera(){
+  if(qrCameraBusy) return;
+  const video=document.getElementById('qr-video');
+  if(!video) return;
+  const session=++qrCameraSession;
+  qrCameraBusy=true;
+  stopQrScannerMedia();
+  const switchBtn=document.getElementById('qr-camera-switch');
+  if(switchBtn) switchBtn.disabled=true;
+  setQrCameraStatus('loading','กำลังขอสิทธิ์ใช้กล้องจากอุปกรณ์…');
+  try{
+    const stream=await requestCameraStream(qrCameraFacing);
+    if(session!==qrCameraSession || !document.contains(video)){ stopMediaStream(stream); return; }
+    qrScanStream=stream;
+    await attachCameraStream(video,qrScanStream);
+    video.classList.toggle('mirror',qrCameraFacing==='user');
+    qrScanDetector=await createBarcodeDetector();
+    let cameras=[];
+    try{ cameras=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput'); }catch(e){}
+    if(switchBtn) switchBtn.disabled=cameras.length<2;
+    setQrCameraStatus('ready',qrScanDetector?'เล็ง QR หรือ Barcode ให้อยู่ในกรอบ ระบบจะอ่านให้อัตโนมัติ':'เล็ง QR Code ให้อยู่ในกรอบ ระบบจะอ่านให้อัตโนมัติ');
+    const canvas=document.createElement('canvas');
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
     async function tick(){
-      if(!qrScanStream){ return; }
+      if(session!==qrCameraSession || !qrScanStream) return;
       if(video.readyState===video.HAVE_ENOUGH_DATA){
-        if(detector){
+        if(qrScanDetector){
           try{
-            const codes = await detector.detect(video);
+            const codes=await qrScanDetector.detect(video);
             if(codes && codes[0] && codes[0].rawValue){ onQrDetected(codes[0].rawValue); return; }
           }catch(e){}
-        } else {
-          canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+        }else if(typeof jsQR!=='undefined'){
+          const scale=Math.min(1,1280/video.videoWidth);
+          canvas.width=Math.max(1,Math.round(video.videoWidth*scale));
+          canvas.height=Math.max(1,Math.round(video.videoHeight*scale));
           ctx.drawImage(video,0,0,canvas.width,canvas.height);
-          const img = ctx.getImageData(0,0,canvas.width,canvas.height);
-          const code = jsQR(img.data, img.width, img.height);
+          const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
+          const code=jsQR(imageData.data,imageData.width,imageData.height,{inversionAttempts:'attemptBoth'});
           if(code && code.data){ onQrDetected(code.data); return; }
         }
       }
-      qrScanRAF = requestAnimationFrame(tick);
+      qrScanRAF=requestAnimationFrame(tick);
     }
-    qrScanRAF = requestAnimationFrame(tick);
-  }catch(e){
-    status.textContent = 'ไม่สามารถเปิดกล้องได้ — กรุณาอัปโหลดรูป QR หรือพิมพ์เลขเอง';
-  }
+    qrScanRAF=requestAnimationFrame(tick);
+  }catch(error){
+    if(session===qrCameraSession) setQrCameraStatus('error',cameraErrorText(error));
+    stopQrScannerMedia();
+  }finally{ if(session===qrCameraSession) qrCameraBusy=false; }
+}
+function toggleQrCamera(){
+  qrCameraFacing=qrCameraFacing==='environment'?'user':'environment';
+  startQrCamera();
 }
 async function scanQrFromFile(input){
   if(!input.files||!input.files[0]) return;
-  const status = document.getElementById('qr-status');
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const img = new Image();
-    img.onload = function(){
-      const canvas = document.createElement('canvas');
-      canvas.width=img.width; canvas.height=img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img,0,0);
-      const data = ctx.getImageData(0,0,canvas.width,canvas.height);
-      const code = jsQR(data.data, data.width, data.height);
-      if(code && code.data){ onQrDetected(code.data); }
-      else { status.textContent='ไม่พบ QR Code ในรูปนี้ ลองรูปอื่น'; }
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(input.files[0]);
+  if(input.files[0].size>12*1024*1024){ showToast('ไฟล์ใหญ่เกินไป','error'); input.value=''; return; }
+  const status=document.getElementById('qr-status');
+  if(status){ status.className='camera-help'; status.textContent='กำลังอ่านรหัสจากรูป…'; }
+  try{
+    const dataUrl=await compressImageFile(input.files[0],2000,0.92);
+    const img=new Image();
+    await new Promise((resolve,reject)=>{ img.onload=resolve; img.onerror=reject; img.src=dataUrl; });
+    const detector=await createBarcodeDetector();
+    if(detector){
+      const codes=await detector.detect(img);
+      if(codes && codes[0] && codes[0].rawValue){ onQrDetected(codes[0].rawValue); return; }
+    }
+    if(typeof jsQR!=='undefined'){
+      const canvas=document.createElement('canvas'); canvas.width=img.width; canvas.height=img.height;
+      const ctx=canvas.getContext('2d',{willReadFrequently:true}); ctx.drawImage(img,0,0);
+      const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
+      const code=jsQR(imageData.data,imageData.width,imageData.height,{inversionAttempts:'attemptBoth'});
+      if(code && code.data){ onQrDetected(code.data); return; }
+    }
+    setQrCameraStatus('error','ไม่พบ QR Code หรือ Barcode ในรูปนี้ กรุณาถ่ายให้ชัดและลองอีกครั้ง');
+  }catch(error){ setQrCameraStatus('error','อ่านรูปนี้ไม่สำเร็จ กรุณาเลือกรูปอื่น'); }
+  finally{ input.value=''; }
 }
 function onQrDetected(data){
   const val = String(data).trim();
@@ -1878,9 +2317,17 @@ function onQrDetected(data){
   showToast('สแกนเลขพัสดุสำเร็จ: '+val, 'success');
 }
 function closeQrScan(){
-  if(qrScanRAF){ cancelAnimationFrame(qrScanRAF); qrScanRAF=null; }
-  if(qrScanStream){ qrScanStream.getTracks().forEach(t=>t.stop()); qrScanStream=null; }
   closeModal();
+}
+function stopQrScannerMedia(){
+  if(qrScanRAF){ cancelAnimationFrame(qrScanRAF); qrScanRAF=null; }
+  stopMediaStream(qrScanStream); qrScanStream=null;
+  qrScanDetector=null;
+}
+function stopQrScanner(){
+  qrCameraSession++;
+  qrCameraBusy=false;
+  stopQrScannerMedia();
 }
 
 /* ============================================================
@@ -1942,7 +2389,7 @@ VIEW_RENDERERS.internal = function(){
   +     '</div>'
   +     '<div>'
   +       '<div class="form-group"><label class="form-label">Add Picture</label>'
-  +         photoBoxHtml(f.photo, {inputId:'int-photo', mainText:'คลิกเพื่อถ่ายรูปหน้าเอกสาร', subText:'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB', onChange:'onInternalPhoto'})
+  +         photoBoxHtml(f.photo, {target:'internal', mainText:'คลิกเพื่อถ่ายรูปหน้าเอกสาร', subText:'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB'})
   +       '</div>'
   +     '</div>'
   +   '</div>'
@@ -2125,7 +2572,7 @@ function toggleEsignSelectAll(){
   else state.ui.esign.selectedIds = docs.map(d=>d.id);
   renderAll();
 }
-function confirmEsign(){
+async function confirmEsign(){
   const e = state.ui.esign;
   if(e.selectedIds.length===0){ showToast('กรุณาเลือกรายการที่ต้องการเซ็นรับ', 'error'); return; }
   const typed = (document.getElementById('esign-typed')||{}).value || '';
@@ -2145,19 +2592,20 @@ function confirmEsign(){
   });
   persistDocuments();
   // generate a PDF record grouped, stored in reports
-  generateSignPdf(signed, typed.trim()||state.currentUser.name, sigData);
+  const reportPromise=generateSignPdf(signed,typed.trim()||state.currentUser.name,sigData);
   logAction('E-Sign', 'เซ็นรับ '+signed.length+' รายการ');
   // auto mail: แจ้งฝ่าย + แจ้งผู้ส่ง (รหัสพนักงาน@domain)
   if(state.settings.autoMail.enabled){ sendEsignMails(signed); }
   state.ui.esign.selectedIds=[]; state.ui.esign.typedName='';
   renderAll();
   fireConfetti();
+  await reportPromise;
   const mailNote = state.settings.autoMail.enabled ? (state.sheet.connected?' และส่งอีเมลแจ้งฝ่าย/ผู้ส่งแล้ว':' (อีเมลจะส่งจริงเมื่อเชื่อมต่อ Google Sheet)') : '';
   showToast('เซ็นรับสำเร็จ '+signed.length+' รายการ'+mailNote, 'success');
 }
 
-/* PDF builder — returns a jsPDF object (reused by save + preview) */
-function buildPdf(docs, receiverName, sigData, fileName){
+/* Legacy PDF builder kept only as a compatibility reference. */
+function buildPdfLegacy(docs, receiverName, sigData, fileName){
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({unit:'mm', format:'a4'});
     const PW = 210, MX = 14, CW = PW - MX*2;
@@ -2251,28 +2699,91 @@ function buildPdf(docs, receiverName, sigData, fileName){
     return pdf;
 }
 
-async function generateSignPdf(docs, receiverName, sigData){
-  if(!docs.length) return;
+/* PDF ภาษาไทย: render Sarabun ต่อหน้าเป็นภาพความละเอียดสูงก่อนบันทึกลง PDF */
+function buildThaiReportPages(docs, receiverName, sigData, fileName){
+  const root=document.createElement('div');
+  root.className='thai-pdf-root';
+  const first=docs[0]||{};
+  const perPage=6;
+  const pageTotal=Math.max(1,Math.ceil(docs.length/perPage));
+  const confirmedBy=first.receiverConfirmName||first.createdBy||state.currentUser.name||'-';
+  for(let pageIndex=0;pageIndex<pageTotal;pageIndex++){
+    const start=pageIndex*perPage;
+    const pageDocs=docs.slice(start,start+perPage);
+    const isLast=pageIndex===pageTotal-1;
+    const rows=pageDocs.map((doc,index)=>'<tr>'+ 
+      '<td style="width:42px;text-align:center;">'+(start+index+1)+'</td>'+ 
+      '<td style="width:68px;">'+(doc.photo?'<img class="pdf-thumb" src="'+doc.photo+'">':'<div class="pdf-no-image">ไม่มีรูป</div>')+'</td>'+ 
+      '<td>'+escapeHtml(doc.senderName||'-')+'</td>'+ 
+      '<td style="width:150px;"><div class="pdf-track">'+escapeHtml(doc.tracking||'-')+'</div></td>'+ 
+      '<td style="width:55px;text-align:center;">'+escapeHtml(doc.quantity||1)+'</td>'+ 
+      '<td style="width:130px;">'+escapeHtml(doc.remark||'-')+'</td>'+ 
+    '</tr>').join('');
+    const signature=isLast?'<div class="pdf-signature">'+
+      '<div><div class="pdf-sign-label">ลายเซ็นผู้รับเอกสาร</div><div class="pdf-sign-box">'+(sigData?'<img src="'+sigData+'">':'<span style="color:#8995AA;font-size:13px;">ยืนยันด้วยการพิมพ์ชื่อ</span>')+'</div><div class="pdf-sign-name">'+escapeHtml(receiverName||'-')+'</div></div>'+ 
+      '<div><div class="pdf-sign-label">ข้อมูลการยืนยัน</div><div class="pdf-meta-box" style="margin-top:7px;"><div class="pdf-meta-label">ผู้ยืนยันในระบบ</div><div class="pdf-meta-value">'+escapeHtml(confirmedBy)+'</div><div class="pdf-meta-label" style="margin-top:9px;">วันที่และเวลาเซ็นรับ</div><div class="pdf-meta-value">'+escapeHtml(formatDateTimeTH(first.signedAt))+'</div></div></div>'+ 
+    '</div>':'';
+    const page=document.createElement('section');
+    page.className='thai-pdf-page';
+    page.innerHTML='<div class="pdf-head"><div><div class="pdf-brand">OPS-BSCS Digital Mail Service</div><div class="pdf-sub">ใบยืนยันการรับเอกสาร / Delivery Receipt</div></div><div><div class="pdf-code">'+escapeHtml(fileName)+'</div><div class="pdf-date">'+escapeHtml(formatDateTimeTH(first.signedAt))+'</div></div></div>'+ 
+      '<div class="pdf-meta"><div class="pdf-meta-box"><div class="pdf-meta-label">แผนกผู้รับ</div><div class="pdf-meta-value">'+escapeHtml(first.receiverDept||'-')+'</div><div class="pdf-meta-label" style="margin-top:8px;">ผู้รับเอกสาร</div><div class="pdf-meta-value">'+escapeHtml(receiverName||'-')+'</div></div><div class="pdf-meta-box"><div class="pdf-meta-label">จำนวนเอกสารทั้งหมด</div><div class="pdf-meta-value">'+docs.length+' ซอง</div><div class="pdf-meta-label" style="margin-top:8px;">ผู้ยืนยันในระบบ</div><div class="pdf-meta-value">'+escapeHtml(confirmedBy)+'</div></div></div>'+ 
+      '<table class="pdf-table"><thead><tr><th style="width:42px;">ลำดับ</th><th style="width:68px;">รูป</th><th>ชื่อผู้ส่ง</th><th style="width:150px;">Tracking</th><th style="width:55px;">จำนวน</th><th style="width:130px;">หมายเหตุ</th></tr></thead><tbody>'+rows+'</tbody></table>'+ 
+      signature+'<div class="pdf-footer"><span>OPS-BSCS Digital Mail Service</span><span>'+escapeHtml(fileName)+' • หน้า '+(pageIndex+1)+' / '+pageTotal+'</span></div>';
+    root.appendChild(page);
+  }
+  return root;
+}
+async function waitForReportAssets(root){
+  if(document.fonts && document.fonts.ready){
+    await Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,2500))]);
+  }
+  const images=Array.from(root.querySelectorAll('img'));
+  await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{ img.onload=resolve; img.onerror=resolve; })));
+}
+async function buildPdf(docs, receiverName, sigData, fileName){
+  if(!window.jspdf || !window.jspdf.jsPDF) throw new Error('ไม่พบตัวสร้าง PDF');
+  if(typeof html2canvas==='undefined') throw new Error('ไม่พบระบบเรนเดอร์ภาษาไทย');
+  const root=buildThaiReportPages(docs,receiverName,sigData,fileName);
+  document.body.appendChild(root);
   try{
-    const first = docs[0];
-    const abbr = deptAbbr(first.receiverDept);
-    const d = new Date();
-    const dateStr = d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
-    const seq = String((state.reports? state.reports.length:0)+1).padStart(3,'0');
-    const fileName = abbr+'-'+dateStr+'-'+seq;
-    const pdf = buildPdf(docs, receiverName, sigData, fileName);
-    const dataUri = pdf.output('datauristring');
-    const report = {
-      id: genId('rpt'), fileName, department:first.receiverDept, createdAt: first.signedAt,
-      receiverName, count:docs.length, trackings:docs.map(x=>x.tracking),
-      thumbs: docs.map(x=>x.photo).filter(Boolean).slice(0,12), signature: sigData||'', dataUri
-    };
-    if(!state.reports) state.reports = [];
-    state.reports.unshift(report);
-    docs.forEach(doc=>{ doc.reportId = report.id; doc.reportFile = fileName; });
-    persistReports();
-    persistDocuments();
-  }catch(e){ console.error(e); }
+    await waitForReportAssets(root);
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+    const pages=Array.from(root.querySelectorAll('.thai-pdf-page'));
+    for(let index=0;index<pages.length;index++){
+      const canvas=await html2canvas(pages[index],{scale:1.6,backgroundColor:'#ffffff',logging:false,useCORS:true,allowTaint:false,scrollX:0,scrollY:0});
+      if(index>0) pdf.addPage('a4','portrait');
+      pdf.addImage(canvas.toDataURL('image/jpeg',.94),'JPEG',0,0,210,297,undefined,'FAST');
+      canvas.width=1; canvas.height=1;
+    }
+    return pdf;
+  }finally{ root.remove(); }
+}
+
+async function generateSignPdf(docs, receiverName, sigData){
+  if(!docs.length) return null;
+  const first=docs[0];
+  const abbr=deptAbbr(first.receiverDept);
+  const d=new Date(first.signedAt||Date.now());
+  const dateStr=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  const seq=String((state.reports?state.reports.length:0)+1).padStart(3,'0');
+  const fileName=abbr+'-'+dateStr+'-'+seq;
+  let dataUri='';
+  try{
+    const pdf=await buildPdf(docs,receiverName,sigData,fileName);
+    dataUri=pdf.output('datauristring');
+  }catch(error){ console.error('Thai PDF generation failed',error); }
+  const report={
+    id:genId('rpt'),fileName:fileName,department:first.receiverDept,createdAt:first.signedAt,
+    receiverName:receiverName,count:docs.length,trackings:docs.map(x=>x.tracking),
+    thumbs:docs.map(x=>x.photo).filter(Boolean).slice(0,12),signature:sigData||'',dataUri:dataUri,pdfVersion:'thai-raster-v1'
+  };
+  if(!state.reports) state.reports=[];
+  state.reports.unshift(report);
+  docs.forEach(doc=>{ doc.reportId=report.id; doc.reportFile=fileName; });
+  persistReports();
+  persistDocuments();
+  return report;
 }
 
 /* หา document ที่อยู่ในรายงานนี้ (สำหรับ regenerate) */
@@ -2285,14 +2796,25 @@ function getReportDocs(report){
   return docs;
 }
 /* สร้าง PDF สดจากข้อมูลปัจจุบัน คืน dataUri (ใช้ตอน preview/แก้ไข/ดาวน์โหลด) */
-function regenerateReportPdf(report){
+async function regenerateReportPdf(report){
   const docs = getReportDocs(report);
   if(docs.length){
     const sig = report.signature || (docs[0] && docs[0].signature) || '';
-    const pdf = buildPdf(docs, report.receiverName, sig, report.fileName);
+    const pdf = await buildPdf(docs, report.receiverName, sig, report.fileName);
     return pdf.output('datauristring');
   }
   return report.dataUri || '';
+}
+async function ensureReportPdf(report){
+  if(report.dataUri && report.pdfVersion==='thai-raster-v1') return report.dataUri;
+  const canRegenerate=getReportDocs(report).length>0;
+  const uri=await regenerateReportPdf(report);
+  if(uri && canRegenerate){
+    report.dataUri=uri;
+    report.pdfVersion='thai-raster-v1';
+    persistReports();
+  }
+  return uri;
 }
 
 /* ============================================================
@@ -2427,30 +2949,35 @@ VIEW_RENDERERS.report = function(){
 };
 function onReportFilter(){ state.ui.report.date=document.getElementById('rep-date').value; state.ui.report.department=document.getElementById('rep-dept').value; renderAll(); }
 function clearReportFilter(){ state.ui.report.date=''; state.ui.report.department=''; renderAll(); }
-function reviewReport(id){
+async function reviewReport(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  let uri = '';
-  try{ uri = regenerateReportPdf(x); }catch(e){ uri = x.dataUri||''; }
-  const docs = getReportDocs(x);
-  let bodyHtml;
-  if(uri){
-    // ใช้ blob URL เพื่อให้ iframe แสดง PDF ได้ชัวร์กว่า data URI
-    let src = uri;
-    try{ src = dataUriToBlobUrl(uri); }catch(e){ src = uri; }
-    bodyHtml = '<iframe src="'+src+'" style="width:100%;height:60vh;border:none;background:#fff;"></iframe>';
-  } else {
-    bodyHtml = '<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('file',22)+'</div><div class="es-title">ไม่พบข้อมูลเอกสารสำหรับสร้าง PDF</div><div>ข้อมูลอาจถูกล้างหรือยังไม่ซิงก์</div></div>';
-  }
+  let previewUrl='';
   openModal(
-    '<div class="modal-head"><h3>รีวิวไฟล์ — '+escapeHtml(x.fileName)+'.pdf</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+
-    '<div class="modal-body" style="padding:0;">'+bodyHtml+'</div>'+
+    '<div class="modal-head"><h3>รีวิวไฟล์ — '+escapeHtml(x.fileName)+'.pdf</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+ 
+    '<div class="modal-body" id="report-preview-body" style="padding:0;"><div class="report-loading"><span class="report-loading-ring"></span><strong>กำลังจัดหน้า PDF ภาษาไทย…</strong><span>กรุณารอสักครู่</span></div></div>'+ 
     '<div class="modal-foot">'+
-      '<button class="btn btn-outline" onclick="closeModal()">ปิด</button>'+
-      (uri?'<button class="btn btn-outline ripple" onclick="openReportNewTab(\''+id+'\')">'+ic('extlink',15)+' เปิดแท็บใหม่</button>':'')+
-      (uri?'<button class="btn btn-primary ripple" onclick="downloadReport(\''+id+'\')">'+ic('download',16)+' ดาวน์โหลด</button>':'')+
+      '<button class="btn btn-outline" onclick="closeModal()">ปิด</button>'+ 
+      '<button class="btn btn-outline ripple" id="report-open-btn" style="display:none;" onclick="openReportNewTab(\''+id+'\')">'+ic('extlink',15)+' เปิดแท็บใหม่</button>'+ 
+      '<button class="btn btn-primary ripple" id="report-download-btn" style="display:none;" onclick="downloadReport(\''+id+'\')">'+ic('download',16)+' ดาวน์โหลด</button>'+ 
     '</div>',
-    {large:true}
+    {large:true,onClose:()=>{ if(previewUrl) URL.revokeObjectURL(previewUrl); }}
   );
+  try{
+    const uri=await ensureReportPdf(x);
+    const body=document.getElementById('report-preview-body');
+    if(!body) return;
+    if(!uri){
+      body.innerHTML='<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('file',22)+'</div><div class="es-title">ไม่พบข้อมูลเอกสารสำหรับสร้าง PDF</div><div>ข้อมูลอาจถูกล้างหรือยังไม่ซิงก์</div></div>';
+      return;
+    }
+    previewUrl=dataUriToBlobUrl(uri);
+    body.innerHTML='<iframe title="ตัวอย่างรายงาน '+escapeHtml(x.fileName)+'" src="'+previewUrl+'" style="width:100%;height:60vh;border:none;background:#fff;"></iframe>';
+    const openBtn=document.getElementById('report-open-btn'); if(openBtn) openBtn.style.display='inline-flex';
+    const downloadBtn=document.getElementById('report-download-btn'); if(downloadBtn) downloadBtn.style.display='inline-flex';
+  }catch(error){
+    const body=document.getElementById('report-preview-body');
+    if(body) body.innerHTML='<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('alert',22)+'</div><div class="es-title">สร้างตัวอย่าง PDF ไม่สำเร็จ</div><div>กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่</div></div>';
+  }
 }
 function dataUriToBlobUrl(uri){
   const parts = uri.split(',');
@@ -2460,17 +2987,25 @@ function dataUriToBlobUrl(uri){
   for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
   return URL.createObjectURL(new Blob([arr], {type:mime}));
 }
-function downloadReport(id){
+async function downloadReport(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  const uri = regenerateReportPdf(x) || x.dataUri;
-  if(!uri){ showToast('ไม่พบข้อมูลสำหรับสร้าง PDF', 'error'); return; }
-  const a = document.createElement('a'); a.href=uri; a.download=x.fileName+'.pdf'; a.click();
+  showToast('กำลังจัดทำ PDF ภาษาไทย…','success');
+  try{
+    const uri=await ensureReportPdf(x);
+    if(!uri){ showToast('ไม่พบข้อมูลสำหรับสร้าง PDF','error'); return; }
+    const a=document.createElement('a'); a.href=uri; a.download=x.fileName+'.pdf'; document.body.appendChild(a); a.click(); a.remove();
+  }catch(error){ showToast('สร้าง PDF ไม่สำเร็จ กรุณาลองใหม่','error'); }
 }
-function openReportNewTab(id){
+async function openReportNewTab(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  const uri = regenerateReportPdf(x) || x.dataUri; if(!uri) return;
-  try{ const url = dataUriToBlobUrl(uri); window.open(url, '_blank'); }
-  catch(e){ const w=window.open(); if(w){ w.document.write('<iframe src="'+uri+'" style="width:100%;height:100%;border:none;"></iframe>'); } }
+  const popup=window.open('about:blank','_blank');
+  if(!popup){ showToast('เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาต Pop-up','error'); return; }
+  popup.document.write('<!doctype html><html lang="th"><meta charset="utf-8"><title>กำลังสร้าง PDF</title><body style="font-family:Tahoma,sans-serif;display:grid;place-items:center;height:100vh;margin:0;color:#365CF5;">กำลังจัดทำ PDF ภาษาไทย…</body></html>');
+  try{
+    const uri=await ensureReportPdf(x);
+    if(!uri){ popup.close(); showToast('ไม่พบข้อมูลสำหรับสร้าง PDF','error'); return; }
+    popup.location.href=dataUriToBlobUrl(uri);
+  }catch(error){ popup.close(); showToast('เปิดรายงานไม่สำเร็จ','error'); }
 }
 
 /* ============================================================
