@@ -360,6 +360,10 @@ tbody tr:hover{background:var(--table-hover);}
 /* ---------- Thumbnails ---------- */
 .thumb{width:44px; height:44px; border-radius:8px; object-fit:cover; border:1px solid var(--line); cursor:pointer; background:var(--paper);}
 .thumb-empty{width:44px; height:44px; border-radius:8px; border:1.5px dashed var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-faint);}
+.report-photo-stack{display:flex;align-items:center;min-width:108px;}
+.report-photo-stack .report-thumb{width:44px;height:44px;border-radius:9px;object-fit:cover;border:2px solid var(--surface);background:var(--paper);box-shadow:0 2px 8px rgba(14,27,61,.13);cursor:pointer;}
+.report-photo-stack .report-thumb+.report-thumb{margin-left:-10px;}
+.report-photo-more{margin-left:7px;font-size:11.5px;font-weight:700;color:var(--blue-deep);white-space:nowrap;}
 
 /* ---------- Photo capture box ---------- */
 .photo-box{border:1.5px dashed var(--line); border-radius:var(--r-md); padding:16px; display:flex; align-items:center; gap:14px; background:var(--paper); transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;}
@@ -706,6 +710,8 @@ const HOME_URL = 'https://add00917-hue.github.io/GNR3-Building-MS/';
    ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb..../exec'
    ============================================================ */
 const EMBEDDED_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycby0-v7iO-7vQZ_mswvdUTPuIFIQEqEfqy_XSnJv3CBCKWBbRZjVPERz9qZfnwWtAW3L/exec';
+const DRIVE_FOLDER_ID = '1r6d_eTcbJn_Tw38JyPgrdjFkplIWHdkG';
+const DRIVE_FOLDER_URL = 'https://drive.google.com/drive/folders/'+DRIVE_FOLDER_ID;
 const STATUS_LABEL = {pending:'รอเซ็นรับ', signed:'เซ็นรับแล้ว', redelivery:'รอนำส่งใหม่', return:'ตีกลับ'};
 
 /* ---------------- Default data ---------------- */
@@ -755,7 +761,7 @@ let state = {
     sidebarOpen:false,
     sidebarCollapsed:false,
     dashboardPeriod:'month',
-    keyin:{step:1, department:'', basket:[], form:{senderName:'', tracking:'', remark:'', photo:null}, dupWarn:null},
+    keyin:{step:1, department:'', basket:[], form:{documentId:'', senderName:'', tracking:'', remark:'', photo:null}, dupWarn:null},
     internal:{form:{building:'', senderName:'', senderDept:'', senderDesk:'', senderEmpId:'', receiverName:'', receiverDept:'', receiverDesk:'', receiverEmpId:'', remark:'', photo:null}, trackingNumber:''},
     esign:{date:todayISO(), department:'', selectedIds:[], signatureEmpty:true, typedName:''},
     track:{query:'', result:[]},
@@ -842,7 +848,112 @@ async function api(action, payload, opts){
   } finally { if(!opts.silent) showNetBar(false); }
 }
 
-/* image/pdf fields ตัดออกก่อนส่งขึ้น Sheet ถ้าใหญ่เกินลิมิตเซลล์ */
+/* รูปฉบับเต็มเก็บใน Google Drive; ในเอกสารเก็บเฉพาะ URL และ File ID */
+function isInlinePhoto(value){ return typeof value==='string' && /^data:image\//i.test(value); }
+function driveViewUrl(fileId){ return fileId ? 'https://drive.google.com/file/d/'+encodeURIComponent(fileId)+'/view' : ''; }
+function drivePhotoUrl(fileId){ return fileId ? 'https://drive.google.com/thumbnail?id='+encodeURIComponent(fileId)+'&sz=w1600' : ''; }
+function driveFileIdFromPhoto(value){
+  if(!value || isInlinePhoto(value)) return '';
+  const m=String(value).match(/(?:\/d\/|[?&]id=)([-\w]{20,})/);
+  return m?m[1]:'';
+}
+async function uploadPhotoToDrive(dataUrl, meta){
+  if(!dataUrl) return null;
+  if(!isInlinePhoto(dataUrl)){
+    const existingId=driveFileIdFromPhoto(dataUrl);
+    return {photo:dataUrl, photoFileId:existingId, photoViewUrl:driveViewUrl(existingId)};
+  }
+  if(!state.sheet.endpoint) throw new Error('ยังไม่ได้ตั้งค่า Web App URL สำหรับอัปโหลดรูปไป Google Drive');
+  if(!state.sheet.connected) await testConnection();
+  if(state.sheet.info&&state.sheet.info.driveReady===false){
+    throw new Error('Google Drive ยังไม่ได้รับสิทธิ์ — รัน authorizeServices() ใน Apps Script แล้ว Deploy เวอร์ชันใหม่');
+  }
+  meta=meta||{};
+  const result=await api('uploadPhoto',{
+    dataUrl:dataUrl,
+    clientId:meta.clientId||genId('photo'),
+    tracking:meta.tracking||'',
+    documentType:meta.documentType||'document',
+    senderName:meta.senderName||'',
+    receiverDept:meta.receiverDept||'',
+    folderId:DRIVE_FOLDER_ID
+  });
+  if(!result.fileId) throw new Error('อัปโหลดรูปแล้วแต่ไม่ได้รับ Google Drive File ID');
+  return {
+    photo:result.photoUrl||result.thumbnailUrl||drivePhotoUrl(result.fileId),
+    photoFileId:result.fileId,
+    photoViewUrl:result.viewUrl||driveViewUrl(result.fileId),
+    photoName:result.fileName||'',
+    photoStoredAt:result.createdAt||new Date().toISOString()
+  };
+}
+function assignDrivePhoto(target, uploaded){
+  if(!uploaded) return target;
+  target.photo=uploaded.photo||null;
+  target.photoFileId=uploaded.photoFileId||'';
+  target.photoViewUrl=uploaded.photoViewUrl||'';
+  target.photoName=uploaded.photoName||'';
+  target.photoStoredAt=uploaded.photoStoredAt||'';
+  return target;
+}
+
+/* โหลดรูปผ่าน Apps Script เพื่อแก้ CORS/สิทธิ์ของ Drive ในหน้า Report และ PDF */
+const reportPhotoDataCache=new Map();
+const reportPhotoPending=new Map();
+async function fetchDrivePhotoData(fileId){
+  if(!fileId) return '';
+  if(reportPhotoDataCache.has(fileId)) return reportPhotoDataCache.get(fileId);
+  if(reportPhotoPending.has(fileId)) return reportPhotoPending.get(fileId);
+  const pending=api('getPhoto',{fileId:fileId},{silent:true}).then(result=>{
+    if(!result.dataUrl||!isInlinePhoto(result.dataUrl)) throw new Error('ไม่พบข้อมูลรูปจาก Google Drive');
+    reportPhotoDataCache.set(fileId,result.dataUrl);
+    return result.dataUrl;
+  }).finally(()=>reportPhotoPending.delete(fileId));
+  reportPhotoPending.set(fileId,pending);
+  return pending;
+}
+async function hydrateDriveImageElement(img){
+  if(!img||img.dataset.driveLoading==='1') return;
+  const fileId=img.dataset.driveId||driveFileIdFromPhoto(img.src);
+  if(!fileId){ img.style.display='none'; return; }
+  img.dataset.driveLoading='1';
+  img.onerror=null;
+  try{
+    const dataUrl=await fetchDrivePhotoData(fileId);
+    if(img.isConnected){ img.src=dataUrl; img.dataset.driveLoading='0'; }
+  }catch(error){
+    if(img.isConnected){ img.style.display='none'; img.dataset.driveLoading='0'; }
+  }
+}
+async function mapWithLimit(items,limit,worker){
+  const output=new Array(items.length);
+  let nextIndex=0;
+  async function run(){
+    while(nextIndex<items.length){
+      const index=nextIndex++;
+      output[index]=await worker(items[index],index);
+    }
+  }
+  const runners=[];
+  for(let i=0;i<Math.min(limit,items.length);i++) runners.push(run());
+  await Promise.all(runners);
+  return output;
+}
+async function resolveReportDocumentPhotos(docs){
+  return mapWithLimit(docs,3,async doc=>{
+    const copy=Object.assign({},doc);
+    if(!copy.photo&&copy.photoFileId) copy.photo=drivePhotoUrl(copy.photoFileId);
+    if(!copy.photo) return copy;
+    if(isInlinePhoto(copy.photo)) return copy;
+    const fileId=copy.photoFileId||driveFileIdFromPhoto(copy.photo);
+    if(!fileId){ copy.photo=null; return copy; }
+    try{ copy.photo=await fetchDrivePhotoData(fileId); }
+    catch(error){ copy.photo=null; }
+    return copy;
+  });
+}
+
+/* รูปเก่าที่เป็น Base64 ตัดออกก่อนส่งขึ้น Sheet; รูปใหม่เป็น Drive URL จึงเก็บได้ถาวร */
 const SHEET_CELL_LIMIT = 45000;
 function sheetSafeDoc(d){
   const c = Object.assign({}, d);
@@ -990,10 +1101,15 @@ function openConnectionModal(){
     ? '<div class="conn-box ok">'+ic('sheet',16)+' เชื่อมต่อสำเร็จ: <strong>'+escapeHtml(info?info.spreadsheetName:'')+'</strong><br><span style="font-size:11.5px;">ชีตที่มี: '+escapeHtml(info?(info.sheets||[]).join(', '):'')+'</span></div>'
     : s.status==='error' ? '<div class="conn-box err">'+ic('alert',16)+' '+escapeHtml(s.lastError||'เชื่อมต่อไม่สำเร็จ')+'</div>'
     : '<div class="conn-box off">'+ic('globe',16)+' ยังไม่ได้เชื่อมต่อ</div>';
+  const driveStatusHtml = info
+    ? (info.driveReady
+      ? '<div class="conn-box ok" style="margin-top:8px;">'+ic('check',15)+' Google Drive พร้อมใช้งาน: <strong>'+escapeHtml(info.driveFolderName||'Picture Mailroom')+'</strong></div>'
+      : '<div class="conn-box err" style="margin-top:8px;">'+ic('alert',15)+' Google Drive ยังไม่ได้รับสิทธิ์<br><span style="font-size:11.5px;">'+escapeHtml(info.driveError||'เพิ่ม appsscript.json แล้วรัน authorizeServices() จาก Apps Script Editor')+'</span></div>')
+    : '';
   openModal(
     '<div class="modal-head"><h3>เชื่อมต่อ Google Sheet</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+
     '<div class="modal-body">'+
-      statusHtml+
+      statusHtml+driveStatusHtml+
       '<div class="form-group" style="margin-top:14px;"><label class="form-label">Web App URL (Apps Script)</label>'+
         '<input class="input" id="conn-url" placeholder="https://script.google.com/macros/s/.../exec" value="'+escapeHtml(s.endpoint)+'" style="font-family:var(--mono);font-size:12px;">'+
         '<p class="form-hint">'+ic('info',13)+' ได้จากการ Deploy โปรเจกต์ Apps Script เป็น Web App (ดูไฟล์ Code.gs)</p></div>'+
@@ -1020,7 +1136,10 @@ async function connFromModal(){
   res.innerHTML='<div class="conn-box off">'+ic('refresh',15)+' กำลังทดสอบ...</div>';
   try{
     const data = await testConnection();
-    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สำเร็จ! เชื่อมกับ "<strong>'+escapeHtml(data.spreadsheetName)+'</strong>"<br><span style="font-size:11.5px;">ชีต: '+escapeHtml((data.sheets||[]).join(', ')||'(ยังไม่มี — กดสร้าง Sheet อัตโนมัติ)')+'</span></div>';
+    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สำเร็จ! เชื่อมกับ "<strong>'+escapeHtml(data.spreadsheetName)+'</strong>"<br><span style="font-size:11.5px;">ชีต: '+escapeHtml((data.sheets||[]).join(', ')||'(ยังไม่มี — กดสร้าง Sheet อัตโนมัติ)')+'</span></div>'
+      +(data.driveReady
+        ? '<div class="conn-box ok" style="margin-top:8px;">'+ic('check',15)+' Drive พร้อมใช้งาน: '+escapeHtml(data.driveFolderName||'Picture Mailroom')+'</div>'
+        : '<div class="conn-box err" style="margin-top:8px;">'+ic('alert',15)+' Drive ยังไม่ได้รับสิทธิ์ — รัน authorizeServices() แล้ว Deploy ใหม่<br><span style="font-size:11.5px;">'+escapeHtml(data.driveError||'')+'</span></div>');
     renderConnStatus();
   }catch(e){ res.innerHTML='<div class="conn-box err">'+ic('alert',15)+' '+escapeHtml(e.message)+'</div>'; }
 }
@@ -1031,7 +1150,11 @@ async function connSetup(){
   try{
     const data = await api('setup');
     setNetStatus('connected');
-    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สร้างชีตเรียบร้อย<br><span style="font-size:11.5px;">สร้างใหม่: '+(data.created.join(', ')||'-')+' | มีอยู่แล้ว: '+(data.existed.join(', ')||'-')+'</span></div>';
+    state.sheet.info=Object.assign({},state.sheet.info||{},data);
+    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สร้างชีตเรียบร้อย<br><span style="font-size:11.5px;">สร้างใหม่: '+(data.created.join(', ')||'-')+' | มีอยู่แล้ว: '+(data.existed.join(', ')||'-')+'</span></div>'
+      +(data.driveReady
+        ? '<div class="conn-box ok" style="margin-top:8px;">'+ic('check',15)+' Drive พร้อมใช้งาน: '+escapeHtml(data.driveFolderName||'Picture Mailroom')+'</div>'
+        : '<div class="conn-box err" style="margin-top:8px;">'+ic('alert',15)+' Drive ยังไม่ได้รับสิทธิ์ — รัน authorizeServices() แล้ว Deploy ใหม่</div>');
     fireConfetti();
   }catch(e){ res.innerHTML='<div class="conn-box err">'+ic('alert',15)+' '+escapeHtml(e.message)+'</div>'; }
 }
@@ -1450,11 +1573,14 @@ document.addEventListener('pointerdown', function(e){
 
 function imageViewerModal(src){
   if(!src) return;
+  const fileId=driveFileIdFromPhoto(src);
+  const originalUrl=fileId?driveViewUrl(fileId):'';
   openModal(
     '<div class="modal-head" style="border:none;padding-bottom:6px;"><h3>รูปภาพซองเอกสาร</h3><button class="modal-close" onclick="closeModal()" aria-label="ปิด">'+ic('x',20)+'</button></div>'+
     '<div class="modal-body" style="text-align:center;padding-top:0;">'+
-      '<div class="img-zoom-wrap"><img src="'+src+'" class="img-zoom" id="zoom-img" onclick="toggleZoom(this)"></div>'+
+      '<div class="img-zoom-wrap"><img src="'+escapeHtml(src)+'" class="img-zoom" id="zoom-img" onclick="toggleZoom(this)" referrerpolicy="no-referrer"></div>'+
       '<p class="form-hint" style="justify-content:center;margin-top:12px;">'+ic('info',13)+' แตะรูปเพื่อซูม • กด X หรือแตะพื้นหลังเพื่อปิดกลับหน้าเดิม</p>'+
+      (originalUrl?'<a class="btn btn-outline btn-sm" href="'+escapeHtml(originalUrl)+'" target="_blank" rel="noopener" style="margin-top:10px;">'+ic('extlink',14)+' เปิดไฟล์ต้นฉบับใน Google Drive</a>':'')+
     '</div>',
     {plain:true}
   );
@@ -1940,7 +2066,7 @@ VIEW_RENDERERS.keyin = function(){
   +     '<div class="photo-stage" role="button" tabindex="0" aria-label="เปิดกล้องถ่ายรูปหน้าซอง" onclick="openPhotoCamera(\'keyin\')" onkeydown="if(event.target===event.currentTarget&&(event.key===\'Enter\'||event.key===\' \')){event.preventDefault();openPhotoCamera(\'keyin\');}">'
   +       (k.form.photo
         ? '<img src="'+k.form.photo+'" class="photo-stage-img"><button class="photo-stage-view" onclick="event.stopPropagation();imageViewerModal(\''+k.form.photo+'\')">'+ic('eye',15)+' ดูรูป</button>'
-        : '<div class="photo-stage-empty">'+ic('camera',34)+'<div class="t1">เปิดกล้องถ่ายรูปหน้าซอง</div><div class="t2">รองรับ iPad มือถือ และคอมพิวเตอร์ • ย่อรูปอัตโนมัติ</div></div>')
+        : '<div class="photo-stage-empty">'+ic('camera',34)+'<div class="t1">เปิดกล้องถ่ายรูปหน้าซอง</div><div class="t2">รองรับ iPad มือถือ และคอมพิวเตอร์ • ย่อรูปอัตโนมัติ • บันทึกลง Google Drive</div></div>')
   +     '</div>'
   +     (k.form.photo?'<button class="btn btn-ghost btn-sm btn-block" style="margin-top:8px;" onclick="removeKeyinPhoto()">'+ic('trash',14)+' ลบรูป</button>':'')
   +     '<div class="form-row" style="margin-top:16px;">'
@@ -2006,11 +2132,12 @@ function keyinCollectCurrent(){
   syncKeyinForm();
   const f = state.ui.keyin.form;
   if(!f.senderName && !f.tracking && !f.photo) return null;
+  if(!f.documentId) f.documentId=genId('doc');
   return {
-    senderName:f.senderName.trim(), tracking:f.tracking.trim(), remark:f.remark.trim(), photo:f.photo
+    documentId:f.documentId, senderName:f.senderName.trim(), tracking:f.tracking.trim(), remark:f.remark.trim(), photo:f.photo
   };
 }
-function clearKeyinForm(){ state.ui.keyin.form = {senderName:'', tracking:'', remark:'', photo:null}; state.ui.keyin.dupWarn=null; }
+function clearKeyinForm(){ state.ui.keyin.form = {documentId:'', senderName:'', tracking:'', remark:'', photo:null}; state.ui.keyin.dupWarn=null; }
 function keyinNext(){
   const item = keyinCollectCurrent();
   if(!item){ showToast('กรุณากรอกข้อมูลอย่างน้อยหนึ่งช่องก่อนกด Next', 'error'); return; }
@@ -2026,7 +2153,7 @@ function editBasketItem(i){
   // move current form to basket if it has data, then load selected item into form
   const cur = keyinCollectCurrent();
   if(cur){ state.ui.keyin.basket.push(cur); }
-  state.ui.keyin.form = {senderName:item.senderName, tracking:item.tracking, remark:item.remark, photo:item.photo};
+  state.ui.keyin.form = {documentId:item.documentId||genId('doc'), senderName:item.senderName, tracking:item.tracking, remark:item.remark, photo:item.photo};
   state.ui.keyin.basket.splice(i,1);
   state.ui.keyin.dupWarn = item.tracking?countHistory(item.tracking):null;
   renderAll();
@@ -2060,20 +2187,38 @@ async function confirmKeyinSubmit(){
   const fill = document.getElementById('submit-progress');
   const txt = document.getElementById('submit-progress-text');
   const now = new Date().toISOString();
-  for(let i=0;i<items.length;i++){
-    const it = items[i];
-    const doc = {
-      id: genId('doc'), type:'keyin', createdAt: now, createdBy: state.currentUser.name,
-      senderName: it.senderName, tracking: it.tracking, remark: it.remark, photo: it.photo,
-      receiverDept: dept, quantity:1, status:'pending',
-      redeliveryCount:0, returnCount:0, signature:null, receiverName:null, signedAt:null, history:[]
-    };
-    state.documents.push(doc);
-    const pct = Math.round(((i+1)/items.length)*100);
-    fill.style.width = pct+'%';
-    txt.textContent = 'กำลังบันทึก '+(i+1)+'/'+items.length+' ('+pct+'%)';
-    await new Promise(r=>setTimeout(r, 40));
+  const readyDocs=[];
+  try{
+    for(let i=0;i<items.length;i++){
+      const it = items[i];
+      const docId=it.documentId||(it.documentId=genId('doc'));
+      const doc = {
+        id:docId, type:'keyin', createdAt:now, createdBy:state.currentUser.name,
+        senderName:it.senderName, tracking:it.tracking, remark:it.remark, photo:null,
+        receiverDept:dept, quantity:1, status:'pending',
+        redeliveryCount:0, returnCount:0, signature:null, receiverName:null, signedAt:null, history:[]
+      };
+      if(it.photo){
+        txt.textContent='กำลังอัปโหลดรูปไป Google Drive '+(i+1)+'/'+items.length;
+        assignDrivePhoto(doc, await uploadPhotoToDrive(it.photo,{
+          clientId:docId, tracking:it.tracking, documentType:'keyin',
+          senderName:it.senderName, receiverDept:dept
+        }));
+      }
+      readyDocs.push(doc);
+      const pct = Math.round(((i+1)/items.length)*100);
+      fill.style.width = pct+'%';
+      txt.textContent = 'กำลังบันทึก '+(i+1)+'/'+items.length+' ('+pct+'%)';
+      await new Promise(r=>setTimeout(r, 40));
+    }
+  }catch(e){
+    fill.style.background='var(--brick)';
+    txt.textContent='บันทึกไม่สำเร็จ: '+e.message+' — ข้อมูลยังอยู่ในตะกร้า';
+    document.getElementById('submit-foot').style.display='flex';
+    showToast('ยังไม่บันทึกข้อมูล: '+e.message, 'error');
+    return;
   }
+  state.documents.push(...readyDocs);
   persistDocuments();
   logAction('Key In', 'บันทึก '+items.length+' ซอง เข้าแผนก '+dept);
   txt.textContent = 'บันทึกสำเร็จ '+items.length+' ซอง 🎉';
@@ -2389,11 +2534,11 @@ VIEW_RENDERERS.internal = function(){
   +     '</div>'
   +     '<div>'
   +       '<div class="form-group"><label class="form-label">Add Picture</label>'
-  +         photoBoxHtml(f.photo, {target:'internal', mainText:'คลิกเพื่อถ่ายรูปหน้าเอกสาร', subText:'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB'})
+  +         photoBoxHtml(f.photo, {target:'internal', mainText:'คลิกเพื่อถ่ายรูปหน้าเอกสาร', subText:'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB • บันทึกลง Google Drive'})
   +       '</div>'
   +     '</div>'
   +   '</div>'
-  +   '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button class="btn btn-outline" onclick="clearInternalForm()">ล้างข้อมูล</button><button class="btn btn-primary" onclick="submitInternal()">'+ic('check',16)+' บันทึกและสร้างงานจัดส่ง</button></div>'
+  +   '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button class="btn btn-outline" onclick="clearInternalForm()">ล้างข้อมูล</button><button class="btn btn-primary" id="internal-submit-btn" onclick="submitInternal()">'+ic('check',16)+' บันทึกและสร้างงานจัดส่ง</button></div>'
   + '</div>';
 };
 
@@ -2422,19 +2567,35 @@ function clearInternalForm(){
   state.ui.internal.form = {building:state.settings.buildings[0]?state.settings.buildings[0].name:'Ari Hills', senderName:'', senderDept:'', senderDesk:'', senderEmpId:'', receiverName:'', receiverDept:'', receiverDesk:'', receiverEmpId:'', remark:'', photo:null};
   renderAll();
 }
-function submitInternal(){
+async function submitInternal(){
   syncInternalForm();
   const f = state.ui.internal.form;
   const required = [['senderName','ชื่อผู้ส่ง'],['senderDept','แผนกผู้ส่ง'],['senderDesk','เบอร์โต๊ะผู้ส่ง'],['senderEmpId','รหัสพนักงานผู้ส่ง'],['receiverName','ชื่อผู้รับ'],['receiverDept','แผนกผู้รับ'],['receiverDesk','เบอร์โต๊ะผู้รับ'],['receiverEmpId','รหัสพนักงานผู้รับ']];
   for(const [k,label] of required){ if(!f[k]){ showToast('กรุณากรอก: '+label, 'error'); return; } }
   const tracking = generateTracking(f.building);
+  const docId=genId('doc');
+  const submitBtn=document.getElementById('internal-submit-btn');
+  if(submitBtn){ submitBtn.disabled=true; submitBtn.innerHTML=ic('refresh',16)+' กำลังบันทึก...'; }
   const doc = {
-    id: genId('doc'), type:'internal', createdAt:new Date().toISOString(), createdBy:state.currentUser.name,
+    id:docId, type:'internal', createdAt:new Date().toISOString(), createdBy:state.currentUser.name,
     building:f.building, senderName:f.senderName, senderDept:f.senderDept, senderDesk:f.senderDesk, senderEmpId:f.senderEmpId,
     receiverName:f.receiverName, receiverDept:f.receiverDept, receiverDesk:f.receiverDesk, receiverEmpId:f.receiverEmpId,
-    tracking, remark:f.remark, photo:f.photo, quantity:1, status:'pending',
+    tracking, remark:f.remark, photo:null, quantity:1, status:'pending',
     redeliveryCount:0, returnCount:0, signature:null, signerName:null, signedAt:null, history:[]
   };
+  try{
+    if(f.photo){
+      if(submitBtn) submitBtn.innerHTML=ic('upload',16)+' กำลังอัปโหลดรูปไป Drive...';
+      assignDrivePhoto(doc, await uploadPhotoToDrive(f.photo,{
+        clientId:docId, tracking:tracking, documentType:'internal',
+        senderName:f.senderName, receiverDept:f.receiverDept
+      }));
+    }
+  }catch(e){
+    if(submitBtn){ submitBtn.disabled=false; submitBtn.innerHTML=ic('check',16)+' บันทึกและสร้างงานจัดส่ง'; }
+    showToast('ยังไม่บันทึกงาน: '+e.message+' (ข้อมูลในฟอร์มยังอยู่ครบ)', 'error');
+    return;
+  }
   state.documents.push(doc);
   persistDocuments();
   logAction('Internal Delivery', 'สร้างงาน '+tracking+' → '+f.receiverDept);
@@ -2743,7 +2904,8 @@ async function waitForReportAssets(root){
 async function buildPdf(docs, receiverName, sigData, fileName){
   if(!window.jspdf || !window.jspdf.jsPDF) throw new Error('ไม่พบตัวสร้าง PDF');
   if(typeof html2canvas==='undefined') throw new Error('ไม่พบระบบเรนเดอร์ภาษาไทย');
-  const root=buildThaiReportPages(docs,receiverName,sigData,fileName);
+  const reportDocs=await resolveReportDocumentPhotos(docs);
+  const root=buildThaiReportPages(reportDocs,receiverName,sigData,fileName);
   document.body.appendChild(root);
   try{
     await waitForReportAssets(root);
@@ -2776,7 +2938,7 @@ async function generateSignPdf(docs, receiverName, sigData){
   const report={
     id:genId('rpt'),fileName:fileName,department:first.receiverDept,createdAt:first.signedAt,
     receiverName:receiverName,count:docs.length,trackings:docs.map(x=>x.tracking),
-    thumbs:docs.map(x=>x.photo).filter(Boolean).slice(0,12),signature:sigData||'',dataUri:dataUri,pdfVersion:'thai-raster-v1'
+    thumbs:docs.map(x=>x.photo).filter(Boolean).slice(0,12),signature:sigData||'',dataUri:dataUri,pdfVersion:'thai-raster-v2-drive-image'
   };
   if(!state.reports) state.reports=[];
   state.reports.unshift(report);
@@ -2795,6 +2957,23 @@ function getReportDocs(report){
   }
   return docs;
 }
+function reportPhotosForRow(report){
+  const docs=getReportDocs(report);
+  let photos=docs.map(d=>({
+    src:d.photo||drivePhotoUrl(d.photoFileId||''),
+    fileId:d.photoFileId||driveFileIdFromPhoto(d.photo||'')
+  })).filter(item=>item.src);
+  if(!photos.length){
+    photos=(report.thumbs||[]).map(src=>({src:src,fileId:driveFileIdFromPhoto(src)})).filter(item=>item.src);
+  }
+  return photos;
+}
+function reportPhotoStackHtml(report){
+  const photos=reportPhotosForRow(report);
+  if(!photos.length) return '<div class="thumb-empty" title="ไม่มีรูป">'+ic('image',16)+'</div>';
+  const visible=photos.slice(0,3).map(item=>'<img class="report-thumb" src="'+escapeHtml(item.src)+'" data-drive-id="'+escapeHtml(item.fileId)+'" loading="lazy" referrerpolicy="no-referrer" onerror="hydrateDriveImageElement(this)" onclick="imageViewerModal(this.src)" alt="รูปเอกสาร">').join('');
+  return '<div class="report-photo-stack">'+visible+(photos.length>3?'<span class="report-photo-more">+'+(photos.length-3)+'</span>':'')+'</div>';
+}
 /* สร้าง PDF สดจากข้อมูลปัจจุบัน คืน dataUri (ใช้ตอน preview/แก้ไข/ดาวน์โหลด) */
 async function regenerateReportPdf(report){
   const docs = getReportDocs(report);
@@ -2806,12 +2985,12 @@ async function regenerateReportPdf(report){
   return report.dataUri || '';
 }
 async function ensureReportPdf(report){
-  if(report.dataUri && report.pdfVersion==='thai-raster-v1') return report.dataUri;
+  if(report.dataUri && report.pdfVersion==='thai-raster-v2-drive-image') return report.dataUri;
   const canRegenerate=getReportDocs(report).length>0;
   const uri=await regenerateReportPdf(report);
   if(uri && canRegenerate){
     report.dataUri=uri;
-    report.pdfVersion='thai-raster-v1';
+    report.pdfVersion='thai-raster-v2-drive-image';
     persistReports();
   }
   return uri;
@@ -2942,8 +3121,8 @@ VIEW_RENDERERS.report = function(){
   +   '<div class="form-group" style="margin-bottom:0;"><label class="form-label">แผนก</label><select class="select" id="rep-dept" onchange="onReportFilter()"><option value="">ทุกแผนก</option>'+state.settings.departments.map(d=>'<option value="'+escapeHtml(d.name)+'"'+(d.name===r.department?' selected':'')+'>'+escapeHtml(d.name)+'</option>').join('')+'</select></div>'
   +   '<button class="btn btn-ghost" onclick="clearReportFilter()" style="flex:none;">ล้างตัวกรอง</button>'
   + '</div></div>'
-  + (reports.length? '<div class="card"><div class="table-wrap"><table><thead><tr><th>ชื่อไฟล์</th><th>แผนก</th><th>ผู้รับ</th><th>จำนวน</th><th>วันที่</th><th></th></tr></thead><tbody>'+
-      reports.map(x=>'<tr><td class="tnum">'+escapeHtml(x.fileName)+'.pdf</td><td>'+escapeHtml(x.department)+'</td><td>'+escapeHtml(x.receiverName)+'</td><td>'+x.count+'</td><td>'+formatDateTimeTH(x.createdAt)+'</td><td style="display:flex;gap:6px;"><button class="btn btn-outline btn-sm" onclick="reviewReport(\''+x.id+'\')">'+ic('eye',14)+' รีวิว</button><button class="btn btn-primary btn-sm" onclick="downloadReport(\''+x.id+'\')">'+ic('download',14)+'</button></td></tr>').join('')+
+  + (reports.length? '<div class="card"><div class="table-wrap"><table><thead><tr><th>ชื่อไฟล์</th><th>รูปเอกสาร</th><th>แผนก</th><th>ผู้รับ</th><th>จำนวน</th><th>วันที่</th><th></th></tr></thead><tbody>'+
+      reports.map(x=>'<tr><td class="tnum">'+escapeHtml(x.fileName)+'.pdf</td><td>'+reportPhotoStackHtml(x)+'</td><td>'+escapeHtml(x.department)+'</td><td>'+escapeHtml(x.receiverName)+'</td><td>'+x.count+'</td><td>'+formatDateTimeTH(x.createdAt)+'</td><td style="display:flex;gap:6px;"><button class="btn btn-outline btn-sm" onclick="reviewReport(\''+x.id+'\')">'+ic('eye',14)+' รีวิว</button><button class="btn btn-primary btn-sm" onclick="downloadReport(\''+x.id+'\')">'+ic('download',14)+'</button></td></tr>').join('')+
       '</tbody></table></div></div>'
     : emptyState('file','ยังไม่มีรายงานการเซ็นรับ', 'ไฟล์จะถูกสร้างอัตโนมัติเมื่อมีการเซ็นรับในเมนู E-Sign'));
 };
@@ -3150,6 +3329,10 @@ VIEW_RENDERERS.setting = function(){
     +   '<button class="btn btn-danger" onclick="clearAllData()">'+ic('trash',16)+' ล้างข้อมูลทั้งหมด</button></div></div>';
   } else if(st.activeTab==='sheet'){
     const s = state.sheet;
+    const driveReady=!!(s.connected&&s.info&&s.info.driveReady);
+    const driveStatusBox=driveReady
+      ? '<div class="conn-box ok">'+ic('check',15)+' Google Drive พร้อมใช้งาน: <strong>'+escapeHtml(s.info.driveFolderName||'Picture Mailroom')+'</strong><br><span style="font-size:11.5px;">Folder ID: '+escapeHtml(DRIVE_FOLDER_ID)+'</span></div>'
+      : '<div class="conn-box err">'+ic('alert',15)+' Google Drive ยังไม่พร้อมใช้งาน<br><span style="font-size:11.5px;">เพิ่ม appsscript.json → รัน authorizeServices() → Deploy Web App เวอร์ชันใหม่</span></div>';
     const badge = s.connected ? '<span class="conn-box ok" style="display:inline-flex;">'+ic('check',14)+' เชื่อมต่อแล้ว</span>'
       : s.status==='error' ? '<span class="conn-box err" style="display:inline-flex;">'+ic('alert',14)+' ล้มเหลว</span>'
       : '<span class="conn-box off" style="display:inline-flex;">'+ic('globe',14)+' ออฟไลน์</span>';
@@ -3160,7 +3343,12 @@ VIEW_RENDERERS.setting = function(){
     +   (s.connected?'<button class="btn btn-outline ripple" onclick="pullAllFromSheet().then(()=>{renderAll();showToast(\'ดึงข้อมูลจาก Sheet แล้ว\',\'success\');})">'+ic('download',16)+' ดึงข้อมูลจาก Sheet</button>':'')+'</div>'
     + '<p class="form-hint" style="margin-top:12px;">'+ic('info',13)+' ชีตที่ระบบใช้: Users, Documents, Reports, Mails, Datalog, Settings — กด "สร้าง Sheet อัตโนมัติ" ในแผงเชื่อมต่อเพื่อสร้างให้ครบ</p>'
     + '<a class="link-external" href="https://docs.google.com/spreadsheets/d/1H0MqfI4mxc9oYy-ZzaXmAxivv2_PBHu7bpUwIGd5Q0k/edit" target="_blank" rel="noopener" style="margin-top:8px;display:inline-flex;">'+ic('extlink',14)+' เปิด Google Sheet เป้าหมาย</a>'
-    + '</div>';
+    + '</div>'
+    + '<div class="card" style="margin-top:16px;"><div class="card-title">'+iconBadge('image')+'พื้นที่จัดเก็บรูปภาพ Google Drive</div>'
+    + driveStatusBox
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;"><a class="btn btn-outline" href="'+escapeHtml(DRIVE_FOLDER_URL)+'" target="_blank" rel="noopener">'+ic('extlink',15)+' เปิดโฟลเดอร์ Picture Mailroom</a>'
+    + '<button class="btn btn-primary" onclick="migrateExistingPhotosToDrive()" '+(driveReady&&state.documents.some(d=>isInlinePhoto(d.photo))?'':'disabled')+'>'+ic('upload',15)+' ย้ายรูปเดิมขึ้น Drive ('+state.documents.filter(d=>isInlinePhoto(d.photo)).length+')</button></div>'
+    + '<p class="form-hint" style="margin-top:10px;">ข้อมูลใน Google Sheet จะเก็บเฉพาะ Drive File ID และ URL จึงเปิดดูรูปเดิมได้จากทุกอุปกรณ์โดยไม่ทำให้ชีตช้า</p></div>';
   }
   return '<div class="view-head"><div><h1>Setting</h1><p class="view-desc">ตั้งค่าทั้งหมดของระบบ (เฉพาะ Super Admin) — บันทึกอัตโนมัติในเครื่อง กดปุ่มเพื่อบันทึกขึ้น Google Sheet</p></div>'
     + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
@@ -3185,6 +3373,39 @@ async function saveSettingsToSheet(){
     fireConfetti();
     showToast('บันทึกการตั้งค่าและข้อมูลทั้งหมดลง Google Sheet แล้ว', 'success');
   }catch(e){ showNetBar(false); showToast('บันทึกไม่สำเร็จ: '+e.message, 'error'); }
+}
+async function migrateExistingPhotosToDrive(){
+  const docs=state.documents.filter(d=>isInlinePhoto(d.photo));
+  if(!docs.length){ showToast('ไม่มีรูป Base64 เดิมที่ต้องย้าย', 'success'); return; }
+  openModal(
+    '<div class="modal-head"><h3>ย้ายรูปเดิมขึ้น Google Drive</h3></div>'+
+    '<div class="modal-body"><p>กำลังย้ายรูป 0/'+docs.length+' รูปไปยังโฟลเดอร์ Picture Mailroom</p><div class="progress-track"><div class="progress-fill" id="drive-migrate-progress"></div></div><p class="form-hint" id="drive-migrate-status" style="margin-top:10px;">กรุณาอย่าปิดหน้านี้</p></div>',
+    {persistent:true}
+  );
+  let completed=0;
+  try{
+    for(const d of docs){
+      const uploaded=await uploadPhotoToDrive(d.photo,{
+        clientId:d.id, tracking:d.tracking, documentType:d.type,
+        senderName:d.senderName, receiverDept:d.receiverDept
+      });
+      assignDrivePhoto(d,uploaded);
+      completed++;
+      const pct=Math.round(completed/docs.length*100);
+      const bar=document.getElementById('drive-migrate-progress');
+      const status=document.getElementById('drive-migrate-status');
+      if(bar) bar.style.width=pct+'%';
+      if(status) status.textContent='ย้ายสำเร็จ '+completed+'/'+docs.length+' รูป ('+pct+'%)';
+    }
+    persistDocuments();
+    logAction('Google Drive','ย้ายรูปเดิมขึ้น Drive '+completed+' รูป');
+    fireConfetti();
+    setTimeout(()=>{ closeModal(); renderAll(); showToast('ย้ายรูปเดิมขึ้น Google Drive ครบแล้ว', 'success'); },900);
+  }catch(e){
+    if(completed) persistDocuments();
+    closeModal(); renderAll();
+    showToast('ย้ายได้ '+completed+'/'+docs.length+' รูป แล้วหยุด: '+e.message, 'error');
+  }
 }
 function unlockSetting(){
   const pin = document.getElementById('pin-input').value;
