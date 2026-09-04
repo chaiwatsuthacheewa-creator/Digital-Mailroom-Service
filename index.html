@@ -634,25 +634,41 @@ const NAV_ITEMS = [
 ];
 const VIEW_TITLES = {dashboard:'Dashboard',keyin:'Key In',internal:'Internal Delivery',esign:'E-Sign',track:'Track',redelivery:'Redelivery',return:'Return',report:'Report',automail:'Auto Mail',datalog:'Datalog',setting:'Setting'};
 const HOME_URL = 'https://add00917-hue.github.io/GNR3-Building-MS/';
+/* ============================================================
+   วาง Web App URL ของคุณตรงนี้ครั้งเดียว แล้วระบบจะเชื่อมต่อ
+   Google Sheet ให้อัตโนมัติทุกครั้งที่เปิด ไม่ต้องกดตั้งค่าอีก
+   (ได้จากการ Deploy โปรเจกต์ Apps Script เป็น Web app — ดู Code.gs)
+   ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb..../exec'
+   ============================================================ */
+const EMBEDDED_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycby0-v7iO-7vQZ_mswvdUTPuIFIQEqEfqy_XSnJv3CBCKWBbRZjVPERz9qZfnwWtAW3L/exec';
 const STATUS_LABEL = {pending:'รอเซ็นรับ', signed:'เซ็นรับแล้ว', redelivery:'รอนำส่งใหม่', return:'ตีกลับ'};
 
 /* ---------------- Default data ---------------- */
 function defaultSettings(){
   return {
     departments:[
-      {name:'ฝ่ายทรัพยากรบุคคล', abbr:'HR'},
-      {name:'ฝ่ายบัญชีและการเงิน', abbr:'FIN'},
-      {name:'ฝ่ายการตลาด', abbr:'MKT'},
-      {name:'ฝ่ายเทคโนโลยีสารสนเทศ', abbr:'IT'},
-      {name:'ฝ่ายจัดซื้อจัดจ้าง', abbr:'PUR'},
-      {name:'ฝ่ายกฎหมายและกำกับดูแล', abbr:'LGL'},
-      {name:'ฝ่ายปฏิบัติการ', abbr:'OPS'},
-      {name:'สำนักผู้บริหาร', abbr:'EXE'},
+      {name:'ฝ่ายทรัพยากรบุคคล', abbr:'HR', email:'hr@tidlor.com'},
+      {name:'ฝ่ายบัญชีและการเงิน', abbr:'FIN', email:'finance@tidlor.com'},
+      {name:'ฝ่ายการตลาด', abbr:'MKT', email:'marketing@tidlor.com'},
+      {name:'ฝ่ายเทคโนโลยีสารสนเทศ', abbr:'IT', email:'it@tidlor.com'},
+      {name:'ฝ่ายจัดซื้อจัดจ้าง', abbr:'PUR', email:'purchasing@tidlor.com'},
+      {name:'ฝ่ายกฎหมายและกำกับดูแล', abbr:'LGL', email:'legal@tidlor.com'},
+      {name:'ฝ่ายปฏิบัติการ', abbr:'OPS', email:'ops@tidlor.com'},
+      {name:'สำนักผู้บริหาร', abbr:'EXE', email:'exec@tidlor.com'},
     ],
     buildings:[{name:'Ari Hills', code:'01'},{name:'BTSVP', code:'02'}],
     trackingPrefix:'TIDLOR',
     theme:{primary:'#2951F5', mode:'light'},
-    autoMail:{enabled:true, ccList:['mailroom-team@tidlor.com'], senderName:'ระบบ OPS-BSCS Digital Mail Service', sendTiming:'ทันทีที่มีการเซ็นรับเอกสาร', template:'เรียนคุณ {senderName}\n\nเอกสารเลขที่ {trackingNumber} ของท่าน ได้รับการนำส่งและเซ็นรับเรียบร้อยแล้ว โดย {receiverName}\nวันที่เซ็นรับ: {signedAt}\n\nระบบ Digital Mail Service'},
+    autoMail:{
+      enabled:true,
+      domain:'tidlor.com',
+      notifyDept:true,
+      notifyEmployee:true,
+      ccList:['mailroom-team@tidlor.com'],
+      senderName:'ระบบ OPS-BSCS Digital Mail Service',
+      sendTiming:'ทันทีที่มีการเซ็นรับเอกสาร',
+      template:'เรียน {receiverDept}\n\nเอกสารเลขที่ {trackingNumber} จาก {senderName} ได้รับการนำส่งและเซ็นรับเรียบร้อยแล้ว โดย {receiverName}\nวันที่เซ็นรับ: {signedAt}\n\nระบบ OPS-BSCS Digital Mail Service'
+    },
     superAdminPin:'2468',
     users:[{username:'admin', password:'admin123', name:'ผู้ดูแลระบบ'}]
   };
@@ -2131,28 +2147,21 @@ function confirmEsign(){
   // generate a PDF record grouped, stored in reports
   generateSignPdf(signed, typed.trim()||state.currentUser.name, sigData);
   logAction('E-Sign', 'เซ็นรับ '+signed.length+' รายการ');
-  // auto mail
-  if(state.settings.autoMail.enabled){ signed.forEach(d=>simulateAutoMail(d)); }
+  // auto mail: แจ้งฝ่าย + แจ้งผู้ส่ง (รหัสพนักงาน@domain)
+  if(state.settings.autoMail.enabled){ sendEsignMails(signed); }
   state.ui.esign.selectedIds=[]; state.ui.esign.typedName='';
   renderAll();
   fireConfetti();
-  showToast('เซ็นรับสำเร็จ '+signed.length+' รายการ และบันทึกเป็น PDF ในเมนู Report', 'success');
+  const mailNote = state.settings.autoMail.enabled ? (state.sheet.connected?' และส่งอีเมลแจ้งฝ่าย/ผู้ส่งแล้ว':' (อีเมลจะส่งจริงเมื่อเชื่อมต่อ Google Sheet)') : '';
+  showToast('เซ็นรับสำเร็จ '+signed.length+' รายการ'+mailNote, 'success');
 }
 
-/* PDF generation (stored as base64 in report registry) — full data + thumbnails */
-async function generateSignPdf(docs, receiverName, sigData){
-  if(!docs.length) return;
-  try{
+/* PDF builder — returns a jsPDF object (reused by save + preview) */
+function buildPdf(docs, receiverName, sigData, fileName){
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({unit:'mm', format:'a4'});
     const PW = 210, MX = 14, CW = PW - MX*2;
     const first = docs[0];
-    const abbr = deptAbbr(first.receiverDept);
-    const d = new Date();
-    const dateStr = d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
-    const seq = String((state.reports? state.reports.length:0)+1).padStart(3,'0');
-    const fileName = abbr+'-'+dateStr+'-'+seq;
-
     function header(){
       pdf.setFillColor(14,27,61); pdf.rect(0,0,PW,26,'F');
       pdf.setTextColor(255); pdf.setFont('helvetica','bold'); pdf.setFontSize(14);
@@ -2239,12 +2248,24 @@ async function generateSignPdf(docs, receiverName, sigData){
     // footer page numbers
     const pageCount = pdf.internal.getNumberOfPages();
     for(let p=1;p<=pageCount;p++){ pdf.setPage(p); pdf.setFontSize(7.5); pdf.setTextColor(160); pdf.text('OPS-BSCS Digital Mail Service • '+fileName+' • Page '+p+'/'+pageCount, PW/2, 290, {align:'center'}); }
+    return pdf;
+}
 
+async function generateSignPdf(docs, receiverName, sigData){
+  if(!docs.length) return;
+  try{
+    const first = docs[0];
+    const abbr = deptAbbr(first.receiverDept);
+    const d = new Date();
+    const dateStr = d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+    const seq = String((state.reports? state.reports.length:0)+1).padStart(3,'0');
+    const fileName = abbr+'-'+dateStr+'-'+seq;
+    const pdf = buildPdf(docs, receiverName, sigData, fileName);
     const dataUri = pdf.output('datauristring');
     const report = {
       id: genId('rpt'), fileName, department:first.receiverDept, createdAt: first.signedAt,
       receiverName, count:docs.length, trackings:docs.map(x=>x.tracking),
-      thumbs: docs.map(x=>x.photo).filter(Boolean).slice(0,12), dataUri
+      thumbs: docs.map(x=>x.photo).filter(Boolean).slice(0,12), signature: sigData||'', dataUri
     };
     if(!state.reports) state.reports = [];
     state.reports.unshift(report);
@@ -2252,6 +2273,26 @@ async function generateSignPdf(docs, receiverName, sigData){
     persistReports();
     persistDocuments();
   }catch(e){ console.error(e); }
+}
+
+/* หา document ที่อยู่ในรายงานนี้ (สำหรับ regenerate) */
+function getReportDocs(report){
+  let docs = (state.documents||[]).filter(d=>d.reportId===report.id);
+  if(!docs.length && report.trackings && report.trackings.length){
+    const set = {}; (report.trackings||[]).forEach(t=>set[t]=1);
+    docs = (state.documents||[]).filter(d=>set[d.tracking]);
+  }
+  return docs;
+}
+/* สร้าง PDF สดจากข้อมูลปัจจุบัน คืน dataUri (ใช้ตอน preview/แก้ไข/ดาวน์โหลด) */
+function regenerateReportPdf(report){
+  const docs = getReportDocs(report);
+  if(docs.length){
+    const sig = report.signature || (docs[0] && docs[0].signature) || '';
+    const pdf = buildPdf(docs, report.receiverName, sig, report.fileName);
+    return pdf.output('datauristring');
+  }
+  return report.dataUri || '';
 }
 
 /* ============================================================
@@ -2388,41 +2429,99 @@ function onReportFilter(){ state.ui.report.date=document.getElementById('rep-dat
 function clearReportFilter(){ state.ui.report.date=''; state.ui.report.department=''; renderAll(); }
 function reviewReport(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
+  let uri = '';
+  try{ uri = regenerateReportPdf(x); }catch(e){ uri = x.dataUri||''; }
+  const docs = getReportDocs(x);
+  let bodyHtml;
+  if(uri){
+    // ใช้ blob URL เพื่อให้ iframe แสดง PDF ได้ชัวร์กว่า data URI
+    let src = uri;
+    try{ src = dataUriToBlobUrl(uri); }catch(e){ src = uri; }
+    bodyHtml = '<iframe src="'+src+'" style="width:100%;height:60vh;border:none;background:#fff;"></iframe>';
+  } else {
+    bodyHtml = '<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('file',22)+'</div><div class="es-title">ไม่พบข้อมูลเอกสารสำหรับสร้าง PDF</div><div>ข้อมูลอาจถูกล้างหรือยังไม่ซิงก์</div></div>';
+  }
   openModal(
     '<div class="modal-head"><h3>รีวิวไฟล์ — '+escapeHtml(x.fileName)+'.pdf</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+
-    '<div class="modal-body" style="padding:0;"><iframe src="'+x.dataUri+'" style="width:100%;height:62vh;border:none;"></iframe></div>'+
-    '<div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">ปิด</button><button class="btn btn-primary" onclick="downloadReport(\''+id+'\')">'+ic('download',16)+' ดาวน์โหลด</button></div>',
+    '<div class="modal-body" style="padding:0;">'+bodyHtml+'</div>'+
+    '<div class="modal-foot">'+
+      '<button class="btn btn-outline" onclick="closeModal()">ปิด</button>'+
+      (uri?'<button class="btn btn-outline ripple" onclick="openReportNewTab(\''+id+'\')">'+ic('extlink',15)+' เปิดแท็บใหม่</button>':'')+
+      (uri?'<button class="btn btn-primary ripple" onclick="downloadReport(\''+id+'\')">'+ic('download',16)+' ดาวน์โหลด</button>':'')+
+    '</div>',
     {large:true}
   );
 }
+function dataUriToBlobUrl(uri){
+  const parts = uri.split(',');
+  const mime = (parts[0].match(/:(.*?);/)||[])[1] || 'application/pdf';
+  const bin = atob(parts[1]);
+  const arr = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+  return URL.createObjectURL(new Blob([arr], {type:mime}));
+}
 function downloadReport(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  const a = document.createElement('a'); a.href=x.dataUri; a.download=x.fileName+'.pdf'; a.click();
+  const uri = regenerateReportPdf(x) || x.dataUri;
+  if(!uri){ showToast('ไม่พบข้อมูลสำหรับสร้าง PDF', 'error'); return; }
+  const a = document.createElement('a'); a.href=uri; a.download=x.fileName+'.pdf'; a.click();
+}
+function openReportNewTab(id){
+  const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
+  const uri = regenerateReportPdf(x) || x.dataUri; if(!uri) return;
+  try{ const url = dataUriToBlobUrl(uri); window.open(url, '_blank'); }
+  catch(e){ const w=window.open(); if(w){ w.document.write('<iframe src="'+uri+'" style="width:100%;height:100%;border:none;"></iframe>'); } }
 }
 
 /* ============================================================
-   AUTO MAIL
+   AUTO MAIL ENGINE
    ============================================================ */
-function simulateAutoMail(doc){
-  if(doc.type!=='internal' || !doc.senderEmpId) return;
-  const to = doc.senderEmpId+'@tidlor.com';
-  const am = state.settings.autoMail;
-  const body = (am.template||'')
+function fillTemplate(tpl, doc, extra){
+  extra = extra||{};
+  return (tpl||'')
     .replace(/{senderName}/g, doc.senderName||'')
     .replace(/{receiverName}/g, doc.signerName||doc.receiverName||'')
+    .replace(/{receiverDept}/g, doc.receiverDept||extra.dept||'')
     .replace(/{trackingNumber}/g, doc.tracking||'')
     .replace(/{signedAt}/g, formatDateTimeTH(doc.signedAt));
-  const subject = 'แจ้งการนำส่งเอกสาร '+doc.tracking;
-  const connected = state.sheet.connected;
-  const record = {id:genId('mail'), to, cc:am.ccList.slice(), subject, body, tracking:doc.tracking, sentAt:new Date().toISOString(), status: connected?'กำลังส่ง...':'ส่งแล้ว (จำลอง)'};
+}
+function queueMail(rec){
   if(!state.mails) state.mails=[];
-  state.mails.unshift(record);
-  storageSet('mails', JSON.stringify(state.mails.slice(0,500)), true);
-  logAction('Auto Mail', 'ส่งเมลถึง '+to+' | '+doc.tracking);
-  if(connected){
-    api('sendMail', {to, cc:am.ccList, subject, body, senderName:am.senderName, tracking:doc.tracking}, {silent:true})
-      .then(()=>{ record.status='ส่งแล้ว'; storageSet('mails', JSON.stringify(state.mails.slice(0,500)), true); if(state.ui.currentView==='automail') renderAll(); })
-      .catch(e=>{ record.status='ส่งไม่สำเร็จ'; if(state.ui.currentView==='automail') renderAll(); });
+  state.mails.unshift(rec);
+  storageSet('mails', JSON.stringify(state.mails.slice(0,800)), true);
+  logAction('Auto Mail', 'ส่งถึง '+rec.to+(rec.tracking?(' | '+rec.tracking):''));
+  if(state.sheet.connected){
+    api('sendMail', {to:rec.to, cc:rec.cc, subject:rec.subject, body:rec.body, senderName:state.settings.autoMail.senderName, tracking:rec.tracking}, {silent:true})
+      .then(()=>{ rec.status='ส่งแล้ว'; storageSet('mails', JSON.stringify(state.mails.slice(0,800)), true); if(state.ui.currentView==='automail') renderAll(); })
+      .catch(()=>{ rec.status='ส่งไม่สำเร็จ'; if(state.ui.currentView==='automail') renderAll(); });
+  } else { rec.status='ส่งแล้ว (จำลอง)'; }
+}
+/* ส่งเมลตอน E-Sign: แจ้งฝ่าย (dept email) + แจ้งผู้ส่งกรณี Internal (empId@domain) */
+function sendEsignMails(signed){
+  const am = state.settings.autoMail;
+  const now = new Date().toISOString();
+  // 1) แจ้งฝ่าย — รวมทุกซองของฝ่ายเดียวกันเป็นเมลเดียว
+  if(am.notifyDept){
+    const byDept = {};
+    signed.forEach(d=>{ (byDept[d.receiverDept]=byDept[d.receiverDept]||[]).push(d); });
+    Object.keys(byDept).forEach(deptName=>{
+      const dept = deptByName(deptName);
+      const to = dept && dept.email ? dept.email : '';
+      if(!to) return;
+      const docs = byDept[deptName];
+      const list = docs.map((d,i)=>(i+1)+'. '+(d.senderName||'-')+' — '+(d.tracking||'-')).join('\n');
+      const first = docs[0];
+      const body = fillTemplate(am.template, first, {dept:deptName}) + '\n\nรายการเอกสาร ('+docs.length+' ฉบับ):\n' + list;
+      queueMail({id:genId('mail'), to, cc:am.ccList.slice(), subject:'แจ้งรับเอกสาร ฝ่าย'+deptName+' ('+docs.length+' ฉบับ)', body, tracking:docs.map(d=>d.tracking).join(', '), sentAt:now, status:'กำลังส่ง...', kind:'dept'});
+    });
+  }
+  // 2) แจ้งผู้ส่ง (เฉพาะ Internal ที่มีรหัสพนักงาน) → รหัสพนักงาน@domain
+  if(am.notifyEmployee){
+    signed.filter(d=>d.type==='internal' && d.senderEmpId).forEach(d=>{
+      const to = d.senderEmpId+'@'+(am.domain||'tidlor.com');
+      const body = fillTemplate(am.template, d, {dept:d.receiverDept});
+      queueMail({id:genId('mail'), to, cc:am.ccList.slice(), subject:'ใบกำกับส่ง: เอกสาร '+d.tracking+' ถูกเซ็นรับแล้ว', body, tracking:d.tracking, sentAt:now, status:'กำลังส่ง...', kind:'employee'});
+    });
   }
 }
 VIEW_RENDERERS.automail = function(){
@@ -2466,9 +2565,14 @@ VIEW_RENDERERS.setting = function(){
   const tabBar = '<div class="tabs">'+tabs.map(t=>'<button class="tab-btn'+(st.activeTab===t[0]?' active':'')+'" onclick="setSettingTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div>';
   let body='';
   if(st.activeTab==='departments'){
-    body = '<div class="card"><div class="card-title">'+iconBadge('building')+'จัดการแผนก (เชื่อม Google Sheet)</div>'
-    + state.settings.departments.map((d,i)=>'<div class="dept-row">'+ic('building',15)+'<input value="'+escapeHtml(d.name)+'" onchange="updateDept('+i+',\'name\',this.value)"><input value="'+escapeHtml(d.abbr)+'" style="max-width:80px;text-align:center;font-family:var(--mono);" onchange="updateDept('+i+',\'abbr\',this.value)"><button class="btn-icon btn-danger" onclick="removeDept('+i+')">'+ic('trash',15)+'</button></div>').join('')
-    + '<div class="form-row" style="margin-top:12px;"><input class="input" id="new-dept-name" placeholder="ชื่อแผนกใหม่"><input class="input" id="new-dept-abbr" placeholder="ชื่อย่อ" style="max-width:120px;"><button class="btn btn-primary" onclick="addDept()">'+ic('plus',16)+' เพิ่ม</button></div></div>';
+    body = '<div class="card"><div class="card-title">'+iconBadge('building')+'จัดการแผนก + อีเมลรับแจ้ง (ใช้ตอน E-Sign)</div>'
+    + '<p class="form-hint" style="margin-bottom:12px;">'+ic('info',13)+' อีเมลของแต่ละฝ่ายจะถูกใช้ส่งแจ้งเตือนอัตโนมัติเมื่อมีการเซ็นรับเอกสารของฝ่ายนั้น</p>'
+    + state.settings.departments.map((d,i)=>'<div class="dept-row" style="flex-wrap:wrap;">'+ic('building',15)
+        +'<input value="'+escapeHtml(d.name)+'" onchange="updateDept('+i+',\'name\',this.value)" style="min-width:120px;">'
+        +'<input value="'+escapeHtml(d.abbr)+'" style="max-width:70px;text-align:center;font-family:var(--mono);" onchange="updateDept('+i+',\'abbr\',this.value)" title="ชื่อย่อ">'
+        +'<input value="'+escapeHtml(d.email||'')+'" placeholder="อีเมลฝ่าย" style="min-width:160px;flex:1;" onchange="updateDept('+i+',\'email\',this.value)" title="อีเมลรับแจ้ง">'
+        +'<button class="btn-icon btn-danger" onclick="removeDept('+i+')">'+ic('trash',15)+'</button></div>').join('')
+    + '<div class="form-row" style="margin-top:12px;flex-wrap:wrap;"><input class="input" id="new-dept-name" placeholder="ชื่อแผนกใหม่"><input class="input" id="new-dept-abbr" placeholder="ชื่อย่อ" style="max-width:100px;"><input class="input" id="new-dept-email" placeholder="อีเมลฝ่าย"><button class="btn btn-primary" onclick="addDept()">'+ic('plus',16)+' เพิ่ม</button></div></div>';
   } else if(st.activeTab==='buildings'){
     body = '<div class="card"><div class="card-title">'+iconBadge('building')+'อาคารต้นทาง & รหัส Tracking</div>'
     + '<div class="form-group"><label class="form-label">Prefix เลข Tracking</label><input class="input" value="'+escapeHtml(state.settings.trackingPrefix)+'" onchange="state.settings.trackingPrefix=this.value;persistSettings();" style="max-width:200px;font-family:var(--mono);"></div>'
@@ -2484,11 +2588,16 @@ VIEW_RENDERERS.setting = function(){
   } else if(st.activeTab==='automail'){
     const am = state.settings.autoMail;
     body = '<div class="card"><div class="card-title">'+iconBadge('mail')+'ตั้งค่า Auto Mail</div>'
-    + '<div class="form-group"><label class="form-label" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" class="cb" '+(am.enabled?'checked':'')+' onchange="am_set(\'enabled\',this.checked)"> เปิดใช้งานการส่งอีเมลอัตโนมัติ</label></div>'
-    + '<div class="form-group"><label class="form-label">ชื่อผู้ส่ง (แสดงในอีเมล)</label><input class="input" value="'+escapeHtml(am.senderName)+'" onchange="am_set(\'senderName\',this.value)"></div>'
+    + '<div class="form-group"><label class="form-label" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" class="cb" '+(am.enabled?'checked':'')+' onchange="am_set(\'enabled\',this.checked)"> เปิดใช้งานการส่งอีเมลอัตโนมัติ (ตอนเซ็นรับ E-Sign)</label></div>'
+    + '<div class="form-row"><div class="form-group"><label class="form-label" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" class="cb" '+(am.notifyDept?'checked':'')+' onchange="am_set(\'notifyDept\',this.checked)"> แจ้งอีเมลฝ่ายผู้รับ</label></div>'
+    +   '<div class="form-group"><label class="form-label" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" class="cb" '+(am.notifyEmployee?'checked':'')+' onchange="am_set(\'notifyEmployee\',this.checked)"> แจ้งผู้ส่ง (Internal → รหัสพนักงาน@โดเมน)</label></div></div>'
+    + '<div class="form-row"><div class="form-group"><label class="form-label">โดเมนอีเมลพนักงาน</label><div style="display:flex;align-items:center;gap:6px;"><span style="color:var(--ink-faint);">@</span><input class="input" value="'+escapeHtml(am.domain||'tidlor.com')+'" onchange="am_set(\'domain\',this.value.replace(/^@/,\'\'))" style="font-family:var(--mono);"></div><p class="form-hint">รหัสพนักงานจาก Internal Delivery + @โดเมนนี้</p></div>'
+    +   '<div class="form-group"><label class="form-label">ชื่อผู้ส่ง (แสดงในอีเมล)</label><input class="input" value="'+escapeHtml(am.senderName)+'" onchange="am_set(\'senderName\',this.value)"></div></div>'
     + '<div class="form-group"><label class="form-label">CC (คั่นด้วยเครื่องหมายจุลภาค)</label><input class="input" value="'+escapeHtml(am.ccList.join(', '))+'" onchange="am_setCC(this.value)"></div>'
     + '<div class="form-group"><label class="form-label">เวลาส่ง</label><input class="input" value="'+escapeHtml(am.sendTiming)+'" onchange="am_set(\'sendTiming\',this.value)"></div>'
-    + '<div class="form-group"><label class="form-label">ข้อความในอีเมล</label><textarea class="textarea" style="min-height:120px;" onchange="am_set(\'template\',this.value)">'+escapeHtml(am.template)+'</textarea><p class="form-hint">'+ic('info',13)+' ตัวแปร: {senderName} {receiverName} {trackingNumber} {signedAt}</p></div></div>';
+    + '<div class="form-group"><label class="form-label">ข้อความในอีเมล</label><textarea class="textarea" style="min-height:120px;" onchange="am_set(\'template\',this.value)">'+escapeHtml(am.template)+'</textarea><p class="form-hint">'+ic('info',13)+' ตัวแปร: {senderName} {receiverName} {receiverDept} {trackingNumber} {signedAt}</p></div>'
+    + '<div style="background:var(--blue-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--blue-deep);">'+ic('info',14)+' อีเมลรายฝ่ายตั้งค่าที่แท็บ "แผนก" — อีเมลจะส่งจริงเมื่อเชื่อมต่อ Google Sheet แล้ว (ทดสอบได้ที่แผงเชื่อมต่อ)</div>'
+    + '</div>';
   } else if(st.activeTab==='theme'){
     const isDark = state.settings.theme.mode==='dark';
     body = '<div class="card"><div class="card-title">'+iconBadge('sparkle')+'ธีมและการแสดงผล</div>'
@@ -2518,10 +2627,30 @@ VIEW_RENDERERS.setting = function(){
     + '<a class="link-external" href="https://docs.google.com/spreadsheets/d/1H0MqfI4mxc9oYy-ZzaXmAxivv2_PBHu7bpUwIGd5Q0k/edit" target="_blank" rel="noopener" style="margin-top:8px;display:inline-flex;">'+ic('extlink',14)+' เปิด Google Sheet เป้าหมาย</a>'
     + '</div>';
   }
-  return '<div class="view-head"><div><h1>Setting</h1><p class="view-desc">ตั้งค่าทั้งหมดของระบบ (เฉพาะ Super Admin) — บันทึกอัตโนมัติทุกครั้งที่แก้ไข</p></div>'
-    + '<button class="btn btn-outline" onclick="lockSetting()">'+ic('lock',15)+' ล็อกการตั้งค่า</button></div>'
+  return '<div class="view-head"><div><h1>Setting</h1><p class="view-desc">ตั้งค่าทั้งหมดของระบบ (เฉพาะ Super Admin) — บันทึกอัตโนมัติในเครื่อง กดปุ่มเพื่อบันทึกขึ้น Google Sheet</p></div>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+    + '<button class="btn btn-primary ripple" onclick="saveSettingsToSheet()">'+ic('sheet',15)+' บันทึกลง Google Sheet</button>'
+    + '<button class="btn btn-outline" onclick="lockSetting()">'+ic('lock',15)+' ล็อก</button></div></div>'
     + tabBar + body;
 };
+async function saveSettingsToSheet(){
+  if(!state.sheet.connected){
+    showToast('ยังไม่ได้เชื่อมต่อ Google Sheet — เปิดแท็บ Google Sheet เพื่อเชื่อมต่อก่อน', 'error');
+    setSettingTab('sheet'); renderAll(); return;
+  }
+  try{
+    showNetBar(true);
+    await api('saveSettings', {settings:state.settings});
+    await api('replaceAll', {table:'Documents', rows:state.documents.map(sheetSafeDoc)});
+    await api('replaceAll', {table:'Reports', rows:reportsForSheet()});
+    await api('replaceAll', {table:'Datalog', rows:state.datalog});
+    await api('replaceAll', {table:'Mails', rows:state.mails||[]});
+    showNetBar(false);
+    logAction('Setting','บันทึกข้อมูลทั้งหมดลง Google Sheet');
+    fireConfetti();
+    showToast('บันทึกการตั้งค่าและข้อมูลทั้งหมดลง Google Sheet แล้ว', 'success');
+  }catch(e){ showNetBar(false); showToast('บันทึกไม่สำเร็จ: '+e.message, 'error'); }
+}
 function unlockSetting(){
   const pin = document.getElementById('pin-input').value;
   if(pin===state.settings.superAdminPin){ state.isSuperAdmin=true; logAction('Setting','ปลดล็อก Super Admin'); renderAll(); showToast('ปลดล็อกสำเร็จ', 'success'); }
@@ -2531,7 +2660,7 @@ function lockSetting(){ state.isSuperAdmin=false; renderAll(); }
 function setSettingTab(t){ state.ui.setting.activeTab=t; renderAll(); }
 function updateDept(i,k,v){ state.settings.departments[i][k]=v; persistSettings(); }
 function removeDept(i){ state.settings.departments.splice(i,1); persistSettings(); renderAll(); }
-function addDept(){ const n=document.getElementById('new-dept-name').value.trim(); const a=document.getElementById('new-dept-abbr').value.trim(); if(!n){showToast('กรอกชื่อแผนก','error');return;} state.settings.departments.push({name:n,abbr:a||'GEN'}); persistSettings(); renderAll(); }
+function addDept(){ const n=document.getElementById('new-dept-name').value.trim(); const a=document.getElementById('new-dept-abbr').value.trim(); const em=document.getElementById('new-dept-email').value.trim(); if(!n){showToast('กรอกชื่อแผนก','error');return;} state.settings.departments.push({name:n,abbr:a||'GEN',email:em}); persistSettings(); renderAll(); }
 function updateBuilding(i,k,v){ state.settings.buildings[i][k]=v; persistSettings(); }
 function removeBuilding(i){ state.settings.buildings.splice(i,1); persistSettings(); renderAll(); }
 function addBuilding(){ const n=document.getElementById('new-bld-name').value.trim(); const c=document.getElementById('new-bld-code').value.trim(); if(!n){showToast('กรอกชื่ออาคาร','error');return;} state.settings.buildings.push({name:n,code:c||'99'}); persistSettings(); renderAll(); }
@@ -2686,9 +2815,14 @@ function doClearAllData(){
   // restore sidebar collapse
   const col = await storageGet('sidebarCollapsed', false);
   if(col==='1'){ state.ui.sidebarCollapsed=true; }
-  // restore Google Sheet endpoint & try to auto-connect
-  const ep = await storageGet('sheetEndpoint', false);
-  if(ep){ state.sheet.endpoint = ep; testConnection().catch(()=>{}); }
+  // restore Google Sheet endpoint (ฝังถาวร: ใช้ EMBEDDED ก่อน ถ้าไม่มีค่อยใช้ที่เคยบันทึก)
+  const savedEp = await storageGet('sheetEndpoint', false);
+  const ep = EMBEDDED_SHEET_ENDPOINT || savedEp;
+  if(ep){
+    state.sheet.endpoint = ep;
+    if(EMBEDDED_SHEET_ENDPOINT) storageSet('sheetEndpoint', ep, false);
+    testConnection().catch(()=>{}); // auto-connect เงียบๆ ทุกครั้งที่เปิด
+  }
   // auto-seed demo data on first run so all features are testable offline
   const seeded = await storageGet('seeded', true);
   if(!seeded && state.documents.length===0){ seedDemoData(); }
