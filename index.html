@@ -12,15 +12,15 @@
   --navy:#0E1B3D; --navy-2:#182A63; --navy-3:#24347A;
   --heading:#0E1B3D;
   --ink:#182233; --ink-soft:#5B6478; --ink-faint:#94A0B8;
-  --paper:#F4F7FF; --surface:#FFFFFF; --surface-2:#F8FAFF; --line:#DDE5F5; --line-2:#EDF1F8;
-  --blue:#365CF5; --blue-deep:#2341C7; --blue-soft:#EAF0FF;
-  --green:#0E9F6E; --green-soft:#DFF8EE;
-  --amber:#E98A15; --amber-soft:#FFF0D6;
-  --plum:#7C4DDB; --plum-soft:#F0E9FF;
-  --brick:#E5485E; --brick-soft:#FFE8EC;
-  --cyan:#00A3C4; --cyan-soft:#DFF7FC;
-  --pink:#E93D98; --pink-soft:#FFE5F3;
-  --sidebar-bg:linear-gradient(180deg,#121F54 0%,#25206B 48%,#06496D 100%);
+  --paper:#F1F3F9; --surface:#FFFFFF; --surface-2:#F8FAFF; --line:#E2E6F0; --line-2:#EDEFF5;
+  --blue:#2951F5; --blue-deep:#1D3BC4; --blue-soft:#EAF0FE;
+  --green:#1C8A5E; --green-soft:#E3F3EC;
+  --amber:#C77D22; --amber-soft:#FBEEDD;
+  --plum:#6B4FA0; --plum-soft:#EFEAF8;
+  --brick:#B23A3A; --brick-soft:#F8E9E9;
+  --cyan:#0E8FA8; --cyan-soft:#E0F4F8;
+  --pink:#C43C86; --pink-soft:#FBE8F2;
+  --sidebar-bg:linear-gradient(180deg,#0E1B3D 0%,#0B1631 100%);
   --table-hover:#FAFBFF;
   --topbar-bg:rgba(255,255,255,.82); --glass-bg:rgba(255,255,255,.9);
   --r-lg:18px; --r-md:12px; --r-sm:8px;
@@ -58,8 +58,7 @@ html,body{margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
 body{
   font-family:'Sarabun','Noto Sans Thai',-apple-system,'Segoe UI',Roboto,sans-serif;
-  background:radial-gradient(circle at 84% 6%,rgba(233,61,152,.09),transparent 28%),radial-gradient(circle at 20% 2%,rgba(0,163,196,.10),transparent 28%),var(--paper); color:var(--ink); font-size:14.5px; line-height:1.55;
-  background-attachment:fixed;
+  background:var(--paper); color:var(--ink); font-size:14.5px; line-height:1.55;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
   overscroll-behavior-y:none;
   transition:background .3s ease, color .3s ease;
@@ -85,8 +84,8 @@ a{color:var(--blue);}
 }
 .sidebar-brand{padding:calc(20px + var(--sat)) 20px 16px; display:flex; align-items:center; gap:11px; border-bottom:1px solid rgba(255,255,255,.08);}
 .brand-mark{
-  width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,#365CF5,#A34FE2 56%,#00B7D7);
-  display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 6px 18px rgba(95,65,220,.46);
+  width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--blue),#5B7CFA);
+  display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 4px 14px rgba(41,81,245,.45);
 }
 .brand-text .brand-title{font-size:14.5px; font-weight:700; color:#fff; letter-spacing:.2px;}
 .brand-text .brand-sub{font-size:11px; color:#8A94BA; margin-top:1px;}
@@ -101,7 +100,7 @@ a{color:var(--blue);}
 }
 .nav-item svg{flex:none; opacity:.82;}
 .nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
-.nav-item.active{background:linear-gradient(135deg,#365CF5,#8A4FD8 56%,#00A3C4); color:#fff; box-shadow:0 8px 22px rgba(54,92,245,.42);}
+.nav-item.active{background:linear-gradient(135deg,var(--blue),#4368F7); color:#fff; box-shadow:0 6px 18px rgba(41,81,245,.4);}
 .nav-item.active svg{opacity:1;}
 .nav-badge{
   margin-left:auto; background:rgba(255,255,255,.14); color:#fff; font-size:11px; font-weight:700;
@@ -150,11 +149,11 @@ a{color:var(--blue);}
 
 /* ---------- Login screen ---------- */
 .login-screen{position:fixed; inset:0; z-index:150; display:flex; align-items:center; justify-content:center; padding:20px; overflow:auto;}
-.login-bg{position:absolute; inset:0; background:linear-gradient(135deg,#10235C,#5429B7 44%,#176CEC 72%,#00A3C4); background-size:220% 220%; animation:hero-spectrum 11s ease infinite;}
-.login-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 15%,rgba(255,96,188,.55),transparent 38%),radial-gradient(circle at 15% 110%,rgba(73,244,211,.52),transparent 42%),radial-gradient(circle at 8% 8%,rgba(255,226,105,.3),transparent 22%);}
-.login-card{position:relative; z-index:1; width:100%; max-width:400px; background:var(--surface); border:1px solid rgba(255,255,255,.65); border-radius:24px; padding:30px; box-shadow:0 24px 70px rgba(8,19,65,.34); animation:modal-pop .3s var(--ease); padding-bottom:calc(30px + var(--sab));}
+.login-bg{position:absolute; inset:0; background:linear-gradient(135deg,#0E1B3D,#1D3BC4 55%,#2951F5);}
+.login-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 15%,rgba(91,124,250,.6),transparent 45%),radial-gradient(circle at 15% 110%,rgba(18,174,202,.5),transparent 45%);}
+.login-card{position:relative; z-index:1; width:100%; max-width:400px; background:var(--surface); border-radius:20px; padding:30px; box-shadow:var(--shadow-lg); animation:modal-pop .3s var(--ease); padding-bottom:calc(30px + var(--sab));}
 .login-brand{display:flex; align-items:center; gap:13px; margin-bottom:18px;}
-.login-brand .brand-mark{background:linear-gradient(135deg,#365CF5,#A34FE2 56%,#00B7D7);}
+.login-brand .brand-mark{background:linear-gradient(135deg,var(--blue),#5B7CFA);}
 .login-title{font-size:22px; font-weight:800; color:var(--heading); letter-spacing:.3px;}
 .login-sub{font-size:12.5px; color:var(--ink-faint);}
 .login-conn{font-size:12px; font-weight:600; padding:8px 12px; border-radius:9px; margin-bottom:18px; display:flex; align-items:center; gap:7px;}
@@ -236,7 +235,7 @@ a{color:var(--blue);}
   white-space:nowrap; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
 }
 .btn:active{transform:scale(.97);}
-.btn-primary{background:linear-gradient(135deg,var(--blue),#7854DD); color:#fff; box-shadow:0 4px 12px rgba(54,92,245,.28);}
+.btn-primary{background:var(--blue); color:#fff; box-shadow:0 2px 8px rgba(41,81,245,.25);}
 .btn-primary:hover{filter:brightness(1.08); box-shadow:0 4px 14px rgba(41,81,245,.32);}
 .btn-primary:disabled{background:#B9C4EF; cursor:not-allowed;}
 .btn-outline{background:var(--surface); color:var(--ink); border-color:var(--line);}
@@ -245,34 +244,28 @@ a{color:var(--blue);}
 .btn-ghost:hover{background:var(--paper); color:var(--ink);}
 .btn-danger{background:var(--brick-soft); color:var(--brick);}
 .btn-danger:hover{background:var(--brick); color:#fff;}
-.btn-success{background:linear-gradient(135deg,var(--green),#00B8C6); color:#fff; box-shadow:0 4px 12px rgba(14,159,110,.22);}
+.btn-success{background:var(--green); color:#fff;}
 .btn-success:hover{filter:brightness(1.08);}
 .btn-sm{padding:6px 11px; font-size:12.5px; border-radius:7px;}
 .btn-icon{padding:8px; border-radius:8px;}
 .btn-block{width:100%;}
 
 /* ---------- Cards ---------- */
-.card{background:linear-gradient(145deg,var(--surface),var(--surface-2)); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px; box-shadow:0 8px 26px rgba(54,92,245,.055);}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px;}
 /* ---------- Dashboard hero ---------- */
-.hero{position:relative; min-height:190px; border-radius:24px; overflow:hidden; color:#fff; padding:30px; box-shadow:0 18px 44px rgba(35,65,199,.25); border:1px solid rgba(255,255,255,.18); isolation:isolate;}
-.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg,#13255F,#5A2FC2,#1F68EC,#00A3C4); background-size:260% 260%; z-index:0; animation:hero-spectrum 10s ease infinite;}
-.hero-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 82% 18%,rgba(255,107,199,.42),transparent 34%),radial-gradient(circle at 12% 120%,rgba(67,237,209,.48),transparent 42%),linear-gradient(110deg,transparent 25%,rgba(255,255,255,.08) 48%,transparent 70%);}
-@keyframes hero-spectrum{0%,100%{background-position:0% 45%;}50%{background-position:100% 55%;}}
-.hero-fireworks{position:absolute; inset:0; z-index:1; width:100%; height:100%; pointer-events:none; mix-blend-mode:screen;}
-.hero-orb{position:absolute; z-index:1; width:160px; height:160px; border-radius:50%; filter:blur(2px); opacity:.34; pointer-events:none; animation:hero-float 7s ease-in-out infinite;}
-.hero-orb.orb-a{right:22%; top:-90px; background:radial-gradient(circle,#FFE66D,transparent 68%);}
-.hero-orb.orb-b{left:18%; bottom:-120px; background:radial-gradient(circle,#54F2D2,transparent 68%); animation-delay:-3.2s;}
-@keyframes hero-float{0%,100%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(18px,18px,0) scale(1.15);}}
-.hero-content{position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+.hero{position:relative; border-radius:var(--r-lg); overflow:hidden; color:#fff; padding:26px 26px; box-shadow:var(--shadow-md);}
+.hero-bg{position:absolute; inset:0; background:linear-gradient(120deg,#0E1B3D 0%,#1D3BC4 55%,#2951F5 100%); z-index:0;}
+.hero-bg::after{content:''; position:absolute; inset:0; background:radial-gradient(circle at 82% 18%, rgba(91,124,250,.55), transparent 42%), radial-gradient(circle at 12% 120%, rgba(18,174,202,.4), transparent 45%);}
+.hero-content{position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
 .hero-greet{font-size:12.5px; font-weight:600; color:#B9C7F5; letter-spacing:.2px;}
 .hero-title{font-size:24px; font-weight:700; color:#fff; margin:6px 0 8px; letter-spacing:-.4px;}
 .hero-date{font-size:12.5px; color:#C9D4F7; display:flex; align-items:center; gap:6px;}
-.hero-pending{text-align:center; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.24); border-radius:18px; padding:16px 24px; backdrop-filter:blur(10px); box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 12px 28px rgba(11,20,67,.18);}
+.hero-pending{text-align:center; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); border-radius:14px; padding:14px 22px; backdrop-filter:blur(6px);}
 .hero-pending-num{font-size:34px; font-weight:800; line-height:1; font-variant-numeric:tabular-nums;}
 .hero-pending-lbl{font-size:11.5px; color:#C9D4F7; margin-top:4px;}
 /* card & stat interactions */
-.stat-card{transition:transform .18s var(--ease), box-shadow .18s ease,border-color .18s ease;}
-@media (hover:hover){ .stat-card:hover{transform:translateY(-5px); box-shadow:0 16px 32px rgba(54,92,245,.14); border-color:currentColor;} }
+.stat-card{transition:transform .18s var(--ease), box-shadow .18s ease;}
+@media (hover:hover){ .stat-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);} }
 .stat-card .stat-ic{background-image:linear-gradient(135deg,rgba(255,255,255,.5),transparent);}
 .card-title{font-size:15px; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:9px; margin-bottom:16px;}
 .card-title .ic-badge{
@@ -286,34 +279,18 @@ a{color:var(--blue);}
   background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
   padding:16px 18px; display:flex; flex-direction:column; gap:6px; min-width:0; position:relative; overflow:hidden;
 }
-.stat-card-button{width:100%; text-align:left; font:inherit; cursor:pointer; appearance:none; -webkit-appearance:none;}
-.stat-card-button:active{transform:translateY(-1px) scale(.985);}
-.stat-card-button:focus-visible{outline:3px solid currentColor; outline-offset:3px;}
 .stat-card::after{content:''; position:absolute; right:-30px; top:-30px; width:90px; height:90px; border-radius:99px; opacity:.1; background:currentColor;}
 .stat-card .stat-top{display:flex; align-items:center; justify-content:space-between;}
 .stat-card .stat-label{font-size:12.5px; font-weight:600; color:var(--ink-soft);}
 .stat-card .stat-ic{width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex:none; color:#fff; box-shadow:0 4px 10px rgba(14,27,61,.18);}
 .stat-card .stat-value{font-size:28px; font-weight:800; color:var(--heading); font-variant-numeric:tabular-nums;}
 .stat-card .stat-sub{font-size:11.5px; color:var(--ink-faint);}
-.stat-open{display:inline-flex; align-items:center; gap:4px; margin-top:3px; font-size:11.5px; font-weight:700; color:currentColor;}
 .stat-blue{color:var(--blue); background:linear-gradient(135deg,var(--blue-soft),var(--surface) 60%);} .stat-blue .stat-ic{background:linear-gradient(135deg,var(--blue),#5B7CFA);}
 .stat-green{color:var(--green); background:linear-gradient(135deg,var(--green-soft),var(--surface) 60%);} .stat-green .stat-ic{background:linear-gradient(135deg,var(--green),#37C58C);}
 .stat-amber{color:var(--amber); background:linear-gradient(135deg,var(--amber-soft),var(--surface) 60%);} .stat-amber .stat-ic{background:linear-gradient(135deg,var(--amber),#E8A94E);}
 .stat-plum{color:var(--plum); background:linear-gradient(135deg,var(--plum-soft),var(--surface) 60%);} .stat-plum .stat-ic{background:linear-gradient(135deg,var(--plum),#9B7BDD);}
 .stat-brick{color:var(--brick); background:linear-gradient(135deg,var(--brick-soft),var(--surface) 60%);} .stat-brick .stat-ic{background:linear-gradient(135deg,var(--brick),#E56A6F);}
 .stat-navy{color:var(--cyan); background:linear-gradient(135deg,var(--cyan-soft),var(--surface) 60%);} .stat-navy .stat-ic{background:linear-gradient(135deg,var(--cyan),#3DC5DE);}
-
-/* ---------- Thai PDF rendering surface ---------- */
-.thai-pdf-root{position:fixed; left:-12000px; top:0; width:794px; z-index:-1; pointer-events:none; font-family:'Sarabun','Noto Sans Thai','Tahoma',sans-serif; color:#17213A;}
-.thai-pdf-page{width:794px; height:1123px; overflow:hidden; background:#fff; padding:48px 52px 42px; display:flex; flex-direction:column; box-sizing:border-box;}
-.pdf-head{margin:-48px -52px 24px; padding:30px 52px 25px; background:linear-gradient(115deg,#13255F,#365CF5 58%,#00A3C4); color:#fff; display:flex; align-items:flex-start; justify-content:space-between; gap:24px;}
-.pdf-brand{font-size:25px; line-height:1.25; font-weight:700;}.pdf-sub{font-size:14px; opacity:.78; margin-top:5px;}.pdf-code{text-align:right; font-size:18px; font-weight:700;}.pdf-date{font-size:13px; opacity:.82; margin-top:5px; font-weight:400;}
-.pdf-meta{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px;}.pdf-meta-box{padding:13px 15px; background:#F3F6FF; border:1px solid #DDE5F5; border-radius:12px;}.pdf-meta-label{font-size:11px; color:#75809A;}.pdf-meta-value{font-size:15px; font-weight:700; color:#17213A; margin-top:3px; overflow-wrap:anywhere;}
-.pdf-table{width:100%; border-collapse:separate; border-spacing:0; font-size:12px; table-layout:fixed; border:1px solid #DDE5F5; border-radius:12px; overflow:hidden;}.pdf-table th{padding:10px 8px; background:#EAF0FF; color:#29408F; border-bottom:1px solid #DDE5F5; font-weight:700;}.pdf-table td{padding:9px 8px; border-bottom:1px solid #EDF1F8; vertical-align:middle; overflow-wrap:anywhere;}.pdf-table tr:last-child td{border-bottom:none;}.pdf-thumb{width:50px; height:38px; border-radius:7px; object-fit:cover; border:1px solid #DDE5F5;}.pdf-no-image{width:50px; height:38px; border-radius:7px; background:#F1F4FA; color:#9BA6BB; display:flex; align-items:center; justify-content:center; font-size:9px;}.pdf-track{font-family:ui-monospace,Consolas,monospace; color:#2341C7; font-weight:700; font-size:10.5px; word-break:break-all;}
-.pdf-signature{margin-top:auto; padding-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:24px;}.pdf-sign-box{height:90px; border:1.5px dashed #BFCBE2; border-radius:12px; display:flex; align-items:center; justify-content:center; background:#FAFBFF;}.pdf-sign-box img{max-width:88%; max-height:76px; object-fit:contain;}.pdf-sign-name{font-size:14px; font-weight:700; margin-top:8px;}.pdf-sign-label{font-size:11px; color:#7B879E;}.pdf-footer{margin-top:auto; padding-top:10px; border-top:1px solid #E5EAF3; color:#8B96AB; font-size:10px; display:flex; justify-content:space-between;}.pdf-signature+.pdf-footer{margin-top:18px;}
-.report-loading{min-height:52vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--ink-soft); background:var(--surface);}.report-loading-ring{width:42px; height:42px; border:4px solid var(--blue-soft); border-top-color:var(--blue); border-radius:50%; animation:spin .8s linear infinite;}
-
-@media (prefers-reduced-motion:reduce){.hero-bg,.hero-orb{animation:none!important;}.hero-fireworks{display:none;}}
 
 /* ---------- Forms ---------- */
 .form-group{margin-bottom:15px;}
@@ -360,10 +337,6 @@ tbody tr:hover{background:var(--table-hover);}
 /* ---------- Thumbnails ---------- */
 .thumb{width:44px; height:44px; border-radius:8px; object-fit:cover; border:1px solid var(--line); cursor:pointer; background:var(--paper);}
 .thumb-empty{width:44px; height:44px; border-radius:8px; border:1.5px dashed var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-faint);}
-.report-photo-stack{display:flex;align-items:center;min-width:108px;}
-.report-photo-stack .report-thumb{width:44px;height:44px;border-radius:9px;object-fit:cover;border:2px solid var(--surface);background:var(--paper);box-shadow:0 2px 8px rgba(14,27,61,.13);cursor:pointer;}
-.report-photo-stack .report-thumb+.report-thumb{margin-left:-10px;}
-.report-photo-more{margin-left:7px;font-size:11.5px;font-weight:700;color:var(--blue-deep);white-space:nowrap;}
 
 /* ---------- Photo capture box ---------- */
 .photo-box{border:1.5px dashed var(--line); border-radius:var(--r-md); padding:16px; display:flex; align-items:center; gap:14px; background:var(--paper); transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;}
@@ -627,7 +600,6 @@ tbody tr:hover{background:var(--table-hover);}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.0/tesseract.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* ============================================================
@@ -710,8 +682,6 @@ const HOME_URL = 'https://add00917-hue.github.io/GNR3-Building-MS/';
    ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb..../exec'
    ============================================================ */
 const EMBEDDED_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycby0-v7iO-7vQZ_mswvdUTPuIFIQEqEfqy_XSnJv3CBCKWBbRZjVPERz9qZfnwWtAW3L/exec';
-const DRIVE_FOLDER_ID = '1r6d_eTcbJn_Tw38JyPgrdjFkplIWHdkG';
-const DRIVE_FOLDER_URL = 'https://drive.google.com/drive/folders/'+DRIVE_FOLDER_ID;
 const STATUS_LABEL = {pending:'รอเซ็นรับ', signed:'เซ็นรับแล้ว', redelivery:'รอนำส่งใหม่', return:'ตีกลับ'};
 
 /* ---------------- Default data ---------------- */
@@ -729,7 +699,7 @@ function defaultSettings(){
     ],
     buildings:[{name:'Ari Hills', code:'01'},{name:'BTSVP', code:'02'}],
     trackingPrefix:'TIDLOR',
-    theme:{primary:'#365CF5', mode:'light'},
+    theme:{primary:'#2951F5', mode:'light'},
     autoMail:{
       enabled:true,
       domain:'tidlor.com',
@@ -761,7 +731,7 @@ let state = {
     sidebarOpen:false,
     sidebarCollapsed:false,
     dashboardPeriod:'month',
-    keyin:{step:1, department:'', basket:[], form:{documentId:'', senderName:'', tracking:'', remark:'', photo:null}, dupWarn:null},
+    keyin:{step:1, department:'', basket:[], form:{senderName:'', tracking:'', remark:'', photo:null}, dupWarn:null},
     internal:{form:{building:'', senderName:'', senderDept:'', senderDesk:'', senderEmpId:'', receiverName:'', receiverDept:'', receiverDesk:'', receiverEmpId:'', remark:'', photo:null}, trackingNumber:''},
     esign:{date:todayISO(), department:'', selectedIds:[], signatureEmpty:true, typedName:''},
     track:{query:'', result:[]},
@@ -848,112 +818,7 @@ async function api(action, payload, opts){
   } finally { if(!opts.silent) showNetBar(false); }
 }
 
-/* รูปฉบับเต็มเก็บใน Google Drive; ในเอกสารเก็บเฉพาะ URL และ File ID */
-function isInlinePhoto(value){ return typeof value==='string' && /^data:image\//i.test(value); }
-function driveViewUrl(fileId){ return fileId ? 'https://drive.google.com/file/d/'+encodeURIComponent(fileId)+'/view' : ''; }
-function drivePhotoUrl(fileId){ return fileId ? 'https://drive.google.com/thumbnail?id='+encodeURIComponent(fileId)+'&sz=w1600' : ''; }
-function driveFileIdFromPhoto(value){
-  if(!value || isInlinePhoto(value)) return '';
-  const m=String(value).match(/(?:\/d\/|[?&]id=)([-\w]{20,})/);
-  return m?m[1]:'';
-}
-async function uploadPhotoToDrive(dataUrl, meta){
-  if(!dataUrl) return null;
-  if(!isInlinePhoto(dataUrl)){
-    const existingId=driveFileIdFromPhoto(dataUrl);
-    return {photo:dataUrl, photoFileId:existingId, photoViewUrl:driveViewUrl(existingId)};
-  }
-  if(!state.sheet.endpoint) throw new Error('ยังไม่ได้ตั้งค่า Web App URL สำหรับอัปโหลดรูปไป Google Drive');
-  if(!state.sheet.connected) await testConnection();
-  if(state.sheet.info&&state.sheet.info.driveReady===false){
-    throw new Error('Google Drive ยังไม่ได้รับสิทธิ์ — รัน authorizeServices() ใน Apps Script แล้ว Deploy เวอร์ชันใหม่');
-  }
-  meta=meta||{};
-  const result=await api('uploadPhoto',{
-    dataUrl:dataUrl,
-    clientId:meta.clientId||genId('photo'),
-    tracking:meta.tracking||'',
-    documentType:meta.documentType||'document',
-    senderName:meta.senderName||'',
-    receiverDept:meta.receiverDept||'',
-    folderId:DRIVE_FOLDER_ID
-  });
-  if(!result.fileId) throw new Error('อัปโหลดรูปแล้วแต่ไม่ได้รับ Google Drive File ID');
-  return {
-    photo:result.photoUrl||result.thumbnailUrl||drivePhotoUrl(result.fileId),
-    photoFileId:result.fileId,
-    photoViewUrl:result.viewUrl||driveViewUrl(result.fileId),
-    photoName:result.fileName||'',
-    photoStoredAt:result.createdAt||new Date().toISOString()
-  };
-}
-function assignDrivePhoto(target, uploaded){
-  if(!uploaded) return target;
-  target.photo=uploaded.photo||null;
-  target.photoFileId=uploaded.photoFileId||'';
-  target.photoViewUrl=uploaded.photoViewUrl||'';
-  target.photoName=uploaded.photoName||'';
-  target.photoStoredAt=uploaded.photoStoredAt||'';
-  return target;
-}
-
-/* โหลดรูปผ่าน Apps Script เพื่อแก้ CORS/สิทธิ์ของ Drive ในหน้า Report และ PDF */
-const reportPhotoDataCache=new Map();
-const reportPhotoPending=new Map();
-async function fetchDrivePhotoData(fileId){
-  if(!fileId) return '';
-  if(reportPhotoDataCache.has(fileId)) return reportPhotoDataCache.get(fileId);
-  if(reportPhotoPending.has(fileId)) return reportPhotoPending.get(fileId);
-  const pending=api('getPhoto',{fileId:fileId},{silent:true}).then(result=>{
-    if(!result.dataUrl||!isInlinePhoto(result.dataUrl)) throw new Error('ไม่พบข้อมูลรูปจาก Google Drive');
-    reportPhotoDataCache.set(fileId,result.dataUrl);
-    return result.dataUrl;
-  }).finally(()=>reportPhotoPending.delete(fileId));
-  reportPhotoPending.set(fileId,pending);
-  return pending;
-}
-async function hydrateDriveImageElement(img){
-  if(!img||img.dataset.driveLoading==='1') return;
-  const fileId=img.dataset.driveId||driveFileIdFromPhoto(img.src);
-  if(!fileId){ img.style.display='none'; return; }
-  img.dataset.driveLoading='1';
-  img.onerror=null;
-  try{
-    const dataUrl=await fetchDrivePhotoData(fileId);
-    if(img.isConnected){ img.src=dataUrl; img.dataset.driveLoading='0'; }
-  }catch(error){
-    if(img.isConnected){ img.style.display='none'; img.dataset.driveLoading='0'; }
-  }
-}
-async function mapWithLimit(items,limit,worker){
-  const output=new Array(items.length);
-  let nextIndex=0;
-  async function run(){
-    while(nextIndex<items.length){
-      const index=nextIndex++;
-      output[index]=await worker(items[index],index);
-    }
-  }
-  const runners=[];
-  for(let i=0;i<Math.min(limit,items.length);i++) runners.push(run());
-  await Promise.all(runners);
-  return output;
-}
-async function resolveReportDocumentPhotos(docs){
-  return mapWithLimit(docs,3,async doc=>{
-    const copy=Object.assign({},doc);
-    if(!copy.photo&&copy.photoFileId) copy.photo=drivePhotoUrl(copy.photoFileId);
-    if(!copy.photo) return copy;
-    if(isInlinePhoto(copy.photo)) return copy;
-    const fileId=copy.photoFileId||driveFileIdFromPhoto(copy.photo);
-    if(!fileId){ copy.photo=null; return copy; }
-    try{ copy.photo=await fetchDrivePhotoData(fileId); }
-    catch(error){ copy.photo=null; }
-    return copy;
-  });
-}
-
-/* รูปเก่าที่เป็น Base64 ตัดออกก่อนส่งขึ้น Sheet; รูปใหม่เป็น Drive URL จึงเก็บได้ถาวร */
+/* image/pdf fields ตัดออกก่อนส่งขึ้น Sheet ถ้าใหญ่เกินลิมิตเซลล์ */
 const SHEET_CELL_LIMIT = 45000;
 function sheetSafeDoc(d){
   const c = Object.assign({}, d);
@@ -1031,12 +896,14 @@ function renderLogin(){
           '<div class="brand-mark" style="width:52px;height:52px;border-radius:14px;">'+ic('mail',26)+'</div>'+
           '<div><div class="login-title">OPS-BSCS</div><div class="login-sub">Digital Mail Service</div></div>'+
         '</div>'+
-        '<div class="form-group"><label class="form-label">ชื่อผู้ใช้ (Username)</label><input class="input" id="login-user" autocomplete="username" placeholder="กรอกชื่อผู้ใช้" onkeydown="if(event.key===\'Enter\')document.getElementById(\'login-pass\').focus()"></div>'+ 
+        '<div class="login-conn '+(state.sheet.connected?'ok':'off')+'">'+ic(state.sheet.connected?'sheet':'globe',14)+' '+(state.sheet.connected?'เชื่อมต่อ Google Sheet แล้ว':'ยังไม่ได้เชื่อมต่อ Google Sheet')+'</div>'+
+        '<div class="form-group"><label class="form-label">ชื่อผู้ใช้ (Username)</label><input class="input" id="login-user" placeholder="admin" onkeydown="if(event.key===\'Enter\')document.getElementById(\'login-pass\').focus()"></div>'+
         '<div class="form-group"><label class="form-label">รหัสผ่าน (Password)</label><input class="input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key===\'Enter\')doLogin()"></div>'+
         '<div id="login-error" class="login-error" style="display:none;"></div>'+
         '<button class="btn btn-primary btn-block ripple" id="login-btn" onclick="doLogin()" style="margin-top:6px;">'+ic('unlock',17)+' เข้าสู่ระบบ</button>'+
         (ep? '' : '<button class="btn btn-outline btn-block" onclick="openConnectionModal()" style="margin-top:10px;">'+ic('sheet',16)+' ตั้งค่าการเชื่อมต่อ Google Sheet</button>')+
-        '<button class="btn btn-ghost btn-block" onclick="loginOffline()" style="margin-top:8px;">เข้าโหมดทดลอง (ออฟไลน์)</button>'+ 
+        '<button class="btn btn-ghost btn-block" onclick="loginOffline()" style="margin-top:8px;">เข้าโหมดทดลอง (ออฟไลน์)</button>'+
+        '<div class="login-hint">ค่าเริ่มต้นหลังสร้างชีต: admin / admin123</div>'+
       '</div>'+
     '</div>';
   document.getElementById('app').style.display='none';
@@ -1049,7 +916,7 @@ async function doLogin(){
   const errEl = document.getElementById('login-error');
   const btn = document.getElementById('login-btn');
   if(!user){ errEl.style.display='block'; errEl.textContent='กรุณากรอกชื่อผู้ใช้'; return; }
-  if(!state.sheet.endpoint){ errEl.style.display='block'; errEl.textContent='กรุณาตั้งค่าการเชื่อมต่อก่อนเข้าสู่ระบบ หรือเลือกเข้าโหมดทดลอง'; return; }
+  if(!state.sheet.endpoint){ errEl.style.display='block'; errEl.textContent='ยังไม่ได้เชื่อมต่อ Google Sheet — กดปุ่มด้านล่างเพื่อตั้งค่า หรือเข้าโหมดทดลอง'; return; }
   btn.disabled=true; btn.innerHTML=ic('refresh',16)+' กำลังตรวจสอบ...';
   try{
     if(!state.sheet.connected){ await testConnection(); }
@@ -1101,15 +968,10 @@ function openConnectionModal(){
     ? '<div class="conn-box ok">'+ic('sheet',16)+' เชื่อมต่อสำเร็จ: <strong>'+escapeHtml(info?info.spreadsheetName:'')+'</strong><br><span style="font-size:11.5px;">ชีตที่มี: '+escapeHtml(info?(info.sheets||[]).join(', '):'')+'</span></div>'
     : s.status==='error' ? '<div class="conn-box err">'+ic('alert',16)+' '+escapeHtml(s.lastError||'เชื่อมต่อไม่สำเร็จ')+'</div>'
     : '<div class="conn-box off">'+ic('globe',16)+' ยังไม่ได้เชื่อมต่อ</div>';
-  const driveStatusHtml = info
-    ? (info.driveReady
-      ? '<div class="conn-box ok" style="margin-top:8px;">'+ic('check',15)+' Google Drive พร้อมใช้งาน: <strong>'+escapeHtml(info.driveFolderName||'Picture Mailroom')+'</strong></div>'
-      : '<div class="conn-box err" style="margin-top:8px;">'+ic('alert',15)+' Google Drive ยังไม่ได้รับสิทธิ์<br><span style="font-size:11.5px;">'+escapeHtml(info.driveError||'เพิ่ม appsscript.json แล้วรัน authorizeServices() จาก Apps Script Editor')+'</span></div>')
-    : '';
   openModal(
     '<div class="modal-head"><h3>เชื่อมต่อ Google Sheet</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+
     '<div class="modal-body">'+
-      statusHtml+driveStatusHtml+
+      statusHtml+
       '<div class="form-group" style="margin-top:14px;"><label class="form-label">Web App URL (Apps Script)</label>'+
         '<input class="input" id="conn-url" placeholder="https://script.google.com/macros/s/.../exec" value="'+escapeHtml(s.endpoint)+'" style="font-family:var(--mono);font-size:12px;">'+
         '<p class="form-hint">'+ic('info',13)+' ได้จากการ Deploy โปรเจกต์ Apps Script เป็น Web App (ดูไฟล์ Code.gs)</p></div>'+
@@ -1136,10 +998,7 @@ async function connFromModal(){
   res.innerHTML='<div class="conn-box off">'+ic('refresh',15)+' กำลังทดสอบ...</div>';
   try{
     const data = await testConnection();
-    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สำเร็จ! เชื่อมกับ "<strong>'+escapeHtml(data.spreadsheetName)+'</strong>"<br><span style="font-size:11.5px;">ชีต: '+escapeHtml((data.sheets||[]).join(', ')||'(ยังไม่มี — กดสร้าง Sheet อัตโนมัติ)')+'</span></div>'
-      +(data.driveReady
-        ? '<div class="conn-box ok" style="margin-top:8px;">'+ic('check',15)+' Drive พร้อมใช้งาน: '+escapeHtml(data.driveFolderName||'Picture Mailroom')+'</div>'
-        : '<div class="conn-box err" style="margin-top:8px;">'+ic('alert',15)+' Drive ยังไม่ได้รับสิทธิ์ — รัน authorizeServices() แล้ว Deploy ใหม่<br><span style="font-size:11.5px;">'+escapeHtml(data.driveError||'')+'</span></div>');
+    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สำเร็จ! เชื่อมกับ "<strong>'+escapeHtml(data.spreadsheetName)+'</strong>"<br><span style="font-size:11.5px;">ชีต: '+escapeHtml((data.sheets||[]).join(', ')||'(ยังไม่มี — กดสร้าง Sheet อัตโนมัติ)')+'</span></div>';
     renderConnStatus();
   }catch(e){ res.innerHTML='<div class="conn-box err">'+ic('alert',15)+' '+escapeHtml(e.message)+'</div>'; }
 }
@@ -1150,11 +1009,7 @@ async function connSetup(){
   try{
     const data = await api('setup');
     setNetStatus('connected');
-    state.sheet.info=Object.assign({},state.sheet.info||{},data);
-    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สร้างชีตเรียบร้อย<br><span style="font-size:11.5px;">สร้างใหม่: '+(data.created.join(', ')||'-')+' | มีอยู่แล้ว: '+(data.existed.join(', ')||'-')+'</span></div>'
-      +(data.driveReady
-        ? '<div class="conn-box ok" style="margin-top:8px;">'+ic('check',15)+' Drive พร้อมใช้งาน: '+escapeHtml(data.driveFolderName||'Picture Mailroom')+'</div>'
-        : '<div class="conn-box err" style="margin-top:8px;">'+ic('alert',15)+' Drive ยังไม่ได้รับสิทธิ์ — รัน authorizeServices() แล้ว Deploy ใหม่</div>');
+    res.innerHTML='<div class="conn-box ok">'+ic('check',15)+' สร้างชีตเรียบร้อย<br><span style="font-size:11.5px;">สร้างใหม่: '+(data.created.join(', ')||'-')+' | มีอยู่แล้ว: '+(data.existed.join(', ')||'-')+'</span></div>';
     fireConfetti();
   }catch(e){ res.innerHTML='<div class="conn-box err">'+ic('alert',15)+' '+escapeHtml(e.message)+'</div>'; }
 }
@@ -1220,68 +1075,6 @@ function fireConfetti(){
     container.appendChild(p);
   }
   setTimeout(()=>container.remove(), 2000);
-}
-
-/* ---------------- Dashboard fireworks ---------------- */
-let dashboardFxRAF=null, dashboardFxCleanup=null;
-function stopDashboardFireworks(){
-  if(dashboardFxRAF){ cancelAnimationFrame(dashboardFxRAF); dashboardFxRAF=null; }
-  if(dashboardFxCleanup){ dashboardFxCleanup(); dashboardFxCleanup=null; }
-}
-function startDashboardFireworks(){
-  stopDashboardFireworks();
-  const canvas=document.getElementById('dashboard-fireworks');
-  if(!canvas || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
-  const ctx=canvas.getContext('2d');
-  if(!ctx) return;
-  let width=0,height=0,dpr=1,lastLaunch=0;
-  let rockets=[],particles=[];
-  const colors=['#FFE66D','#FF76C8','#5EF4D4','#78A5FF','#FF8A6B','#DDA2FF'];
-  function resize(){
-    const rect=canvas.getBoundingClientRect();
-    width=Math.max(1,rect.width); height=Math.max(1,rect.height); dpr=Math.min(2,window.devicePixelRatio||1);
-    canvas.width=Math.round(width*dpr); canvas.height=Math.round(height*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-  }
-  function burst(x,y,color){
-    const count=34+Math.floor(Math.random()*20);
-    for(let i=0;i<count;i++){
-      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.12;
-      const speed=1.1+Math.random()*2.6;
-      particles.push({x:x,y:y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.012+Math.random()*.012,color:color,size:1+Math.random()*1.6});
-    }
-  }
-  function launch(){
-    const color=colors[Math.floor(Math.random()*colors.length)];
-    const x=width*(.12+Math.random()*.76);
-    rockets.push({x:x,y:height+5,px:x,py:height+5,vx:(Math.random()-.5)*.36,vy:-(2.7+Math.random()*1.2),target:height*(.18+Math.random()*.38),color:color});
-  }
-  function frame(time){
-    ctx.clearRect(0,0,width,height);
-    ctx.globalCompositeOperation='lighter';
-    if(time-lastLaunch>620 && rockets.length<3){ launch(); lastLaunch=time; }
-    for(let i=rockets.length-1;i>=0;i--){
-      const r=rockets[i]; r.px=r.x; r.py=r.y; r.x+=r.vx; r.y+=r.vy; r.vy+=.012;
-      ctx.globalAlpha=.95; ctx.strokeStyle=r.color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(r.px,r.py); ctx.lineTo(r.x,r.y+8); ctx.stroke();
-      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(r.x,r.y,1.8,0,Math.PI*2); ctx.fill();
-      if(r.y<=r.target){ burst(r.x,r.y,r.color); rockets.splice(i,1); }
-    }
-    for(let i=particles.length-1;i>=0;i--){
-      const p=particles[i]; p.px=p.x; p.py=p.y; p.x+=p.vx; p.y+=p.vy; p.vy+=.032; p.vx*=.992; p.life-=p.decay;
-      if(p.life<=0){ particles.splice(i,1); continue; }
-      ctx.globalAlpha=Math.max(0,p.life); ctx.strokeStyle=p.color; ctx.lineWidth=p.size; ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke();
-      if(p.life>.72){ ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(p.x,p.y,.8,0,Math.PI*2); ctx.fill(); }
-    }
-    ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
-    dashboardFxRAF=requestAnimationFrame(frame);
-  }
-  resize();
-  let observer=null;
-  if(typeof ResizeObserver!=='undefined'){ observer=new ResizeObserver(resize); observer.observe(canvas); }
-  else window.addEventListener('resize',resize);
-  dashboardFxCleanup=()=>{ if(observer) observer.disconnect(); else window.removeEventListener('resize',resize); rockets=[]; particles=[]; };
-  lastLaunch=performance.now()-700;
-  dashboardFxRAF=requestAnimationFrame(frame);
 }
 
 function applyTheme(){
@@ -1573,14 +1366,11 @@ document.addEventListener('pointerdown', function(e){
 
 function imageViewerModal(src){
   if(!src) return;
-  const fileId=driveFileIdFromPhoto(src);
-  const originalUrl=fileId?driveViewUrl(fileId):'';
   openModal(
     '<div class="modal-head" style="border:none;padding-bottom:6px;"><h3>รูปภาพซองเอกสาร</h3><button class="modal-close" onclick="closeModal()" aria-label="ปิด">'+ic('x',20)+'</button></div>'+
     '<div class="modal-body" style="text-align:center;padding-top:0;">'+
-      '<div class="img-zoom-wrap"><img src="'+escapeHtml(src)+'" class="img-zoom" id="zoom-img" onclick="toggleZoom(this)" referrerpolicy="no-referrer"></div>'+
+      '<div class="img-zoom-wrap"><img src="'+src+'" class="img-zoom" id="zoom-img" onclick="toggleZoom(this)"></div>'+
       '<p class="form-hint" style="justify-content:center;margin-top:12px;">'+ic('info',13)+' แตะรูปเพื่อซูม • กด X หรือแตะพื้นหลังเพื่อปิดกลับหน้าเดิม</p>'+
-      (originalUrl?'<a class="btn btn-outline btn-sm" href="'+escapeHtml(originalUrl)+'" target="_blank" rel="noopener" style="margin-top:10px;">'+ic('extlink',14)+' เปิดไฟล์ต้นฉบับใน Google Drive</a>':'')+
     '</div>',
     {plain:true}
   );
@@ -1721,7 +1511,6 @@ function saveSwitchUser(){
 const VIEW_RENDERERS = {}; /* populated by each view module below */
 
 function renderAll(){
-  stopDashboardFireworks();
   renderNav();
   renderTopbar();
   const fn = VIEW_RENDERERS[state.ui.currentView];
@@ -1733,13 +1522,12 @@ const AFTER_RENDER = {};
 /* ============================================================
    Shared UI helpers used across views
    ============================================================ */
-function statCard(label, value, sub, iconName, colorClass, cardKey){
-  return '<button type="button" class="stat-card stat-card-button stat-'+colorClass+'" onclick="openDashboardCard(\''+cardKey+'\')" aria-label="ดูรายละเอียด '+label+'">'
+function statCard(label, value, sub, iconName, colorClass){
+  return '<div class="stat-card stat-'+colorClass+'">'
     +'<div class="stat-top"><span class="stat-label">'+label+'</span><span class="stat-ic">'+ic(iconName,15)+'</span></div>'
     +'<div class="stat-value" data-count="'+value+'">0</div>'
     +'<div class="stat-sub">'+sub+'</div>'
-    +'<span class="stat-open">ดูข้อมูลทั้งหมด '+ic('chevright',13)+'</span>'
-  +'</button>';
+  +'</div>';
 }
 function iconBadge(name){ return '<span class="ic-badge">'+ic(name,16)+'</span>'; }
 function emptyState(iconName, title, sub){
@@ -1843,56 +1631,6 @@ function computeDeptSummary(){
   return Object.values(map).sort((a,b)=>b.total-a.total);
 }
 function setDashboardPeriod(p){ state.ui.dashboardPeriod=p; renderAll(); }
-function dashboardDocsForCard(cardKey){
-  const now=new Date();
-  const period=state.ui.dashboardPeriod;
-  function inPeriod(iso){
-    const d=new Date(iso);
-    if(period==='week'){ const diffDays=(now-d)/86400000; return diffDays>=0 && diffDays<7; }
-    return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
-  }
-  const todayStr=todayISO();
-  const docs=(state.documents||[]).filter(d=>{
-    if(cardKey==='total') return inPeriod(d.createdAt);
-    if(cardKey==='pickup') return d.type==='keyin' && isoDatePart(d.createdAt)===todayStr;
-    if(cardKey==='interoffice') return d.type==='internal' && inPeriod(d.createdAt);
-    if(cardKey==='pending') return d.status==='pending';
-    if(cardKey==='redelivery') return d.status==='redelivery';
-    if(cardKey==='return') return d.status==='return';
-    return false;
-  });
-  return docs.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
-}
-function openDashboardCard(cardKey){
-  const meta={
-    total:{title:'เอกสารรับเข้าทั้งหมด',icon:'inbox'},
-    pickup:{title:'เอกสาร Pick Up วันนี้',icon:'zap'},
-    interoffice:{title:'เอกสารจัดส่งระหว่างตึก',icon:'truck'},
-    pending:{title:'รายการรอเซ็นรับ',icon:'clock'},
-    redelivery:{title:'รายการนำส่งใหม่',icon:'redo'},
-    'return':{title:'รายการตีกลับ Vendor',icon:'undo2'}
-  }[cardKey];
-  if(!meta) return;
-  const docs=dashboardDocsForCard(cardKey);
-  const rows=docs.map((d,i)=>'<tr>'+
-    '<td>'+(i+1)+'</td>'+ 
-    '<td>'+formatDateTimeTH(d.createdAt)+'</td>'+ 
-    '<td>'+(d.type==='internal'?'Internal Delivery':'Key In')+'</td>'+ 
-    '<td>'+escapeHtml(d.senderName||'-')+'</td>'+ 
-    '<td>'+escapeHtml(d.receiverDept||'-')+'</td>'+ 
-    '<td class="tnum">'+escapeHtml(d.tracking||'-')+'</td>'+ 
-    '<td>'+statusBadge(d.status||'pending')+'</td>'+ 
-    '<td>'+thumbHtml(d.photo)+'</td>'+ 
-  '</tr>').join('');
-  openModal(
-    '<div class="modal-head"><h3>'+iconBadge(meta.icon)+escapeHtml(meta.title)+' <span style="color:var(--blue);">('+docs.length+')</span></h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+ 
-    '<div class="modal-body">'+(docs.length?
-      '<div class="table-wrap" style="max-height:62vh;overflow:auto;"><table><thead><tr><th>#</th><th>วันที่รับเข้า</th><th>ช่องทาง</th><th>ผู้ส่ง</th><th>แผนกผู้รับ</th><th>Tracking</th><th>สถานะ</th><th>รูป</th></tr></thead><tbody>'+rows+'</tbody></table></div>':
-      emptyState(meta.icon,'ยังไม่มีข้อมูลในรายการนี้','ข้อมูลจะแสดงทันทีเมื่อมีรายการตรงตามเงื่อนไข'))+'</div>'+ 
-    '<div class="modal-foot"><button class="btn btn-primary" onclick="closeModal()">ปิด</button></div>',
-    {large:true}
-  );
-}
 
 VIEW_RENDERERS.dashboard = function(){
   const s = computeDashboardStats();
@@ -1904,8 +1642,6 @@ VIEW_RENDERERS.dashboard = function(){
   return ''
   + '<div class="hero">'
   +   '<div class="hero-bg"></div>'
-  +   '<canvas class="hero-fireworks" id="dashboard-fireworks" aria-hidden="true"></canvas>'
-  +   '<span class="hero-orb orb-a" aria-hidden="true"></span><span class="hero-orb orb-b" aria-hidden="true"></span>'
   +   '<div class="hero-content">'
   +     '<div class="hero-left"><div class="hero-greet">'+greet+' · '+escapeHtml(state.currentUser.name)+'</div>'
   +       '<h1 class="hero-title">ภาพรวมระบบจัดส่งเอกสาร</h1>'
@@ -1925,14 +1661,14 @@ VIEW_RENDERERS.dashboard = function(){
   +   '</div>'
   + '</div>'
   + '<div class="grid-3" style="margin-bottom:16px;">'
-  +   statCard('Total', s.total, 'เอกสารรับเข้าระบบภายใน'+periodLabel, 'inbox', 'blue', 'total')
-  +   statCard('Pick Up', s.pickup, 'รับเข้าวันนี้จาก Key In', 'zap', 'navy', 'pickup')
-  +   statCard('Interoffice Mail', s.interoffice, 'จัดส่งระหว่างตึกภายใน'+periodLabel, 'truck', 'green', 'interoffice')
+  +   statCard('Total', s.total, 'เอกสารรับเข้าระบบภายใน'+periodLabel, 'inbox', 'blue')
+  +   statCard('Pick Up', s.pickup, 'รับเข้าวันนี้จาก Key In', 'zap', 'navy')
+  +   statCard('Interoffice Mail', s.interoffice, 'จัดส่งระหว่างตึกภายใน'+periodLabel, 'truck', 'blue')
   + '</div>'
   + '<div class="grid-3" style="margin-bottom:24px;">'
-  +   statCard('Pending Signature', s.pending, 'รอเซ็นรับ ณ ปัจจุบัน', 'clock', 'amber', 'pending')
-  +   statCard('Redelivery', s.redelivery, 'รอนำส่งใหม่ (ระบุผิดแผนก)', 'redo', 'plum', 'redelivery')
-  +   statCard('Return', s.ret, 'เอกสารตีกลับ Vendor', 'undo2', 'brick', 'return')
+  +   statCard('Pending Signature', s.pending, 'รอเซ็นรับ ณ ปัจจุบัน', 'clock', 'amber')
+  +   statCard('Redelivery', s.redelivery, 'รอนำส่งใหม่ (ระบุผิดแผนก)', 'redo', 'plum')
+  +   statCard('Return', s.ret, 'เอกสารตีกลับ Vendor', 'undo2', 'brick')
   + '</div>'
   + '<div class="grid-2">'
   +   '<div class="card">'
@@ -1948,7 +1684,7 @@ VIEW_RENDERERS.dashboard = function(){
   +   '</div>'
   + '</div>';
 };
-AFTER_RENDER.dashboard = function(){ animateCounts(); startDashboardFireworks(); };
+AFTER_RENDER.dashboard = function(){ animateCounts(); };
 function animateCounts(){
   document.querySelectorAll('[data-count]').forEach(el=>{
     const target = parseInt(el.getAttribute('data-count'),10)||0;
@@ -2066,7 +1802,7 @@ VIEW_RENDERERS.keyin = function(){
   +     '<div class="photo-stage" role="button" tabindex="0" aria-label="เปิดกล้องถ่ายรูปหน้าซอง" onclick="openPhotoCamera(\'keyin\')" onkeydown="if(event.target===event.currentTarget&&(event.key===\'Enter\'||event.key===\' \')){event.preventDefault();openPhotoCamera(\'keyin\');}">'
   +       (k.form.photo
         ? '<img src="'+k.form.photo+'" class="photo-stage-img"><button class="photo-stage-view" onclick="event.stopPropagation();imageViewerModal(\''+k.form.photo+'\')">'+ic('eye',15)+' ดูรูป</button>'
-        : '<div class="photo-stage-empty">'+ic('camera',34)+'<div class="t1">เปิดกล้องถ่ายรูปหน้าซอง</div><div class="t2">รองรับ iPad มือถือ และคอมพิวเตอร์ • ย่อรูปอัตโนมัติ • บันทึกลง Google Drive</div></div>')
+        : '<div class="photo-stage-empty">'+ic('camera',34)+'<div class="t1">เปิดกล้องถ่ายรูปหน้าซอง</div><div class="t2">รองรับ iPad มือถือ และคอมพิวเตอร์ • ย่อรูปอัตโนมัติ</div></div>')
   +     '</div>'
   +     (k.form.photo?'<button class="btn btn-ghost btn-sm btn-block" style="margin-top:8px;" onclick="removeKeyinPhoto()">'+ic('trash',14)+' ลบรูป</button>':'')
   +     '<div class="form-row" style="margin-top:16px;">'
@@ -2132,12 +1868,11 @@ function keyinCollectCurrent(){
   syncKeyinForm();
   const f = state.ui.keyin.form;
   if(!f.senderName && !f.tracking && !f.photo) return null;
-  if(!f.documentId) f.documentId=genId('doc');
   return {
-    documentId:f.documentId, senderName:f.senderName.trim(), tracking:f.tracking.trim(), remark:f.remark.trim(), photo:f.photo
+    senderName:f.senderName.trim(), tracking:f.tracking.trim(), remark:f.remark.trim(), photo:f.photo
   };
 }
-function clearKeyinForm(){ state.ui.keyin.form = {documentId:'', senderName:'', tracking:'', remark:'', photo:null}; state.ui.keyin.dupWarn=null; }
+function clearKeyinForm(){ state.ui.keyin.form = {senderName:'', tracking:'', remark:'', photo:null}; state.ui.keyin.dupWarn=null; }
 function keyinNext(){
   const item = keyinCollectCurrent();
   if(!item){ showToast('กรุณากรอกข้อมูลอย่างน้อยหนึ่งช่องก่อนกด Next', 'error'); return; }
@@ -2153,7 +1888,7 @@ function editBasketItem(i){
   // move current form to basket if it has data, then load selected item into form
   const cur = keyinCollectCurrent();
   if(cur){ state.ui.keyin.basket.push(cur); }
-  state.ui.keyin.form = {documentId:item.documentId||genId('doc'), senderName:item.senderName, tracking:item.tracking, remark:item.remark, photo:item.photo};
+  state.ui.keyin.form = {senderName:item.senderName, tracking:item.tracking, remark:item.remark, photo:item.photo};
   state.ui.keyin.basket.splice(i,1);
   state.ui.keyin.dupWarn = item.tracking?countHistory(item.tracking):null;
   renderAll();
@@ -2187,38 +1922,20 @@ async function confirmKeyinSubmit(){
   const fill = document.getElementById('submit-progress');
   const txt = document.getElementById('submit-progress-text');
   const now = new Date().toISOString();
-  const readyDocs=[];
-  try{
-    for(let i=0;i<items.length;i++){
-      const it = items[i];
-      const docId=it.documentId||(it.documentId=genId('doc'));
-      const doc = {
-        id:docId, type:'keyin', createdAt:now, createdBy:state.currentUser.name,
-        senderName:it.senderName, tracking:it.tracking, remark:it.remark, photo:null,
-        receiverDept:dept, quantity:1, status:'pending',
-        redeliveryCount:0, returnCount:0, signature:null, receiverName:null, signedAt:null, history:[]
-      };
-      if(it.photo){
-        txt.textContent='กำลังอัปโหลดรูปไป Google Drive '+(i+1)+'/'+items.length;
-        assignDrivePhoto(doc, await uploadPhotoToDrive(it.photo,{
-          clientId:docId, tracking:it.tracking, documentType:'keyin',
-          senderName:it.senderName, receiverDept:dept
-        }));
-      }
-      readyDocs.push(doc);
-      const pct = Math.round(((i+1)/items.length)*100);
-      fill.style.width = pct+'%';
-      txt.textContent = 'กำลังบันทึก '+(i+1)+'/'+items.length+' ('+pct+'%)';
-      await new Promise(r=>setTimeout(r, 40));
-    }
-  }catch(e){
-    fill.style.background='var(--brick)';
-    txt.textContent='บันทึกไม่สำเร็จ: '+e.message+' — ข้อมูลยังอยู่ในตะกร้า';
-    document.getElementById('submit-foot').style.display='flex';
-    showToast('ยังไม่บันทึกข้อมูล: '+e.message, 'error');
-    return;
+  for(let i=0;i<items.length;i++){
+    const it = items[i];
+    const doc = {
+      id: genId('doc'), type:'keyin', createdAt: now, createdBy: state.currentUser.name,
+      senderName: it.senderName, tracking: it.tracking, remark: it.remark, photo: it.photo,
+      receiverDept: dept, quantity:1, status:'pending',
+      redeliveryCount:0, returnCount:0, signature:null, receiverName:null, signedAt:null, history:[]
+    };
+    state.documents.push(doc);
+    const pct = Math.round(((i+1)/items.length)*100);
+    fill.style.width = pct+'%';
+    txt.textContent = 'กำลังบันทึก '+(i+1)+'/'+items.length+' ('+pct+'%)';
+    await new Promise(r=>setTimeout(r, 40));
   }
-  state.documents.push(...readyDocs);
   persistDocuments();
   logAction('Key In', 'บันทึก '+items.length+' ซอง เข้าแผนก '+dept);
   txt.textContent = 'บันทึกสำเร็จ '+items.length+' ซอง 🎉';
@@ -2534,11 +2251,11 @@ VIEW_RENDERERS.internal = function(){
   +     '</div>'
   +     '<div>'
   +       '<div class="form-group"><label class="form-label">Add Picture</label>'
-  +         photoBoxHtml(f.photo, {target:'internal', mainText:'คลิกเพื่อถ่ายรูปหน้าเอกสาร', subText:'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB • บันทึกลง Google Drive'})
+  +         photoBoxHtml(f.photo, {target:'internal', mainText:'คลิกเพื่อถ่ายรูปหน้าเอกสาร', subText:'รองรับไฟล์ .jpg, .jpeg, .png ไม่เกิน 5 MB'})
   +       '</div>'
   +     '</div>'
   +   '</div>'
-  +   '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button class="btn btn-outline" onclick="clearInternalForm()">ล้างข้อมูล</button><button class="btn btn-primary" id="internal-submit-btn" onclick="submitInternal()">'+ic('check',16)+' บันทึกและสร้างงานจัดส่ง</button></div>'
+  +   '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button class="btn btn-outline" onclick="clearInternalForm()">ล้างข้อมูล</button><button class="btn btn-primary" onclick="submitInternal()">'+ic('check',16)+' บันทึกและสร้างงานจัดส่ง</button></div>'
   + '</div>';
 };
 
@@ -2567,35 +2284,19 @@ function clearInternalForm(){
   state.ui.internal.form = {building:state.settings.buildings[0]?state.settings.buildings[0].name:'Ari Hills', senderName:'', senderDept:'', senderDesk:'', senderEmpId:'', receiverName:'', receiverDept:'', receiverDesk:'', receiverEmpId:'', remark:'', photo:null};
   renderAll();
 }
-async function submitInternal(){
+function submitInternal(){
   syncInternalForm();
   const f = state.ui.internal.form;
   const required = [['senderName','ชื่อผู้ส่ง'],['senderDept','แผนกผู้ส่ง'],['senderDesk','เบอร์โต๊ะผู้ส่ง'],['senderEmpId','รหัสพนักงานผู้ส่ง'],['receiverName','ชื่อผู้รับ'],['receiverDept','แผนกผู้รับ'],['receiverDesk','เบอร์โต๊ะผู้รับ'],['receiverEmpId','รหัสพนักงานผู้รับ']];
   for(const [k,label] of required){ if(!f[k]){ showToast('กรุณากรอก: '+label, 'error'); return; } }
   const tracking = generateTracking(f.building);
-  const docId=genId('doc');
-  const submitBtn=document.getElementById('internal-submit-btn');
-  if(submitBtn){ submitBtn.disabled=true; submitBtn.innerHTML=ic('refresh',16)+' กำลังบันทึก...'; }
   const doc = {
-    id:docId, type:'internal', createdAt:new Date().toISOString(), createdBy:state.currentUser.name,
+    id: genId('doc'), type:'internal', createdAt:new Date().toISOString(), createdBy:state.currentUser.name,
     building:f.building, senderName:f.senderName, senderDept:f.senderDept, senderDesk:f.senderDesk, senderEmpId:f.senderEmpId,
     receiverName:f.receiverName, receiverDept:f.receiverDept, receiverDesk:f.receiverDesk, receiverEmpId:f.receiverEmpId,
-    tracking, remark:f.remark, photo:null, quantity:1, status:'pending',
+    tracking, remark:f.remark, photo:f.photo, quantity:1, status:'pending',
     redeliveryCount:0, returnCount:0, signature:null, signerName:null, signedAt:null, history:[]
   };
-  try{
-    if(f.photo){
-      if(submitBtn) submitBtn.innerHTML=ic('upload',16)+' กำลังอัปโหลดรูปไป Drive...';
-      assignDrivePhoto(doc, await uploadPhotoToDrive(f.photo,{
-        clientId:docId, tracking:tracking, documentType:'internal',
-        senderName:f.senderName, receiverDept:f.receiverDept
-      }));
-    }
-  }catch(e){
-    if(submitBtn){ submitBtn.disabled=false; submitBtn.innerHTML=ic('check',16)+' บันทึกและสร้างงานจัดส่ง'; }
-    showToast('ยังไม่บันทึกงาน: '+e.message+' (ข้อมูลในฟอร์มยังอยู่ครบ)', 'error');
-    return;
-  }
   state.documents.push(doc);
   persistDocuments();
   logAction('Internal Delivery', 'สร้างงาน '+tracking+' → '+f.receiverDept);
@@ -2733,7 +2434,7 @@ function toggleEsignSelectAll(){
   else state.ui.esign.selectedIds = docs.map(d=>d.id);
   renderAll();
 }
-async function confirmEsign(){
+function confirmEsign(){
   const e = state.ui.esign;
   if(e.selectedIds.length===0){ showToast('กรุณาเลือกรายการที่ต้องการเซ็นรับ', 'error'); return; }
   const typed = (document.getElementById('esign-typed')||{}).value || '';
@@ -2753,20 +2454,19 @@ async function confirmEsign(){
   });
   persistDocuments();
   // generate a PDF record grouped, stored in reports
-  const reportPromise=generateSignPdf(signed,typed.trim()||state.currentUser.name,sigData);
+  generateSignPdf(signed, typed.trim()||state.currentUser.name, sigData);
   logAction('E-Sign', 'เซ็นรับ '+signed.length+' รายการ');
   // auto mail: แจ้งฝ่าย + แจ้งผู้ส่ง (รหัสพนักงาน@domain)
   if(state.settings.autoMail.enabled){ sendEsignMails(signed); }
   state.ui.esign.selectedIds=[]; state.ui.esign.typedName='';
   renderAll();
   fireConfetti();
-  await reportPromise;
   const mailNote = state.settings.autoMail.enabled ? (state.sheet.connected?' และส่งอีเมลแจ้งฝ่าย/ผู้ส่งแล้ว':' (อีเมลจะส่งจริงเมื่อเชื่อมต่อ Google Sheet)') : '';
   showToast('เซ็นรับสำเร็จ '+signed.length+' รายการ'+mailNote, 'success');
 }
 
-/* Legacy PDF builder kept only as a compatibility reference. */
-function buildPdfLegacy(docs, receiverName, sigData, fileName){
+/* PDF builder — returns a jsPDF object (reused by save + preview) */
+function buildPdf(docs, receiverName, sigData, fileName){
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({unit:'mm', format:'a4'});
     const PW = 210, MX = 14, CW = PW - MX*2;
@@ -2860,92 +2560,28 @@ function buildPdfLegacy(docs, receiverName, sigData, fileName){
     return pdf;
 }
 
-/* PDF ภาษาไทย: render Sarabun ต่อหน้าเป็นภาพความละเอียดสูงก่อนบันทึกลง PDF */
-function buildThaiReportPages(docs, receiverName, sigData, fileName){
-  const root=document.createElement('div');
-  root.className='thai-pdf-root';
-  const first=docs[0]||{};
-  const perPage=6;
-  const pageTotal=Math.max(1,Math.ceil(docs.length/perPage));
-  const confirmedBy=first.receiverConfirmName||first.createdBy||state.currentUser.name||'-';
-  for(let pageIndex=0;pageIndex<pageTotal;pageIndex++){
-    const start=pageIndex*perPage;
-    const pageDocs=docs.slice(start,start+perPage);
-    const isLast=pageIndex===pageTotal-1;
-    const rows=pageDocs.map((doc,index)=>'<tr>'+ 
-      '<td style="width:42px;text-align:center;">'+(start+index+1)+'</td>'+ 
-      '<td style="width:68px;">'+(doc.photo?'<img class="pdf-thumb" src="'+doc.photo+'">':'<div class="pdf-no-image">ไม่มีรูป</div>')+'</td>'+ 
-      '<td>'+escapeHtml(doc.senderName||'-')+'</td>'+ 
-      '<td style="width:150px;"><div class="pdf-track">'+escapeHtml(doc.tracking||'-')+'</div></td>'+ 
-      '<td style="width:55px;text-align:center;">'+escapeHtml(doc.quantity||1)+'</td>'+ 
-      '<td style="width:130px;">'+escapeHtml(doc.remark||'-')+'</td>'+ 
-    '</tr>').join('');
-    const signature=isLast?'<div class="pdf-signature">'+
-      '<div><div class="pdf-sign-label">ลายเซ็นผู้รับเอกสาร</div><div class="pdf-sign-box">'+(sigData?'<img src="'+sigData+'">':'<span style="color:#8995AA;font-size:13px;">ยืนยันด้วยการพิมพ์ชื่อ</span>')+'</div><div class="pdf-sign-name">'+escapeHtml(receiverName||'-')+'</div></div>'+ 
-      '<div><div class="pdf-sign-label">ข้อมูลการยืนยัน</div><div class="pdf-meta-box" style="margin-top:7px;"><div class="pdf-meta-label">ผู้ยืนยันในระบบ</div><div class="pdf-meta-value">'+escapeHtml(confirmedBy)+'</div><div class="pdf-meta-label" style="margin-top:9px;">วันที่และเวลาเซ็นรับ</div><div class="pdf-meta-value">'+escapeHtml(formatDateTimeTH(first.signedAt))+'</div></div></div>'+ 
-    '</div>':'';
-    const page=document.createElement('section');
-    page.className='thai-pdf-page';
-    page.innerHTML='<div class="pdf-head"><div><div class="pdf-brand">OPS-BSCS Digital Mail Service</div><div class="pdf-sub">ใบยืนยันการรับเอกสาร / Delivery Receipt</div></div><div><div class="pdf-code">'+escapeHtml(fileName)+'</div><div class="pdf-date">'+escapeHtml(formatDateTimeTH(first.signedAt))+'</div></div></div>'+ 
-      '<div class="pdf-meta"><div class="pdf-meta-box"><div class="pdf-meta-label">แผนกผู้รับ</div><div class="pdf-meta-value">'+escapeHtml(first.receiverDept||'-')+'</div><div class="pdf-meta-label" style="margin-top:8px;">ผู้รับเอกสาร</div><div class="pdf-meta-value">'+escapeHtml(receiverName||'-')+'</div></div><div class="pdf-meta-box"><div class="pdf-meta-label">จำนวนเอกสารทั้งหมด</div><div class="pdf-meta-value">'+docs.length+' ซอง</div><div class="pdf-meta-label" style="margin-top:8px;">ผู้ยืนยันในระบบ</div><div class="pdf-meta-value">'+escapeHtml(confirmedBy)+'</div></div></div>'+ 
-      '<table class="pdf-table"><thead><tr><th style="width:42px;">ลำดับ</th><th style="width:68px;">รูป</th><th>ชื่อผู้ส่ง</th><th style="width:150px;">Tracking</th><th style="width:55px;">จำนวน</th><th style="width:130px;">หมายเหตุ</th></tr></thead><tbody>'+rows+'</tbody></table>'+ 
-      signature+'<div class="pdf-footer"><span>OPS-BSCS Digital Mail Service</span><span>'+escapeHtml(fileName)+' • หน้า '+(pageIndex+1)+' / '+pageTotal+'</span></div>';
-    root.appendChild(page);
-  }
-  return root;
-}
-async function waitForReportAssets(root){
-  if(document.fonts && document.fonts.ready){
-    await Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,2500))]);
-  }
-  const images=Array.from(root.querySelectorAll('img'));
-  await Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{ img.onload=resolve; img.onerror=resolve; })));
-}
-async function buildPdf(docs, receiverName, sigData, fileName){
-  if(!window.jspdf || !window.jspdf.jsPDF) throw new Error('ไม่พบตัวสร้าง PDF');
-  if(typeof html2canvas==='undefined') throw new Error('ไม่พบระบบเรนเดอร์ภาษาไทย');
-  const reportDocs=await resolveReportDocumentPhotos(docs);
-  const root=buildThaiReportPages(reportDocs,receiverName,sigData,fileName);
-  document.body.appendChild(root);
-  try{
-    await waitForReportAssets(root);
-    const {jsPDF}=window.jspdf;
-    const pdf=new jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
-    const pages=Array.from(root.querySelectorAll('.thai-pdf-page'));
-    for(let index=0;index<pages.length;index++){
-      const canvas=await html2canvas(pages[index],{scale:1.6,backgroundColor:'#ffffff',logging:false,useCORS:true,allowTaint:false,scrollX:0,scrollY:0});
-      if(index>0) pdf.addPage('a4','portrait');
-      pdf.addImage(canvas.toDataURL('image/jpeg',.94),'JPEG',0,0,210,297,undefined,'FAST');
-      canvas.width=1; canvas.height=1;
-    }
-    return pdf;
-  }finally{ root.remove(); }
-}
-
 async function generateSignPdf(docs, receiverName, sigData){
-  if(!docs.length) return null;
-  const first=docs[0];
-  const abbr=deptAbbr(first.receiverDept);
-  const d=new Date(first.signedAt||Date.now());
-  const dateStr=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
-  const seq=String((state.reports?state.reports.length:0)+1).padStart(3,'0');
-  const fileName=abbr+'-'+dateStr+'-'+seq;
-  let dataUri='';
+  if(!docs.length) return;
   try{
-    const pdf=await buildPdf(docs,receiverName,sigData,fileName);
-    dataUri=pdf.output('datauristring');
-  }catch(error){ console.error('Thai PDF generation failed',error); }
-  const report={
-    id:genId('rpt'),fileName:fileName,department:first.receiverDept,createdAt:first.signedAt,
-    receiverName:receiverName,count:docs.length,trackings:docs.map(x=>x.tracking),
-    thumbs:docs.map(x=>x.photo).filter(Boolean).slice(0,12),signature:sigData||'',dataUri:dataUri,pdfVersion:'thai-raster-v2-drive-image'
-  };
-  if(!state.reports) state.reports=[];
-  state.reports.unshift(report);
-  docs.forEach(doc=>{ doc.reportId=report.id; doc.reportFile=fileName; });
-  persistReports();
-  persistDocuments();
-  return report;
+    const first = docs[0];
+    const abbr = deptAbbr(first.receiverDept);
+    const d = new Date();
+    const dateStr = d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+    const seq = String((state.reports? state.reports.length:0)+1).padStart(3,'0');
+    const fileName = abbr+'-'+dateStr+'-'+seq;
+    const pdf = buildPdf(docs, receiverName, sigData, fileName);
+    const dataUri = pdf.output('datauristring');
+    const report = {
+      id: genId('rpt'), fileName, department:first.receiverDept, createdAt: first.signedAt,
+      receiverName, count:docs.length, trackings:docs.map(x=>x.tracking),
+      thumbs: docs.map(x=>x.photo).filter(Boolean).slice(0,12), signature: sigData||'', dataUri
+    };
+    if(!state.reports) state.reports = [];
+    state.reports.unshift(report);
+    docs.forEach(doc=>{ doc.reportId = report.id; doc.reportFile = fileName; });
+    persistReports();
+    persistDocuments();
+  }catch(e){ console.error(e); }
 }
 
 /* หา document ที่อยู่ในรายงานนี้ (สำหรับ regenerate) */
@@ -2957,43 +2593,15 @@ function getReportDocs(report){
   }
   return docs;
 }
-function reportPhotosForRow(report){
-  const docs=getReportDocs(report);
-  let photos=docs.map(d=>({
-    src:d.photo||drivePhotoUrl(d.photoFileId||''),
-    fileId:d.photoFileId||driveFileIdFromPhoto(d.photo||'')
-  })).filter(item=>item.src);
-  if(!photos.length){
-    photos=(report.thumbs||[]).map(src=>({src:src,fileId:driveFileIdFromPhoto(src)})).filter(item=>item.src);
-  }
-  return photos;
-}
-function reportPhotoStackHtml(report){
-  const photos=reportPhotosForRow(report);
-  if(!photos.length) return '<div class="thumb-empty" title="ไม่มีรูป">'+ic('image',16)+'</div>';
-  const visible=photos.slice(0,3).map(item=>'<img class="report-thumb" src="'+escapeHtml(item.src)+'" data-drive-id="'+escapeHtml(item.fileId)+'" loading="lazy" referrerpolicy="no-referrer" onerror="hydrateDriveImageElement(this)" onclick="imageViewerModal(this.src)" alt="รูปเอกสาร">').join('');
-  return '<div class="report-photo-stack">'+visible+(photos.length>3?'<span class="report-photo-more">+'+(photos.length-3)+'</span>':'')+'</div>';
-}
 /* สร้าง PDF สดจากข้อมูลปัจจุบัน คืน dataUri (ใช้ตอน preview/แก้ไข/ดาวน์โหลด) */
-async function regenerateReportPdf(report){
+function regenerateReportPdf(report){
   const docs = getReportDocs(report);
   if(docs.length){
     const sig = report.signature || (docs[0] && docs[0].signature) || '';
-    const pdf = await buildPdf(docs, report.receiverName, sig, report.fileName);
+    const pdf = buildPdf(docs, report.receiverName, sig, report.fileName);
     return pdf.output('datauristring');
   }
   return report.dataUri || '';
-}
-async function ensureReportPdf(report){
-  if(report.dataUri && report.pdfVersion==='thai-raster-v2-drive-image') return report.dataUri;
-  const canRegenerate=getReportDocs(report).length>0;
-  const uri=await regenerateReportPdf(report);
-  if(uri && canRegenerate){
-    report.dataUri=uri;
-    report.pdfVersion='thai-raster-v2-drive-image';
-    persistReports();
-  }
-  return uri;
 }
 
 /* ============================================================
@@ -3121,42 +2729,37 @@ VIEW_RENDERERS.report = function(){
   +   '<div class="form-group" style="margin-bottom:0;"><label class="form-label">แผนก</label><select class="select" id="rep-dept" onchange="onReportFilter()"><option value="">ทุกแผนก</option>'+state.settings.departments.map(d=>'<option value="'+escapeHtml(d.name)+'"'+(d.name===r.department?' selected':'')+'>'+escapeHtml(d.name)+'</option>').join('')+'</select></div>'
   +   '<button class="btn btn-ghost" onclick="clearReportFilter()" style="flex:none;">ล้างตัวกรอง</button>'
   + '</div></div>'
-  + (reports.length? '<div class="card"><div class="table-wrap"><table><thead><tr><th>ชื่อไฟล์</th><th>รูปเอกสาร</th><th>แผนก</th><th>ผู้รับ</th><th>จำนวน</th><th>วันที่</th><th></th></tr></thead><tbody>'+
-      reports.map(x=>'<tr><td class="tnum">'+escapeHtml(x.fileName)+'.pdf</td><td>'+reportPhotoStackHtml(x)+'</td><td>'+escapeHtml(x.department)+'</td><td>'+escapeHtml(x.receiverName)+'</td><td>'+x.count+'</td><td>'+formatDateTimeTH(x.createdAt)+'</td><td style="display:flex;gap:6px;"><button class="btn btn-outline btn-sm" onclick="reviewReport(\''+x.id+'\')">'+ic('eye',14)+' รีวิว</button><button class="btn btn-primary btn-sm" onclick="downloadReport(\''+x.id+'\')">'+ic('download',14)+'</button></td></tr>').join('')+
+  + (reports.length? '<div class="card"><div class="table-wrap"><table><thead><tr><th>ชื่อไฟล์</th><th>แผนก</th><th>ผู้รับ</th><th>จำนวน</th><th>วันที่</th><th></th></tr></thead><tbody>'+
+      reports.map(x=>'<tr><td class="tnum">'+escapeHtml(x.fileName)+'.pdf</td><td>'+escapeHtml(x.department)+'</td><td>'+escapeHtml(x.receiverName)+'</td><td>'+x.count+'</td><td>'+formatDateTimeTH(x.createdAt)+'</td><td style="display:flex;gap:6px;"><button class="btn btn-outline btn-sm" onclick="reviewReport(\''+x.id+'\')">'+ic('eye',14)+' รีวิว</button><button class="btn btn-primary btn-sm" onclick="downloadReport(\''+x.id+'\')">'+ic('download',14)+'</button></td></tr>').join('')+
       '</tbody></table></div></div>'
     : emptyState('file','ยังไม่มีรายงานการเซ็นรับ', 'ไฟล์จะถูกสร้างอัตโนมัติเมื่อมีการเซ็นรับในเมนู E-Sign'));
 };
 function onReportFilter(){ state.ui.report.date=document.getElementById('rep-date').value; state.ui.report.department=document.getElementById('rep-dept').value; renderAll(); }
 function clearReportFilter(){ state.ui.report.date=''; state.ui.report.department=''; renderAll(); }
-async function reviewReport(id){
+function reviewReport(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  let previewUrl='';
-  openModal(
-    '<div class="modal-head"><h3>รีวิวไฟล์ — '+escapeHtml(x.fileName)+'.pdf</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+ 
-    '<div class="modal-body" id="report-preview-body" style="padding:0;"><div class="report-loading"><span class="report-loading-ring"></span><strong>กำลังจัดหน้า PDF ภาษาไทย…</strong><span>กรุณารอสักครู่</span></div></div>'+ 
-    '<div class="modal-foot">'+
-      '<button class="btn btn-outline" onclick="closeModal()">ปิด</button>'+ 
-      '<button class="btn btn-outline ripple" id="report-open-btn" style="display:none;" onclick="openReportNewTab(\''+id+'\')">'+ic('extlink',15)+' เปิดแท็บใหม่</button>'+ 
-      '<button class="btn btn-primary ripple" id="report-download-btn" style="display:none;" onclick="downloadReport(\''+id+'\')">'+ic('download',16)+' ดาวน์โหลด</button>'+ 
-    '</div>',
-    {large:true,onClose:()=>{ if(previewUrl) URL.revokeObjectURL(previewUrl); }}
-  );
-  try{
-    const uri=await ensureReportPdf(x);
-    const body=document.getElementById('report-preview-body');
-    if(!body) return;
-    if(!uri){
-      body.innerHTML='<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('file',22)+'</div><div class="es-title">ไม่พบข้อมูลเอกสารสำหรับสร้าง PDF</div><div>ข้อมูลอาจถูกล้างหรือยังไม่ซิงก์</div></div>';
-      return;
-    }
-    previewUrl=dataUriToBlobUrl(uri);
-    body.innerHTML='<iframe title="ตัวอย่างรายงาน '+escapeHtml(x.fileName)+'" src="'+previewUrl+'" style="width:100%;height:60vh;border:none;background:#fff;"></iframe>';
-    const openBtn=document.getElementById('report-open-btn'); if(openBtn) openBtn.style.display='inline-flex';
-    const downloadBtn=document.getElementById('report-download-btn'); if(downloadBtn) downloadBtn.style.display='inline-flex';
-  }catch(error){
-    const body=document.getElementById('report-preview-body');
-    if(body) body.innerHTML='<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('alert',22)+'</div><div class="es-title">สร้างตัวอย่าง PDF ไม่สำเร็จ</div><div>กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่</div></div>';
+  let uri = '';
+  try{ uri = regenerateReportPdf(x); }catch(e){ uri = x.dataUri||''; }
+  const docs = getReportDocs(x);
+  let bodyHtml;
+  if(uri){
+    // ใช้ blob URL เพื่อให้ iframe แสดง PDF ได้ชัวร์กว่า data URI
+    let src = uri;
+    try{ src = dataUriToBlobUrl(uri); }catch(e){ src = uri; }
+    bodyHtml = '<iframe src="'+src+'" style="width:100%;height:60vh;border:none;background:#fff;"></iframe>';
+  } else {
+    bodyHtml = '<div class="empty-state" style="padding:30px;"><div class="es-ic">'+ic('file',22)+'</div><div class="es-title">ไม่พบข้อมูลเอกสารสำหรับสร้าง PDF</div><div>ข้อมูลอาจถูกล้างหรือยังไม่ซิงก์</div></div>';
   }
+  openModal(
+    '<div class="modal-head"><h3>รีวิวไฟล์ — '+escapeHtml(x.fileName)+'.pdf</h3><button class="modal-close" onclick="closeModal()">'+ic('x',18)+'</button></div>'+
+    '<div class="modal-body" style="padding:0;">'+bodyHtml+'</div>'+
+    '<div class="modal-foot">'+
+      '<button class="btn btn-outline" onclick="closeModal()">ปิด</button>'+
+      (uri?'<button class="btn btn-outline ripple" onclick="openReportNewTab(\''+id+'\')">'+ic('extlink',15)+' เปิดแท็บใหม่</button>':'')+
+      (uri?'<button class="btn btn-primary ripple" onclick="downloadReport(\''+id+'\')">'+ic('download',16)+' ดาวน์โหลด</button>':'')+
+    '</div>',
+    {large:true}
+  );
 }
 function dataUriToBlobUrl(uri){
   const parts = uri.split(',');
@@ -3166,25 +2769,17 @@ function dataUriToBlobUrl(uri){
   for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
   return URL.createObjectURL(new Blob([arr], {type:mime}));
 }
-async function downloadReport(id){
+function downloadReport(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  showToast('กำลังจัดทำ PDF ภาษาไทย…','success');
-  try{
-    const uri=await ensureReportPdf(x);
-    if(!uri){ showToast('ไม่พบข้อมูลสำหรับสร้าง PDF','error'); return; }
-    const a=document.createElement('a'); a.href=uri; a.download=x.fileName+'.pdf'; document.body.appendChild(a); a.click(); a.remove();
-  }catch(error){ showToast('สร้าง PDF ไม่สำเร็จ กรุณาลองใหม่','error'); }
+  const uri = regenerateReportPdf(x) || x.dataUri;
+  if(!uri){ showToast('ไม่พบข้อมูลสำหรับสร้าง PDF', 'error'); return; }
+  const a = document.createElement('a'); a.href=uri; a.download=x.fileName+'.pdf'; a.click();
 }
-async function openReportNewTab(id){
+function openReportNewTab(id){
   const x = (state.reports||[]).find(r=>r.id===id); if(!x) return;
-  const popup=window.open('about:blank','_blank');
-  if(!popup){ showToast('เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาต Pop-up','error'); return; }
-  popup.document.write('<!doctype html><html lang="th"><meta charset="utf-8"><title>กำลังสร้าง PDF</title><body style="font-family:Tahoma,sans-serif;display:grid;place-items:center;height:100vh;margin:0;color:#365CF5;">กำลังจัดทำ PDF ภาษาไทย…</body></html>');
-  try{
-    const uri=await ensureReportPdf(x);
-    if(!uri){ popup.close(); showToast('ไม่พบข้อมูลสำหรับสร้าง PDF','error'); return; }
-    popup.location.href=dataUriToBlobUrl(uri);
-  }catch(error){ popup.close(); showToast('เปิดรายงานไม่สำเร็จ','error'); }
+  const uri = regenerateReportPdf(x) || x.dataUri; if(!uri) return;
+  try{ const url = dataUriToBlobUrl(uri); window.open(url, '_blank'); }
+  catch(e){ const w=window.open(); if(w){ w.document.write('<iframe src="'+uri+'" style="width:100%;height:100%;border:none;"></iframe>'); } }
 }
 
 /* ============================================================
@@ -3329,10 +2924,6 @@ VIEW_RENDERERS.setting = function(){
     +   '<button class="btn btn-danger" onclick="clearAllData()">'+ic('trash',16)+' ล้างข้อมูลทั้งหมด</button></div></div>';
   } else if(st.activeTab==='sheet'){
     const s = state.sheet;
-    const driveReady=!!(s.connected&&s.info&&s.info.driveReady);
-    const driveStatusBox=driveReady
-      ? '<div class="conn-box ok">'+ic('check',15)+' Google Drive พร้อมใช้งาน: <strong>'+escapeHtml(s.info.driveFolderName||'Picture Mailroom')+'</strong><br><span style="font-size:11.5px;">Folder ID: '+escapeHtml(DRIVE_FOLDER_ID)+'</span></div>'
-      : '<div class="conn-box err">'+ic('alert',15)+' Google Drive ยังไม่พร้อมใช้งาน<br><span style="font-size:11.5px;">เพิ่ม appsscript.json → รัน authorizeServices() → Deploy Web App เวอร์ชันใหม่</span></div>';
     const badge = s.connected ? '<span class="conn-box ok" style="display:inline-flex;">'+ic('check',14)+' เชื่อมต่อแล้ว</span>'
       : s.status==='error' ? '<span class="conn-box err" style="display:inline-flex;">'+ic('alert',14)+' ล้มเหลว</span>'
       : '<span class="conn-box off" style="display:inline-flex;">'+ic('globe',14)+' ออฟไลน์</span>';
@@ -3343,12 +2934,7 @@ VIEW_RENDERERS.setting = function(){
     +   (s.connected?'<button class="btn btn-outline ripple" onclick="pullAllFromSheet().then(()=>{renderAll();showToast(\'ดึงข้อมูลจาก Sheet แล้ว\',\'success\');})">'+ic('download',16)+' ดึงข้อมูลจาก Sheet</button>':'')+'</div>'
     + '<p class="form-hint" style="margin-top:12px;">'+ic('info',13)+' ชีตที่ระบบใช้: Users, Documents, Reports, Mails, Datalog, Settings — กด "สร้าง Sheet อัตโนมัติ" ในแผงเชื่อมต่อเพื่อสร้างให้ครบ</p>'
     + '<a class="link-external" href="https://docs.google.com/spreadsheets/d/1H0MqfI4mxc9oYy-ZzaXmAxivv2_PBHu7bpUwIGd5Q0k/edit" target="_blank" rel="noopener" style="margin-top:8px;display:inline-flex;">'+ic('extlink',14)+' เปิด Google Sheet เป้าหมาย</a>'
-    + '</div>'
-    + '<div class="card" style="margin-top:16px;"><div class="card-title">'+iconBadge('image')+'พื้นที่จัดเก็บรูปภาพ Google Drive</div>'
-    + driveStatusBox
-    + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;"><a class="btn btn-outline" href="'+escapeHtml(DRIVE_FOLDER_URL)+'" target="_blank" rel="noopener">'+ic('extlink',15)+' เปิดโฟลเดอร์ Picture Mailroom</a>'
-    + '<button class="btn btn-primary" onclick="migrateExistingPhotosToDrive()" '+(driveReady&&state.documents.some(d=>isInlinePhoto(d.photo))?'':'disabled')+'>'+ic('upload',15)+' ย้ายรูปเดิมขึ้น Drive ('+state.documents.filter(d=>isInlinePhoto(d.photo)).length+')</button></div>'
-    + '<p class="form-hint" style="margin-top:10px;">ข้อมูลใน Google Sheet จะเก็บเฉพาะ Drive File ID และ URL จึงเปิดดูรูปเดิมได้จากทุกอุปกรณ์โดยไม่ทำให้ชีตช้า</p></div>';
+    + '</div>';
   }
   return '<div class="view-head"><div><h1>Setting</h1><p class="view-desc">ตั้งค่าทั้งหมดของระบบ (เฉพาะ Super Admin) — บันทึกอัตโนมัติในเครื่อง กดปุ่มเพื่อบันทึกขึ้น Google Sheet</p></div>'
     + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
@@ -3373,39 +2959,6 @@ async function saveSettingsToSheet(){
     fireConfetti();
     showToast('บันทึกการตั้งค่าและข้อมูลทั้งหมดลง Google Sheet แล้ว', 'success');
   }catch(e){ showNetBar(false); showToast('บันทึกไม่สำเร็จ: '+e.message, 'error'); }
-}
-async function migrateExistingPhotosToDrive(){
-  const docs=state.documents.filter(d=>isInlinePhoto(d.photo));
-  if(!docs.length){ showToast('ไม่มีรูป Base64 เดิมที่ต้องย้าย', 'success'); return; }
-  openModal(
-    '<div class="modal-head"><h3>ย้ายรูปเดิมขึ้น Google Drive</h3></div>'+
-    '<div class="modal-body"><p>กำลังย้ายรูป 0/'+docs.length+' รูปไปยังโฟลเดอร์ Picture Mailroom</p><div class="progress-track"><div class="progress-fill" id="drive-migrate-progress"></div></div><p class="form-hint" id="drive-migrate-status" style="margin-top:10px;">กรุณาอย่าปิดหน้านี้</p></div>',
-    {persistent:true}
-  );
-  let completed=0;
-  try{
-    for(const d of docs){
-      const uploaded=await uploadPhotoToDrive(d.photo,{
-        clientId:d.id, tracking:d.tracking, documentType:d.type,
-        senderName:d.senderName, receiverDept:d.receiverDept
-      });
-      assignDrivePhoto(d,uploaded);
-      completed++;
-      const pct=Math.round(completed/docs.length*100);
-      const bar=document.getElementById('drive-migrate-progress');
-      const status=document.getElementById('drive-migrate-status');
-      if(bar) bar.style.width=pct+'%';
-      if(status) status.textContent='ย้ายสำเร็จ '+completed+'/'+docs.length+' รูป ('+pct+'%)';
-    }
-    persistDocuments();
-    logAction('Google Drive','ย้ายรูปเดิมขึ้น Drive '+completed+' รูป');
-    fireConfetti();
-    setTimeout(()=>{ closeModal(); renderAll(); showToast('ย้ายรูปเดิมขึ้น Google Drive ครบแล้ว', 'success'); },900);
-  }catch(e){
-    if(completed) persistDocuments();
-    closeModal(); renderAll();
-    showToast('ย้ายได้ '+completed+'/'+docs.length+' รูป แล้วหยุด: '+e.message, 'error');
-  }
 }
 function unlockSetting(){
   const pin = document.getElementById('pin-input').value;
